@@ -6,8 +6,6 @@ output:
   html_document: default
 ---
 
-Type regular things here. 
-
 ```{r setup, include=TRUE, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -16,7 +14,7 @@ library(tidyverse)
 
 # Might need to add other packages like scales, ggtext, ggthemes and so on.
 
-# For the purpose sdfsdfsdfsdfdsof an in-class exercise, we clean up this data. The raw data
+# For the purpose of an in-class exercise, we clean up this data. The raw data
 # is a little too complex to deal with in week 1 of the course.
 
 x <- PPBDS.data::kenya %>%

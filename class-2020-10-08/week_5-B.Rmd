@@ -78,8 +78,6 @@ cov_mat <- diag(states$std_dev) %*%
   as.matrix(cor_mat, .name_repair = "minimal") %*% 
   diag(states$std_dev)
 
-
-
 # Think about how you might want to improve this code. Note that the function
 # fails to pass in the necessary variables. For example, it needs an object
 # named cov_mat, otherwise it will fail. Right now, it just assumes that that

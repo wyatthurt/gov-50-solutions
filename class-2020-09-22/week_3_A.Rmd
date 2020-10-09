@@ -88,7 +88,8 @@ Before we start on the model, Wisdom suggests we should:
 After we have a model, Temperance suggests we should:
 
 
-**Comments:** Obviously, there are no right answers here. But we want to start to hit the key themes. Read the Cardinal Virtues Wikpedia page: https://en.wikipedia.org/wiki/Cardinal_virtues. Wisdom would ask us: Why are we even exploring this issue? Is enrollment a good guide to action? Should we even care which courses have increases in decreases? Are such changes correlated with anything? Are they biased? 
+**Answer:**
+Wisdom would ask us: Why are we even exploring this issue? Is enrollment a good guide to action? Should we even care which courses have increases in decreases? Are such changes correlated with anything? Are they biased? 
 
 Temperance suggests that, even if we come up with a "model," we should be very careful of trying to use it in the future. Things change, Unknown/unknowns. Will whatever "causes" we discover today still have the same effects post-pandemic?
 
