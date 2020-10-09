@@ -1,0 +1,123 @@
+---
+title: "Week 4, Day 2"
+date: "9/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(readxl)
+library(janitor)
+
+
+read_enrollment <- function(file, skip_lines = 3){
+  read_excel(file, 
+             skip = skip_lines) %>% 
+  clean_names() %>% 
+  filter(! is.na(course_title)) %>% 
+  select( -instructor_full_name, -course_section_code, -(grad:total)) %>%
+  rename_with(~ str_replace(.x, "course_", "")) %>% 
+  group_by(id, title, name, department) %>% 
+  summarize(u_grad = sum(u_grad), .groups = "drop") %>% 
+  filter(u_grad > 10)
+}
+```
+
+Let's continue working with the same enrollment data as Tuesday. As you can see, I have included my version of the `read_enrollment()` function. Take a look! Is it similar to yours? Where does it differ? Recall the [official source](https://registrar.fas.harvard.edu/faculty-staff/courses/enrollment/archived-course-enrollment-reports).
+
+### Scene 1
+
+**Prompt:** Create a tibble named `classes` which includes the data from all five years in a "tidy" format. In addition to the variables produced by `read_enrollemnt()`, your tibble shoild include a variable named `year`.
+
+```{r sc1}
+
+d_2019 <- read_enrollment(file = "raw_data/class_enrollment_summary_by_term_12.20.19.xlsx")
+d_2018 <- read_enrollment(file = "raw_data/class_enrollment_summary_by_term_10.24.18.xlsx", 
+                          skip_lines = 2)
+d_2017 <- read_enrollment(file = "raw_data/class_enrollment_summary_by_term_10.20.17.xlsx")
+d_2016 <- read_enrollment(file = "raw_data/class_enrollment_summary_by_term_fall_2016.xlsx",
+                          skip_lines = 0)
+d_2015 <- read_enrollment(file = "raw_data/class_enrollment_summary_by_term_fall_2015.xlsx")
+
+
+classes <- bind_rows(list(d_2015, d_2016, d_2017, d_2018, d_2019), .id = "year") %>% 
+  mutate(year = as.numeric(year) + 2014)
+```
+
+
+### Scene 2
+
+**Prompt:** Write a function called `big_classes()` whose first argument `x` requires a tibble, formatted like `classes`. It should return a tibble with the 5 highest enrollment classes in `x`. Once everyone in your group has that working, add a function argument called `my_year` which allows the user to pick a year for which she wants to know the biggest 5 courses.
+
+```{r sc2}
+ 
+
+big_classes(classes)
+
+big_classes <- function(x, my_year){
+  x %>% 
+    filter(year == my_year) %>% 
+    arrange(desc(u_grad)) %>% 
+    slice(1:5)
+}
+
+
+big_classes <- function(x, my_year, my_department = "Government"){
+  x %>% 
+    filter(year == my_year, department == my_department) %>% 
+    arrange(desc(u_grad)) %>% 
+    slice(1:5)
+}
+
+```
+
+
+### Scene 3
+
+**Prompt:** Chapter 4 explains list-columns and the map_* family of functions. Use those tools to create a pipe for each subpart below which accomplishes the specified task. I recommend you consult the chapter as you get started.
+
+* Create a tibble with a row for each year which includes a list-column named `q_enrollment` in which is stored the results of running `quantile()`.
+
+```{r sc3-a}
+classes %>% 
+  group_by(year) %>% 
+  summarize(q_enrollment = list(quantile(u_grad)))
+
+```
+
+* You now have a tibble with two columns: `year` and `q_enrollment`. Add another column called `mean_25_75` which is the average of the 25th and 75th percentiles. (You should look at `?quantile` to determine which elements in the list these are.) 
+
+
+```{r sc3-b}
+classes %>% 
+  group_by(year) %>% 
+  summarize(q_enrollment = list(quantile(u_grad))) %>% 
+  mutate(mean_25_75 = map_dbl(q_enrollment, ~ mean(c(.[2], .[4])))) %>%
+  View()
+
+```
+
+
+### Scene 4
+
+**Prompt:** The current version of the chapter does not mention `group_nest()`, which is a brand new function in **dplyr** package. Examine it by typing `?group_nest`. Read the help page. Note how `group_nest()` creates a new tibble with just the grouping variable and a new column, called `data` which is a list-column containing a tibble of all the relevant data. This is confusing, but powerful.
+
+```{r sc4}
+classes %>% 
+  group_by(year) %>% 
+  group_nest() %>% 
+  mutate(my_plot = map(data, ~ ggplot(data = .x, aes(u_grad)) + geom_histogram(bins = 40))) %>%
+  View()
+
+```
+
+
+### Scene 5
+
+**Prompt:** Make an interesting plot with this data. Take that plot and publish it on Rpubs. Add a link to the Rpubs in the #general Slack channel.
+
+```{r sc5}
+
+```
+
