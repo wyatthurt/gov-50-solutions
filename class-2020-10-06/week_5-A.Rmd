@@ -1,0 +1,149 @@
+---
+title: "Week 5, Day 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+```
+
+
+### Scene 1
+
+**Prompt:** Create a graphic of the posterior distribution of the [538 forecast](https://projects.fivethirtyeight.com/2020-election-forecast/) for Biden's electoral vote total. Recall the example given in Chapter 3 of *The Primer*.
+https://github.com/fivethirtyeight/data/tree/master/election-forecasts-2020
+
+```{r sc1}
+x <- read_csv("data_538/election-forecasts-2020/presidential_ev_probabilities_2020.csv",
+              col_types = cols(cycle = col_double(),
+                               branch = col_character(),
+                               model = col_character(),
+                               modeldate = col_character(),
+                               candidate_inc = col_character(),
+                               candidate_chal = col_character(),
+                               candidate_3rd = col_logical(),
+                               evprob_inc = col_double(),
+                               evprob_chal = col_double(),
+                               evprob_3rd = col_logical(),
+                               total_ev = col_double(),
+                               timestamp = col_character(),
+                               simulations = col_double()))
+
+# Note that the default col_types given as part of the warning message may not
+# be correct. Look at your work! Don't just trust the machine! For example, does
+# it really make sense for candidate_3rd to be logical? No! This should be the
+# name (character) of the main 3rd party candidate. Why is it logical? Because
+# it is missing in all rows. Still, it wopuld be better to edit this so that it
+# was col_character().
+
+x %>% 
+  ggplot(aes(total_ev, evprob_chal)) +
+  geom_bar(stat = 'identity') +
+  labs(title = "Posterior Probability Distribution Based on FiveThirtyEight Forecast",
+       subtitle = "Presidential Elections",
+       y = "Probability",
+       x = "Outcome\nElectoral Vote Total for Democratic Candidate",
+       caption = "Data from October 3, 2020") +
+  theme_classic()
+
+```
+
+
+### Scene 2
+
+**Prompt:** The purpose of this question and the next is to make sure you understand the Rubin Causal Model. Use a Google sheet, or a spreadsheet of your choice, to create the necessary tables. Most will just require a couple of lines. Wisconsin has 10 electoral votes.
+
+a) Create an ideal Preceptor Table which examines the causal effect of a proposed advertising campaign on Biden's electoral votes from Wisconsin. 
+
+b) Assume that Biden implements the campaign, create the actual Preceptor Table which we will see after the election.
+
+c) What does the actual Preceptor Table look like now?
+
+**Answer:**
+a) Will have all three columns filled in. But note the initial trickiness. We did not tell you whether or not the campaign worked! The natural inclination is to put a 10 in the first column, a zero in the second, and then a +10 as the causal effect. And that is a reasonable answer. But it could also be the opposite, that the advertising campaign was poorly designed, with a causal effect of -10. Even more so, it could be that the campaign had no effect, that Biden would have won (or lost) Wisconsin regardless. So, there are 4 possible true states of the world: 0/10, 10/0, 0/0 and 10/10. We don't know which one is true.
+
+b) We will see one column with a number, either zero or 10. The other column will gave a ?, as will the causal effect column. We can never repeat the Fundamental Problem of Causal Inference too often. If one column is zero, then other column can be either 10 or zero. Too often, students interpret the columns as Biden EV and Trump EV. If one is zero, the other must be 10. But that is wrong!
+
+c) All question marks. This is a bit of a trick question, but it is useful to ponder, if at least to say the words "experimental design," and to discuss how the world looks before we start to observe any outcomes.
+
+### Scene 3
+
+**Prompt:** Probability distributions are confusing. Using 538's posterior probability distribution of Biden's electoral votes, answer the following question. (Recall that there are 538 total electoral votes. For this exercise, you may assume that every EV goes to either Biden or Trump. In other words, we are, by assumption, eliminating the possibility of a third party candidate winning any votes.)
+
+
+a) What is the probability that Biden wins more than 300 electoral votes?
+
+b) What is the probability that Biden wins exactly 531 electoral votes? Is this answer consistent with your answer in a)?
+
+c) What is the probability of a "very close" election, defined as Biden winning between 269 and 289 electoral votes, inclusive?
+
+d) How many unique electoral vote totals does 538 view as impossible for Biden to achieve? Some of these are truly impossible. Given an example of one of these. Why does 538 think that some vote totals, while theoretically possible, should be given zero probability in its posterior?
+
+```{r sc3}
+# a) Review the three types of distributions that the book talks about:
+# mathematical, empirical and posterior. This is (obviously!) a non-standard
+# presentation of these topics. No math, lots of intuition. Fortunately,
+# whatever kind of distrubution you have, the same approach works when asking
+# questions: look at the area under the curve for the region of interest.
+
+x %>% 
+  select(total_ev, evprob_chal) %>% 
+  filter(total_ev > 300) %>% 
+  summarize(chances = sum(evprob_chal))
+
+# b) Zero percent. Interesting to ponder the meaning of zero here. If the values
+# for 530 and 532 are positive, does it really make sense to believe that this
+# is exactly zero? Isn't there a natural "smoothness" assumption that should
+# come into play.
+
+x %>% 
+  select(total_ev, evprob_chal) %>% 
+  filter(total_ev == 531) %>% 
+  pull(evprob_chal)
+
+# c) About 10%. Imagine the controversy!
+
+x %>% 
+  select(total_ev, evprob_chal) %>% 
+  filter(total_ev <= 289, total_ev >= 269 ) %>% 
+  summarize(chances = sum(evprob_chal))
+
+
+# d) In terms of which are truly impossible, I think this is a bit of a trick
+# question. 20 years ago, it was impossible to get just one electoral vote. That
+# also meant that certain other totals were impossible. Now, with the single
+# vote districts in ME and NE, I think any total is possible. If so, then why
+# are so many zero? Presumably it is because they never happened in the 40,000
+# simulations which 538 ran. Is that a good reason?
+
+x %>% 
+  select(total_ev, evprob_chal) %>% 
+  filter(evprob_chal == 0) %>% 
+  nrow()
+
+```
+
+
+### Scene 4
+
+**Prompt:** Biden is considering a larger implementation of this advertising campaign. However, he can't afford to use it in every state. Create an ideal Preceptor Table illustrating the situation from a causal inference perspective. Use ... to indicate rows which exist but which you are not writing down explicitly, as we do in the book. (After all, you can write down every row.)
+
+a) On a Google sheet or other spreadsheet, create an ideal Preceptor Table which illustrates the causal effect of the campaign.
+
+b) Does it make sense to calculate an average causal effect?
+
+c) There are two approaches Biden might take to determine which states to use the campaign in. He could randomize. He could select states which, in his judgment, do the most to increase his odds of winning the presidency. Which should he do?
+
+d) Assume he randomized. What conclusions might we be able to draw after the election? How would we draw them.
+
+
+**Answer:** 
+
+a) Even in what appears to be a simple situation, there is layers of complexity. Here, we obviously are looking for one row per state, with two columns and a causal effect. But that is probably wrong! Most obviously, you need a row for the District of Columbia.
+
+b) A hard question! Does it make sense? Maybe? Causal inference is hard! The chapter, of necessity, makes it easy. If you randomize, you just take the average treated and subtract the average control. Easy/peasy in the simple case. But does that really work here? What if, by chance, CA/TX/NY are all treated? That would almost certainly lead to a big estimated causal effect! Would you believe it?
+
+c) He should obviously (?) maximize his odds of getting elected. (Even that is not totally obvious, at least from the point of view of the Democratic National Committee. If randomization showed clearly that the campaign worked great --- and if you could keep that knowledge from the Republicans --- then a randomization approach might be the best answer for the Democratic Party as an organization.) 
+
+d) Temperance. Even if we could "know" that the campaign worked in this election, that does not mean that we can be certain it would work in the next one. The world changes! We should not consider future elections to be random draws from the exact same data generating mechanism as this one. Do we expect/hope that the DGM will be similar (Data Generating Mechanism)? Sure! The world is highly serially correlated. But future uncertainty is almost wider than a naive reading of a model using current data would suggest.

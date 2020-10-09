@@ -1,0 +1,217 @@
+---
+title: "Week 3, Day 2"
+author: "David Kane"
+output: html_document
+---
+
+Let's continue working with enrollment data.
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(stringr)
+library(gt)
+library(readxl)
+library(janitor)
+knitr::opts_chunk$set(echo = FALSE)
+
+# Note the changes that I made in the code from Tuesday. Try to understand them.
+# Chapter 4, which we will discuss next week explains the use of the anonymous
+# function -- the ~ str_replace() trick. Look at ?select to understand the use
+# of a colon in grad:total.
+
+sep_old <- 
+  read_excel("downloaded_data/class_enrollment_summary_by_term_9-1-2020.xlsx", 
+             skip = 3) %>% 
+  clean_names() %>% 
+  filter(! is.na(course_title)) %>% 
+  select( -instructor_full_name, -course_section_code, -(grad:total)) %>%
+  rename_with(~ str_replace(.x, "course_", "")) %>% 
+  group_by(id, title, name, department) %>% 
+  summarize(u_grad = sum(u_grad), .groups = "drop") %>% 
+  filter(u_grad > 10)
+
+
+sep_new <- 
+  read_excel("downloaded_data//class_enrollment_summary_by_term_9-22-2020.xlsx", 
+             skip = 3) %>% 
+  clean_names() %>% 
+  filter(! is.na(course_title)) %>% 
+  select( -instructor_full_name, -course_section_code, -(grad:total)) %>%
+  rename_with(~ str_replace(.x, "course_", "")) %>% 
+  group_by(id, title, name, department) %>% 
+  summarize(u_grad = sum(u_grad), .groups = "drop") %>% 
+  filter(u_grad > 10)
+```
+
+### Scene 1
+
+**Prompt:** Which classes had the biggest increases and decreases in undergraduate enrollments between September 1 and September 22? Obviously, you will need to join the two datasets which I have created for you above.
+
+a) Make a table using **gt** which shows the five courses with the biggest increase. Use the [How to make a table](https://davidkane9.github.io/PPBDS/tools.html#how-to-make-a-table) section of *The Primer*.
+
+
+b) Make a table using **gt** which shows the five courses with the biggest decrease.
+
+c) Make a nice looking graphic which shows these 10 courses.
+
+d) Write down some thoughts about what might explain these increases and decreases. Or is it all just random? How would we know?
+
+See [here](https://rpubs.com/dkane/week-3) for my answers. No need to copy exactly what I have done! Make yours better.
+
+
+**Answer:**
+
+```{r s1}
+# Create a new object in which to store your merged datasets. left_join() will
+# be the appropriate join to use here, and use the suffix argument to clearly
+# indicate which columns are from which dataset. Note that it is common to name
+# the main dataset that you will work with over the course of an analysis x.
+
+x <- left_join(sep_old, sep_new, 
+               by = c("id", "title", "name", "department"),   
+               suffix = c("_old", "_new")) %>% 
+  mutate(change = u_grad_new - u_grad_old)
+
+# Here I have created two separate tibbles to find the top 5 courses with the
+# greatest enrollment increase and the top 5 courses with the greatest
+# enrollment decrease. I will feed this into gt. I could use slice(1:5) as well.
+
+top_inc <- x %>% 
+  select(title, name, u_grad_new, change) %>% 
+  arrange(desc(change)) %>% 
+  slice_head(n = 5)
+
+top_dec <- x %>% 
+  select(title, name, u_grad_new, change) %>% 
+  arrange(change) %>% 
+  slice_head(n = 5) 
+
+# then, I join together those tibbles using full_join which simply puts all rows
+# from both datasets into one. however, you will have to reorder your courses
+# again when doing ggplot using reorder()
+
+p <- full_join(top_inc, top_dec,
+               by = c("title", "name", 
+                      "u_grad_new", "change")) %>% 
+  ggplot(mapping = aes(x = reorder(name, change), y = change)) +
+  geom_col() +
+  coord_flip() +
+  labs(y = "Change in Enrollment",
+       title = "Courses with Greatest Increase and Decrease in Enrollment") +
+  theme(axis.title.y = element_blank())
+```
+
+```{r s1-tables}
+top_inc %>% 
+  gt() %>% 
+    tab_header(title = "Biggests Increases in Enrollment") %>% 
+    cols_label(title = "Number",
+               name = "Title",
+               u_grad_new = "Enrollment",
+               change = "Change") %>% 
+    tab_source_note("Harvard Register")
+
+top_dec %>% 
+  gt() %>% 
+    tab_header(title = "Biggests Decreases in Enrollment") %>% 
+    cols_label(title = "Number",
+               name = "Title",
+               u_grad_new = "Enrollment",
+               change = "Change") %>% 
+    tab_source_note("Harvard Register")
+```
+
+```{r s1-plot}
+p
+```
+
+
+## Scene 2
+
+**Prompt:** Dean Amanda Claybaugh is worried about that the amount of work that some classes assigned in the first few weeks of class. Describe an ideal Preceptor Table with no missing data which would allow us to investigate this situation. What data is missing and why? With our actual Preceptor Table, how might we investigate the effect of work assigned in the first two weeks? Would the estimated Average Treatment Effect be accurate? Why or why not?
+
+Make a spreadsheet --- I recommend using Google sheets, but anything will do --- which shows a simple version of that Preceptor Table. What are the units? What are the outcomes? What is the treatment? What is the causal effect?
+
+## Scene 3
+
+**Prompt:** Dean Claybaugh does a survey and discovers that 100 of the 500 courses at Harvard gave "lots" of work in the first weeks of class and 400 of the courses gave a "normal" amount of work.
+
+Describe, in words, how you would estimate the Average Treatment Effect. 
+
+Describe why this estimate might be a very bad estimate of the true Average Treatment effect.
+
+### Scene 4
+
+**Prompt:** Create a scatterplot of the length of course name versus enrollment for the Computer Science and Economics Department. Use `nchar()` to find the length, and include spaces. Add a linear line of best fit on your plot and scale axes appropriately.
+
+**Answer:**
+
+```{r s4}
+# Create a new column for the length of the course name, and filter for relevant
+# departments plotting is straightforward scale the y-axis using a lot scale and
+# "lm" method for geom_smooth() for a linear line.
+
+x %>% 
+  drop_na() %>% 
+  mutate(length_name = nchar(name)) %>% 
+  filter(department %in% c("Computer Science", "Economics")) %>% 
+  ggplot(mapping = aes(x = length_name, y = u_grad_new)) +
+    geom_point(alpha = 0.3) +
+    geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
+    scale_y_log10() +
+    facet_wrap(~ department) +
+    labs(x = "Length of Course Name",
+         y = "Undergraduate Enrollment",
+         title = "Undergraduate Enrollment by Length of Course Name")
+
+```
+
+### Scene 5
+
+**Prompt:** Use the stringr library to find the 10 most common first names of instructors and plot them. 
+
+**Answer:**
+
+```{r s5}
+# Create a new object to store the tibble in. I used drop_na() to be safe. You
+# will want to group by instructor's full name first, so that if one instructor
+# is teaching more than one course, they will not be counted as separate names.
+
+names <- read_excel("downloaded_data//class_enrollment_summary_by_term_9-22-2020.xlsx", 
+                    skip = 3) %>% 
+  clean_names() %>% 
+  filter(! is.na(course_title)) %>% 
+  drop_na() %>% 
+  group_by(instructor_full_name) %>% 
+  
+  # Use str_split to split instructor_full_name by the comma. This will split
+  # between an instructor's first and last name. Setting simplify = TRUE creates
+  # a matrix out of the results of the split, and using [, 2] selects the second
+  # column of that matrix, which is the first name of the instructor
+  
+  mutate(first_name = str_split(instructor_full_name, ",", simplify = TRUE)[, 2]) %>% 
+
+  # here, I noticed that some people have middle initials while some also have
+  # multiple middle or first names. let's just select the very first name people
+  # have to standardize. I did this by using another str_split to split by the
+  # space between each name, and used [, 1] to select only the very first name.
+  # finally, you will just need to group by first name and use summarize and n()
+  # to count the appearances of each first name.
+  
+  mutate(first_name = str_split(first_name, " ", simplify = TRUE)[, 1]) %>% 
+  group_by(first_name) %>% 
+  summarize(count = n(), .groups = "drop") %>% 
+  arrange(desc(count)) %>% 
+  slice_head(n = 10)
+
+names %>% 
+  ggplot(mapping = aes(x = reorder(first_name, -count), y = count)) +
+  geom_col() +
+  labs(x = "Instructor First Name",
+       y = "Count",
+       title = "Ten Most Common First Names of Harvard Professors")
+
+```
+
+

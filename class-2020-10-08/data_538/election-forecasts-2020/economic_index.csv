@@ -1,0 +1,869 @@
+cycle,branch,model,modeldate,candidate_inc,candidate_chal,candidate_3rd,current_zscore,projected_zscore,projected_hi,projected_lo,category,indicator,timestamp,simulations
+2020,President,polls-plus,10/2/2020,Trump,Biden,"",.7222743,.6602898,1.237006,.083574,stock market,S&P 500,16:34:03  2 Oct 2020,40000
+2020,President,polls-plus,10/2/2020,Trump,Biden,"",-1.45219,-1.077966,-.5012501,-1.654682,spending,Personal consumption expenditures,16:34:03  2 Oct 2020,40000
+2020,President,polls-plus,10/2/2020,Trump,Biden,"",-1.62591,-1.312062,-.7353461,-1.888778,manufacturing,Industrial production,16:34:03  2 Oct 2020,40000
+2020,President,polls-plus,10/2/2020,Trump,Biden,"",-3.204552,-2.835074,-2.258358,-3.41179,jobs,Nonfarm payrolls,16:34:03  2 Oct 2020,40000
+2020,President,polls-plus,10/2/2020,Trump,Biden,"",.6025671,.6488451,1.225561,.0721294,inflation,Consumer price index,16:34:03  2 Oct 2020,40000
+2020,President,polls-plus,10/2/2020,Trump,Biden,"",.6656389,.5559089,1.132625,-.0208068,income,Real disposable personal income,16:34:03  2 Oct 2020,40000
+2020,President,polls-plus,10/2/2020,Trump,Biden,"",-.7153618,-.5600097,-.15221,-.9678093,combined,Average of all six indicators,16:34:03  2 Oct 2020,40000
+2020,President,polls-plus,10/1/2020,Trump,Biden,"",.7945145,.7297305,1.311405,.1480563,stock market,S&P 500,21:27:02  1 Oct 2020,40000
+2020,President,polls-plus,10/1/2020,Trump,Biden,"",-1.45219,-1.060115,-.4784406,-1.641789,spending,Personal consumption expenditures,21:27:02  1 Oct 2020,40000
+2020,President,polls-plus,10/1/2020,Trump,Biden,"",-1.62591,-1.295314,-.7136397,-1.876988,manufacturing,Industrial production,21:27:02  1 Oct 2020,40000
+2020,President,polls-plus,10/1/2020,Trump,Biden,"",-3.260423,-2.876542,-2.294868,-3.458216,jobs,Nonfarm payrolls,21:27:02  1 Oct 2020,40000
+2020,President,polls-plus,10/1/2020,Trump,Biden,"",.6025671,.6502742,1.231948,.0685999,inflation,Consumer price index,21:27:02  1 Oct 2020,40000
+2020,President,polls-plus,10/1/2020,Trump,Biden,"",.6656389,.553151,1.134825,-.0285232,income,Real disposable personal income,21:27:02  1 Oct 2020,40000
+2020,President,polls-plus,10/1/2020,Trump,Biden,"",-.7126337,-.5498025,-.1384967,-.9611083,combined,Average of all six indicators,21:27:02  1 Oct 2020,40000
+2020,President,polls-plus,9/30/2020,Trump,Biden,"",.7605334,.6943838,1.274146,.1146215,stock market,S&P 500,20:24:04 30 Sep 2020,40000
+2020,President,polls-plus,9/30/2020,Trump,Biden,"",-1.979027,-1.565513,-.9857512,-2.145276,spending,Personal consumption expenditures,20:24:04 30 Sep 2020,40000
+2020,President,polls-plus,9/30/2020,Trump,Biden,"",-1.62591,-1.289042,-.7092801,-1.868805,manufacturing,Industrial production,20:24:04 30 Sep 2020,40000
+2020,President,polls-plus,9/30/2020,Trump,Biden,"",-3.260423,-2.866458,-2.286695,-3.44622,jobs,Nonfarm payrolls,20:24:04 30 Sep 2020,40000
+2020,President,polls-plus,9/30/2020,Trump,Biden,"",.6025671,.6517032,1.231465,.0719409,inflation,Consumer price index,20:24:04 30 Sep 2020,40000
+2020,President,polls-plus,9/30/2020,Trump,Biden,"",2.891383,2.792217,3.371979,2.212455,income,Real disposable personal income,20:24:04 30 Sep 2020,40000
+2020,President,polls-plus,9/30/2020,Trump,Biden,"",-.435146,-.263785,.1461689,-.6737388,combined,Average of all six indicators,20:24:04 30 Sep 2020,40000
+2020,President,polls-plus,9/29/2020,Trump,Biden,"",.7053884,.6382558,1.223451,.0530605,stock market,S&P 500,20:44:03 29 Sep 2020,40000
+2020,President,polls-plus,9/29/2020,Trump,Biden,"",-1.979027,-1.558924,-.9737285,-2.144119,spending,Personal consumption expenditures,20:44:03 29 Sep 2020,40000
+2020,President,polls-plus,9/29/2020,Trump,Biden,"",-1.62591,-1.285187,-.6999919,-1.870383,manufacturing,Industrial production,20:44:03 29 Sep 2020,40000
+2020,President,polls-plus,9/29/2020,Trump,Biden,"",-3.260423,-2.857665,-2.27247,-3.442861,jobs,Nonfarm payrolls,20:44:03 29 Sep 2020,40000
+2020,President,polls-plus,9/29/2020,Trump,Biden,"",.6025671,.6531322,1.238328,.0679369,inflation,Consumer price index,20:44:03 29 Sep 2020,40000
+2020,President,polls-plus,9/29/2020,Trump,Biden,"",2.891383,2.787826,3.373021,2.20263,income,Real disposable personal income,20:44:03 29 Sep 2020,40000
+2020,President,polls-plus,9/29/2020,Trump,Biden,"",-.4443369,-.2704271,.1433685,-.6842227,combined,Average of all six indicators,20:44:03 29 Sep 2020,40000
+2020,President,polls-plus,9/28/2020,Trump,Biden,"",.7436004,.6740435,1.264773,.0833136,stock market,S&P 500,22:13:03 28 Sep 2020,40000
+2020,President,polls-plus,9/28/2020,Trump,Biden,"",-1.979027,-1.543423,-.9526929,-2.134153,spending,Personal consumption expenditures,22:13:03 28 Sep 2020,40000
+2020,President,polls-plus,9/28/2020,Trump,Biden,"",-1.62591,-1.271557,-.6808269,-1.862287,manufacturing,Industrial production,22:13:03 28 Sep 2020,40000
+2020,President,polls-plus,9/28/2020,Trump,Biden,"",-3.260423,-2.843657,-2.252927,-3.434387,jobs,Nonfarm payrolls,22:13:03 28 Sep 2020,40000
+2020,President,polls-plus,9/28/2020,Trump,Biden,"",.6025671,.6545613,1.245291,.0638314,inflation,Consumer price index,22:13:03 28 Sep 2020,40000
+2020,President,polls-plus,9/28/2020,Trump,Biden,"",2.891383,2.784525,3.375255,2.193795,income,Real disposable personal income,22:13:03 28 Sep 2020,40000
+2020,President,polls-plus,9/28/2020,Trump,Biden,"",-.4379682,-.2575843,.1601247,-.6752934,combined,Average of all six indicators,22:13:03 28 Sep 2020,40000
+2020,President,polls-plus,9/27/2020,Trump,Biden,"",.6333736,.563939,1.160025,-.0321474,stock market,S&P 500,20:00:04 27 Sep 2020,40000
+2020,President,polls-plus,9/27/2020,Trump,Biden,"",-1.979027,-1.542668,-.9465815,-2.138754,spending,Personal consumption expenditures,20:00:04 27 Sep 2020,40000
+2020,President,polls-plus,9/27/2020,Trump,Biden,"",-1.62591,-1.274158,-.6780716,-1.870245,manufacturing,Industrial production,20:00:04 27 Sep 2020,40000
+2020,President,polls-plus,9/27/2020,Trump,Biden,"",-3.260423,-2.838318,-2.242231,-3.434404,jobs,Nonfarm payrolls,20:00:04 27 Sep 2020,40000
+2020,President,polls-plus,9/27/2020,Trump,Biden,"",.6025671,.6559903,1.252077,.0599038,inflation,Consumer price index,20:00:04 27 Sep 2020,40000
+2020,President,polls-plus,9/27/2020,Trump,Biden,"",2.891383,2.779399,3.375485,2.183312,income,Real disposable personal income,20:00:04 27 Sep 2020,40000
+2020,President,polls-plus,9/27/2020,Trump,Biden,"",-.4563393,-.2759693,.1455275,-.6974661,combined,Average of all six indicators,20:00:04 27 Sep 2020,40000
+2020,President,polls-plus,9/26/2020,Trump,Biden,"",.6333736,.5620031,1.163488,-.0394815,stock market,S&P 500,19:00:04 26 Sep 2020,40000
+2020,President,polls-plus,9/26/2020,Trump,Biden,"",-1.979027,-1.531183,-.9296981,-2.132667,spending,Personal consumption expenditures,19:00:04 26 Sep 2020,40000
+2020,President,polls-plus,9/26/2020,Trump,Biden,"",-1.62591,-1.26496,-.6634755,-1.866445,manufacturing,Industrial production,19:00:04 26 Sep 2020,40000
+2020,President,polls-plus,9/26/2020,Trump,Biden,"",-3.260423,-2.826679,-2.225194,-3.428163,jobs,Nonfarm payrolls,19:00:04 26 Sep 2020,40000
+2020,President,polls-plus,9/26/2020,Trump,Biden,"",.6025671,.6574193,1.258904,.0559348,inflation,Consumer price index,19:00:04 26 Sep 2020,40000
+2020,President,polls-plus,9/26/2020,Trump,Biden,"",2.891383,2.775597,3.377082,2.174113,income,Real disposable personal income,19:00:04 26 Sep 2020,40000
+2020,President,polls-plus,9/26/2020,Trump,Biden,"",-.4563393,-.2713003,.1540135,-.6966141,combined,Average of all six indicators,19:00:04 26 Sep 2020,40000
+2020,President,polls-plus,9/25/2020,Trump,Biden,"",.6333736,.5600671,1.16695,-.0468155,stock market,S&P 500,22:17:03 25 Sep 2020,40000
+2020,President,polls-plus,9/25/2020,Trump,Biden,"",-1.979027,-1.519697,-.9128149,-2.12658,spending,Personal consumption expenditures,22:17:03 25 Sep 2020,40000
+2020,President,polls-plus,9/25/2020,Trump,Biden,"",-1.62591,-1.255762,-.6488794,-1.862645,manufacturing,Industrial production,22:17:03 25 Sep 2020,40000
+2020,President,polls-plus,9/25/2020,Trump,Biden,"",-3.260423,-2.815039,-2.208157,-3.421922,jobs,Nonfarm payrolls,22:17:03 25 Sep 2020,40000
+2020,President,polls-plus,9/25/2020,Trump,Biden,"",.6025671,.6588483,1.265731,.0519657,inflation,Consumer price index,22:17:03 25 Sep 2020,40000
+2020,President,polls-plus,9/25/2020,Trump,Biden,"",2.891383,2.771795,3.378678,2.164913,income,Real disposable personal income,22:17:03 25 Sep 2020,40000
+2020,President,polls-plus,9/25/2020,Trump,Biden,"",-.4563393,-.2666313,.1624995,-.6957622,combined,Average of all six indicators,22:17:03 25 Sep 2020,40000
+2020,President,polls-plus,9/24/2020,Trump,Biden,"",.5230193,.4502226,1.062413,-.1619673,stock market,S&P 500,19:10:02 24 Sep 2020,40000
+2020,President,polls-plus,9/24/2020,Trump,Biden,"",-1.979027,-1.519978,-.9077879,-2.132168,spending,Personal consumption expenditures,19:10:02 24 Sep 2020,40000
+2020,President,polls-plus,9/24/2020,Trump,Biden,"",-1.62591,-1.259602,-.6474122,-1.871792,manufacturing,Industrial production,19:10:02 24 Sep 2020,40000
+2020,President,polls-plus,9/24/2020,Trump,Biden,"",-3.260423,-2.810377,-2.198187,-3.422567,jobs,Nonfarm payrolls,19:10:02 24 Sep 2020,40000
+2020,President,polls-plus,9/24/2020,Trump,Biden,"",.6025671,.6602774,1.272467,.0480875,inflation,Consumer price index,19:10:02 24 Sep 2020,40000
+2020,President,polls-plus,9/24/2020,Trump,Biden,"",2.891383,2.766504,3.378694,2.154315,income,Real disposable personal income,19:10:02 24 Sep 2020,40000
+2020,President,polls-plus,9/24/2020,Trump,Biden,"",-.4747317,-.2854921,.1473915,-.7183757,combined,Average of all six indicators,19:10:02 24 Sep 2020,40000
+2020,President,polls-plus,9/23/2020,Trump,Biden,"",.5054775,.4313202,1.049008,-.1863675,stock market,S&P 500,20:53:03 23 Sep 2020,40000
+2020,President,polls-plus,9/23/2020,Trump,Biden,"",-1.979027,-1.510577,-.8928892,-2.128264,spending,Personal consumption expenditures,20:53:03 23 Sep 2020,40000
+2020,President,polls-plus,9/23/2020,Trump,Biden,"",-1.62591,-1.25274,-.6350527,-1.870428,manufacturing,Industrial production,20:53:03 23 Sep 2020,40000
+2020,President,polls-plus,9/23/2020,Trump,Biden,"",-3.260423,-2.799992,-2.182304,-3.41768,jobs,Nonfarm payrolls,20:53:03 23 Sep 2020,40000
+2020,President,polls-plus,9/23/2020,Trump,Biden,"",.6025671,.6617064,1.279394,.0440187,inflation,Consumer price index,20:53:03 23 Sep 2020,40000
+2020,President,polls-plus,9/23/2020,Trump,Biden,"",2.891383,2.762429,3.380117,2.144741,income,Real disposable personal income,20:53:03 23 Sep 2020,40000
+2020,President,polls-plus,9/23/2020,Trump,Biden,"",-.4776554,-.2846422,.1521289,-.7214134,combined,Average of all six indicators,20:53:03 23 Sep 2020,40000
+2020,President,polls-plus,9/22/2020,Trump,Biden,"",.6787787,.5989662,1.221825,-.0238922,stock market,S&P 500,19:00:04 22 Sep 2020,40000
+2020,President,polls-plus,9/22/2020,Trump,Biden,"",-1.979027,-1.479853,-.8569943,-2.102711,spending,Personal consumption expenditures,19:00:04 22 Sep 2020,40000
+2020,President,polls-plus,9/22/2020,Trump,Biden,"",-1.62591,-1.222176,-.5993176,-1.845034,manufacturing,Industrial production,19:00:04 22 Sep 2020,40000
+2020,President,polls-plus,9/22/2020,Trump,Biden,"",-3.260423,-2.776912,-2.154054,-3.399771,jobs,Nonfarm payrolls,19:00:04 22 Sep 2020,40000
+2020,President,polls-plus,9/22/2020,Trump,Biden,"",.6025671,.6631354,1.285994,.040277,inflation,Consumer price index,19:00:04 22 Sep 2020,40000
+2020,President,polls-plus,9/22/2020,Trump,Biden,"",2.891383,2.761079,3.383938,2.138221,income,Real disposable personal income,19:00:04 22 Sep 2020,40000
+2020,President,polls-plus,9/22/2020,Trump,Biden,"",-.4487718,-.2426267,.1978007,-.6830541,combined,Average of all six indicators,19:00:04 22 Sep 2020,40000
+2020,President,polls-plus,9/21/2020,Trump,Biden,"",.6074108,.5275533,1.155801,-.1006941,stock market,S&P 500,19:00:04 21 Sep 2020,40000
+2020,President,polls-plus,9/21/2020,Trump,Biden,"",-1.979027,-1.476337,-.8480892,-2.104584,spending,Personal consumption expenditures,19:00:04 21 Sep 2020,40000
+2020,President,polls-plus,9/21/2020,Trump,Biden,"",-1.62591,-1.221843,-.5935957,-1.850091,manufacturing,Industrial production,19:00:04 21 Sep 2020,40000
+2020,President,polls-plus,9/21/2020,Trump,Biden,"",-3.260423,-2.770022,-2.141774,-3.398269,jobs,Nonfarm payrolls,19:00:04 21 Sep 2020,40000
+2020,President,polls-plus,9/21/2020,Trump,Biden,"",.6025671,.6645644,1.292812,.036317,inflation,Consumer price index,19:00:04 21 Sep 2020,40000
+2020,President,polls-plus,9/21/2020,Trump,Biden,"",2.891383,2.756256,3.384504,2.128009,income,Real disposable personal income,19:00:04 21 Sep 2020,40000
+2020,President,polls-plus,9/21/2020,Trump,Biden,"",-.4606665,-.2533046,.1909334,-.6975426,combined,Average of all six indicators,19:00:04 21 Sep 2020,40000
+2020,President,polls-plus,9/20/2020,Trump,Biden,"",.6949242,.6111798,1.244807,-.0224471,stock market,S&P 500,22:02:03 20 Sep 2020,40000
+2020,President,polls-plus,9/20/2020,Trump,Biden,"",-1.979027,-1.454594,-.8209677,-2.088221,spending,Personal consumption expenditures,22:02:03 20 Sep 2020,40000
+2020,President,polls-plus,9/20/2020,Trump,Biden,"",-1.62591,-1.20121,-.5675827,-1.834836,manufacturing,Industrial production,22:02:03 20 Sep 2020,40000
+2020,President,polls-plus,9/20/2020,Trump,Biden,"",-3.260423,-2.752254,-2.118627,-3.38588,jobs,Nonfarm payrolls,22:02:03 20 Sep 2020,40000
+2020,President,polls-plus,9/20/2020,Trump,Biden,"",.6025671,.6659935,1.29962,.0323666,inflation,Consumer price index,22:02:03 20 Sep 2020,40000
+2020,President,polls-plus,9/20/2020,Trump,Biden,"",2.891383,2.753778,3.387405,2.120151,income,Real disposable personal income,22:02:03 20 Sep 2020,40000
+2020,President,polls-plus,9/20/2020,Trump,Biden,"",-.4460809,-.2295177,.2185241,-.6775596,combined,Average of all six indicators,22:02:03 20 Sep 2020,40000
+2020,President,polls-plus,9/19/2020,Trump,Biden,"",.6949242,.609189,1.248212,-.0298337,stock market,S&P 500,19:00:04 19 Sep 2020,40000
+2020,President,polls-plus,9/19/2020,Trump,Biden,"",-1.979027,-1.442956,-.8039338,-2.081979,spending,Personal consumption expenditures,19:00:04 19 Sep 2020,40000
+2020,President,polls-plus,9/19/2020,Trump,Biden,"",-1.62591,-1.191828,-.5528057,-1.830851,manufacturing,Industrial production,19:00:04 19 Sep 2020,40000
+2020,President,polls-plus,9/19/2020,Trump,Biden,"",-3.260423,-2.740514,-2.101492,-3.379537,jobs,Nonfarm payrolls,19:00:04 19 Sep 2020,40000
+2020,President,polls-plus,9/19/2020,Trump,Biden,"",.6025671,.6674225,1.306445,.0283998,inflation,Consumer price index,19:00:04 19 Sep 2020,40000
+2020,President,polls-plus,9/19/2020,Trump,Biden,"",2.891383,2.75,3.389023,2.110978,income,Real disposable personal income,19:00:04 19 Sep 2020,40000
+2020,President,polls-plus,9/19/2020,Trump,Biden,"",-.4460809,-.2247812,.2270761,-.6766384,combined,Average of all six indicators,19:00:04 19 Sep 2020,40000
+2020,President,polls-plus,9/18/2020,Trump,Biden,"",.6949242,.6071981,1.251617,-.0372204,stock market,S&P 500,19:20:04 18 Sep 2020,40000
+2020,President,polls-plus,9/18/2020,Trump,Biden,"",-1.979027,-1.431318,-.7868999,-2.075737,spending,Personal consumption expenditures,19:20:04 18 Sep 2020,40000
+2020,President,polls-plus,9/18/2020,Trump,Biden,"",-1.62591,-1.182447,-.5380287,-1.826866,manufacturing,Industrial production,19:20:04 18 Sep 2020,40000
+2020,President,polls-plus,9/18/2020,Trump,Biden,"",-3.260423,-2.728775,-2.084357,-3.373194,jobs,Nonfarm payrolls,19:20:04 18 Sep 2020,40000
+2020,President,polls-plus,9/18/2020,Trump,Biden,"",.6025671,.6688516,1.31327,.024433,inflation,Consumer price index,19:20:04 18 Sep 2020,40000
+2020,President,polls-plus,9/18/2020,Trump,Biden,"",2.891383,2.746223,3.390642,2.101805,income,Real disposable personal income,19:20:04 18 Sep 2020,40000
+2020,President,polls-plus,9/18/2020,Trump,Biden,"",-.4460809,-.2200446,.2356281,-.6757174,combined,Average of all six indicators,19:20:04 18 Sep 2020,40000
+2020,President,polls-plus,9/17/2020,Trump,Biden,"",.7786006,.6868388,1.336591,.0370871,stock market,S&P 500,19:00:03 17 Sep 2020,40000
+2020,President,polls-plus,9/17/2020,Trump,Biden,"",-1.979027,-1.409237,-.7594857,-2.058989,spending,Personal consumption expenditures,19:00:03 17 Sep 2020,40000
+2020,President,polls-plus,9/17/2020,Trump,Biden,"",-1.62591,-1.16137,-.5116181,-1.811121,manufacturing,Industrial production,19:00:03 17 Sep 2020,40000
+2020,President,polls-plus,9/17/2020,Trump,Biden,"",-3.260423,-2.710759,-2.061007,-3.360511,jobs,Nonfarm payrolls,19:00:03 17 Sep 2020,40000
+2020,President,polls-plus,9/17/2020,Trump,Biden,"",.6025671,.6702806,1.320032,.0205289,inflation,Consumer price index,19:00:03 17 Sep 2020,40000
+2020,President,polls-plus,9/17/2020,Trump,Biden,"",2.891383,2.743813,3.393564,2.094061,income,Real disposable personal income,19:00:03 17 Sep 2020,40000
+2020,President,polls-plus,9/17/2020,Trump,Biden,"",-.4321348,-.196739,.2627048,-.6561828,combined,Average of all six indicators,19:00:03 17 Sep 2020,40000
+2020,President,polls-plus,9/16/2020,Trump,Biden,"",.8424696,.7471771,1.402334,.0920204,stock market,S&P 500,23:12:03 16 Sep 2020,40000
+2020,President,polls-plus,9/16/2020,Trump,Biden,"",-1.979027,-1.389269,-.7341128,-2.044426,spending,Personal consumption expenditures,23:12:03 16 Sep 2020,40000
+2020,President,polls-plus,9/16/2020,Trump,Biden,"",-1.62591,-1.142632,-.4874756,-1.797789,manufacturing,Industrial production,23:12:03 16 Sep 2020,40000
+2020,President,polls-plus,9/16/2020,Trump,Biden,"",-3.260423,-2.693994,-2.038838,-3.349151,jobs,Nonfarm payrolls,23:12:03 16 Sep 2020,40000
+2020,President,polls-plus,9/16/2020,Trump,Biden,"",.6025671,.6717096,1.326866,.0165529,inflation,Consumer price index,23:12:03 16 Sep 2020,40000
+2020,President,polls-plus,9/16/2020,Trump,Biden,"",2.891383,2.741136,3.396292,2.085979,income,Real disposable personal income,23:12:03 16 Sep 2020,40000
+2020,President,polls-plus,9/16/2020,Trump,Biden,"",-.42149,-.1776456,.2856202,-.6409113,combined,Average of all six indicators,23:12:03 16 Sep 2020,40000
+2020,President,polls-plus,9/15/2020,Trump,Biden,"",.8792177,.7811658,1.441753,.1205781,stock market,S&P 500,23:33:03 15 Sep 2020,40000
+2020,President,polls-plus,9/15/2020,Trump,Biden,"",-1.979027,-1.372494,-.711906,-2.033081,spending,Personal consumption expenditures,23:33:03 15 Sep 2020,40000
+2020,President,polls-plus,9/15/2020,Trump,Biden,"",-1.62591,-1.127456,-.4668683,-1.788044,manufacturing,Industrial production,23:33:03 15 Sep 2020,40000
+2020,President,polls-plus,9/15/2020,Trump,Biden,"",-3.260423,-2.679139,-2.018551,-3.339726,jobs,Nonfarm payrolls,23:33:03 15 Sep 2020,40000
+2020,President,polls-plus,9/15/2020,Trump,Biden,"",.6025671,.6731386,1.333726,.012551,inflation,Consumer price index,23:33:03 15 Sep 2020,40000
+2020,President,polls-plus,9/15/2020,Trump,Biden,"",2.891383,2.738046,3.398633,2.077458,income,Real disposable personal income,23:33:03 15 Sep 2020,40000
+2020,President,polls-plus,9/15/2020,Trump,Biden,"",-.4153653,-.1644564,.3026496,-.6315624,combined,Average of all six indicators,23:33:03 15 Sep 2020,40000
+2020,President,polls-plus,9/14/2020,Trump,Biden,"",.8476182,.7488744,1.415811,.0819374,stock market,S&P 500,23:33:03 14 Sep 2020,40000
+2020,President,polls-plus,9/14/2020,Trump,Biden,"",-1.979027,-1.364493,-.6975566,-2.03143,spending,Personal consumption expenditures,23:33:03 14 Sep 2020,40000
+2020,President,polls-plus,9/14/2020,Trump,Biden,"",-2.057216,-1.598708,-.931771,-2.265645,manufacturing,Industrial production,23:33:03 14 Sep 2020,40000
+2020,President,polls-plus,9/14/2020,Trump,Biden,"",-3.260423,-2.669574,-2.002638,-3.336511,jobs,Nonfarm payrolls,23:33:03 14 Sep 2020,40000
+2020,President,polls-plus,9/14/2020,Trump,Biden,"",.6458718,.7161678,1.383105,.0492309,inflation,Consumer price index,23:33:03 14 Sep 2020,40000
+2020,President,polls-plus,9/14/2020,Trump,Biden,"",2.891383,2.733798,3.400735,2.066861,income,Real disposable personal income,23:33:03 14 Sep 2020,40000
+2020,President,polls-plus,9/14/2020,Trump,Biden,"",-.4852988,-.2389892,.2326064,-.7105849,combined,Average of all six indicators,23:33:03 14 Sep 2020,40000
+2020,President,polls-plus,9/13/2020,Trump,Biden,"",.7613009,.6637105,1.335983,-.0085623,stock market,S&P 500,19:00:03 13 Sep 2020,40000
+2020,President,polls-plus,9/13/2020,Trump,Biden,"",-1.979027,-1.363924,-.6916515,-2.036197,spending,Personal consumption expenditures,19:00:03 13 Sep 2020,40000
+2020,President,polls-plus,9/13/2020,Trump,Biden,"",-2.057216,-1.602451,-.9301785,-2.274724,manufacturing,Industrial production,19:00:03 13 Sep 2020,40000
+2020,President,polls-plus,9/13/2020,Trump,Biden,"",-3.260423,-2.664512,-1.99224,-3.336785,jobs,Nonfarm payrolls,19:00:03 13 Sep 2020,40000
+2020,President,polls-plus,9/13/2020,Trump,Biden,"",.6458718,.7176017,1.389874,.0453289,inflation,Consumer price index,19:00:03 13 Sep 2020,40000
+2020,President,polls-plus,9/13/2020,Trump,Biden,"",2.891383,2.728559,3.400832,2.056287,income,Real disposable personal income,19:00:03 13 Sep 2020,40000
+2020,President,polls-plus,9/13/2020,Trump,Biden,"",-.499685,-.2535028,.2218659,-.7288714,combined,Average of all six indicators,19:00:03 13 Sep 2020,40000
+2020,President,polls-plus,9/12/2020,Trump,Biden,"",.7613009,.6616845,1.33936,-.0159914,stock market,S&P 500,19:00:04 12 Sep 2020,40000
+2020,President,polls-plus,9/12/2020,Trump,Biden,"",-1.979027,-1.352125,-.6744494,-2.029801,spending,Personal consumption expenditures,19:00:04 12 Sep 2020,40000
+2020,President,polls-plus,9/12/2020,Trump,Biden,"",-2.057216,-1.59357,-.9158938,-2.271246,manufacturing,Industrial production,19:00:04 12 Sep 2020,40000
+2020,President,polls-plus,9/12/2020,Trump,Biden,"",-3.260423,-2.652668,-1.974992,-3.330344,jobs,Nonfarm payrolls,19:00:04 12 Sep 2020,40000
+2020,President,polls-plus,9/12/2020,Trump,Biden,"",.6458718,.7190356,1.396711,.0413596,inflation,Consumer price index,19:00:04 12 Sep 2020,40000
+2020,President,polls-plus,9/12/2020,Trump,Biden,"",2.891383,2.724808,3.402483,2.047132,income,Real disposable personal income,19:00:04 12 Sep 2020,40000
+2020,President,polls-plus,9/12/2020,Trump,Biden,"",-.499685,-.2488059,.2303833,-.7279952,combined,Average of all six indicators,19:00:04 12 Sep 2020,40000
+2020,President,polls-plus,9/11/2020,Trump,Biden,"",.7613009,.6596586,1.342738,-.0234205,stock market,S&P 500,19:00:03 11 Sep 2020,40000
+2020,President,polls-plus,9/11/2020,Trump,Biden,"",-1.979027,-1.340327,-.6572475,-2.023406,spending,Personal consumption expenditures,19:00:03 11 Sep 2020,40000
+2020,President,polls-plus,9/11/2020,Trump,Biden,"",-2.057216,-1.584688,-.9016092,-2.267767,manufacturing,Industrial production,19:00:03 11 Sep 2020,40000
+2020,President,polls-plus,9/11/2020,Trump,Biden,"",-3.260423,-2.640823,-1.957744,-3.323902,jobs,Nonfarm payrolls,19:00:03 11 Sep 2020,40000
+2020,President,polls-plus,9/11/2020,Trump,Biden,"",.6458718,.7204695,1.403549,.0373904,inflation,Consumer price index,19:00:03 11 Sep 2020,40000
+2020,President,polls-plus,9/11/2020,Trump,Biden,"",2.891383,2.721056,3.404135,2.037977,income,Real disposable personal income,19:00:03 11 Sep 2020,40000
+2020,President,polls-plus,9/11/2020,Trump,Biden,"",-.499685,-.244109,.2389008,-.7271189,combined,Average of all six indicators,19:00:03 11 Sep 2020,40000
+2020,President,polls-plus,9/10/2020,Trump,Biden,"",.761175,.6579434,1.346558,-.0306709,stock market,S&P 500,21:47:02 10 Sep 2020,40000
+2020,President,polls-plus,9/10/2020,Trump,Biden,"",-1.979027,-1.328492,-.6398779,-2.017107,spending,Personal consumption expenditures,21:47:02 10 Sep 2020,40000
+2020,President,polls-plus,9/10/2020,Trump,Biden,"",-2.057216,-1.575766,-.8871521,-2.264381,manufacturing,Industrial production,21:47:02 10 Sep 2020,40000
+2020,President,polls-plus,9/10/2020,Trump,Biden,"",-3.260423,-2.628957,-1.940343,-3.317571,jobs,Nonfarm payrolls,21:47:02 10 Sep 2020,40000
+2020,President,polls-plus,9/10/2020,Trump,Biden,"",.6458718,.7219034,1.410518,.0332891,inflation,Consumer price index,21:47:02 10 Sep 2020,40000
+2020,President,polls-plus,9/10/2020,Trump,Biden,"",2.891383,2.717309,3.405923,2.028695,income,Real disposable personal income,21:47:02 10 Sep 2020,40000
+2020,President,polls-plus,9/10/2020,Trump,Biden,"",-.499706,-.2393433,.2475805,-.7262672,combined,Average of all six indicators,21:47:02 10 Sep 2020,40000
+2020,President,polls-plus,9/9/2020,Trump,Biden,"",.8904973,.7810007,1.474848,.0871536,stock market,S&P 500,23:52:03  9 Sep 2020,40000
+2020,President,polls-plus,9/9/2020,Trump,Biden,"",-1.979027,-1.242283,-.5484359,-1.93613,spending,Personal consumption expenditures,23:52:03  9 Sep 2020,40000
+2020,President,polls-plus,9/9/2020,Trump,Biden,"",-2.057216,-1.50264,-.8087934,-2.196488,manufacturing,Industrial production,23:52:03  9 Sep 2020,40000
+2020,President,polls-plus,9/9/2020,Trump,Biden,"",-3.260423,-2.572025,-1.878178,-3.265872,jobs,Nonfarm payrolls,23:52:03  9 Sep 2020,40000
+2020,President,polls-plus,9/9/2020,Trump,Biden,"",.6458718,.7455913,1.439438,.0517442,inflation,Consumer price index,23:52:03  9 Sep 2020,40000
+2020,President,polls-plus,9/9/2020,Trump,Biden,"",2.891383,2.74712,3.440968,2.053273,income,Real disposable personal income,23:52:03  9 Sep 2020,40000
+2020,President,polls-plus,9/9/2020,Trump,Biden,"",-.4781523,-.1738726,.3167514,-.6644967,combined,Average of all six indicators,23:52:03  9 Sep 2020,40000
+2020,President,polls-plus,9/8/2020,Trump,Biden,"",.7502039,.6444213,1.343477,-.0546341,stock market,S&P 500,22:02:02  8 Sep 2020,40000
+2020,President,polls-plus,9/8/2020,Trump,Biden,"",-1.979027,-1.249461,-.5504056,-1.948516,spending,Personal consumption expenditures,22:02:02  8 Sep 2020,40000
+2020,President,polls-plus,9/8/2020,Trump,Biden,"",-2.057216,-1.515569,-.816514,-2.214625,manufacturing,Industrial production,22:02:02  8 Sep 2020,40000
+2020,President,polls-plus,9/8/2020,Trump,Biden,"",-3.260423,-2.571716,-1.87266,-3.270771,jobs,Nonfarm payrolls,22:02:02  8 Sep 2020,40000
+2020,President,polls-plus,9/8/2020,Trump,Biden,"",.6458718,.7473833,1.446439,.0483279,inflation,Consumer price index,22:02:02  8 Sep 2020,40000
+2020,President,polls-plus,9/8/2020,Trump,Biden,"",2.891383,2.741219,3.440274,2.042163,income,Real disposable personal income,22:02:02  8 Sep 2020,40000
+2020,President,polls-plus,9/8/2020,Trump,Biden,"",-.5015345,-.2006206,.2936863,-.6949274,combined,Average of all six indicators,22:02:02  8 Sep 2020,40000
+2020,President,polls-plus,9/7/2020,Trump,Biden,"",.9536672,.838543,1.542695,.1343913,stock market,S&P 500,21:01:02  7 Sep 2020,40000
+2020,President,polls-plus,9/7/2020,Trump,Biden,"",-1.979027,-1.206751,-.5025998,-1.910903,spending,Personal consumption expenditures,21:01:02  7 Sep 2020,40000
+2020,President,polls-plus,9/7/2020,Trump,Biden,"",-2.057216,-1.472049,-.7678977,-2.176201,manufacturing,Industrial production,21:01:02  7 Sep 2020,40000
+2020,President,polls-plus,9/7/2020,Trump,Biden,"",-3.260423,-2.541028,-1.836877,-3.24518,jobs,Nonfarm payrolls,21:01:02  7 Sep 2020,40000
+2020,President,polls-plus,9/7/2020,Trump,Biden,"",.6458718,.7491753,1.453327,.0450235,inflation,Consumer price index,21:01:02  7 Sep 2020,40000
+2020,President,polls-plus,9/7/2020,Trump,Biden,"",2.891383,2.742059,3.446211,2.037907,income,Real disposable personal income,21:01:02  7 Sep 2020,40000
+2020,President,polls-plus,9/7/2020,Trump,Biden,"",-.467624,-.148342,.3495684,-.6462525,combined,Average of all six indicators,21:01:02  7 Sep 2020,40000
+2020,President,polls-plus,9/6/2020,Trump,Biden,"",.9536672,.8363429,1.545893,.1267923,stock market,S&P 500,21:06:02  6 Sep 2020,40000
+2020,President,polls-plus,9/6/2020,Trump,Biden,"",-1.979027,-1.193516,-.4839659,-1.903067,spending,Personal consumption expenditures,21:06:02  6 Sep 2020,40000
+2020,President,polls-plus,9/6/2020,Trump,Biden,"",-2.057216,-1.461874,-.7523237,-2.171425,manufacturing,Industrial production,21:06:02  6 Sep 2020,40000
+2020,President,polls-plus,9/6/2020,Trump,Biden,"",-3.260423,-2.528285,-1.818734,-3.237836,jobs,Nonfarm payrolls,21:06:02  6 Sep 2020,40000
+2020,President,polls-plus,9/6/2020,Trump,Biden,"",.6458718,.7509673,1.460518,.0414167,inflation,Consumer price index,21:06:02  6 Sep 2020,40000
+2020,President,polls-plus,9/6/2020,Trump,Biden,"",2.891383,2.738918,3.448469,2.029368,income,Real disposable personal income,21:06:02  6 Sep 2020,40000
+2020,President,polls-plus,9/6/2020,Trump,Biden,"",-.467624,-.1429079,.3588201,-.6446359,combined,Average of all six indicators,21:06:02  6 Sep 2020,40000
+2020,President,polls-plus,9/5/2020,Trump,Biden,"",.9536672,.8341427,1.549092,.1191933,stock market,S&P 500,22:17:02  5 Sep 2020,40000
+2020,President,polls-plus,9/5/2020,Trump,Biden,"",-1.979027,-1.180282,-.4653321,-1.895231,spending,Personal consumption expenditures,22:17:02  5 Sep 2020,40000
+2020,President,polls-plus,9/5/2020,Trump,Biden,"",-2.057216,-1.451699,-.7367496,-2.166648,manufacturing,Industrial production,22:17:02  5 Sep 2020,40000
+2020,President,polls-plus,9/5/2020,Trump,Biden,"",-3.260423,-2.515542,-1.800592,-3.230491,jobs,Nonfarm payrolls,22:17:02  5 Sep 2020,40000
+2020,President,polls-plus,9/5/2020,Trump,Biden,"",.6458718,.7527593,1.467709,.0378098,inflation,Consumer price index,22:17:02  5 Sep 2020,40000
+2020,President,polls-plus,9/5/2020,Trump,Biden,"",2.891383,2.735778,3.450727,2.020828,income,Real disposable personal income,22:17:02  5 Sep 2020,40000
+2020,President,polls-plus,9/5/2020,Trump,Biden,"",-.467624,-.1374738,.3680719,-.6430194,combined,Average of all six indicators,22:17:02  5 Sep 2020,40000
+2020,President,polls-plus,9/4/2020,Trump,Biden,"",.9536672,.8319426,1.550987,.112898,stock market,S&P 500,22:34:02  4 Sep 2020,40000
+2020,President,polls-plus,9/4/2020,Trump,Biden,"",-1.979027,-1.167046,-.4480018,-1.886091,spending,Personal consumption expenditures,22:34:02  4 Sep 2020,40000
+2020,President,polls-plus,9/4/2020,Trump,Biden,"",-2.057216,-1.441524,-.7224793,-2.160568,manufacturing,Industrial production,22:34:02  4 Sep 2020,40000
+2020,President,polls-plus,9/4/2020,Trump,Biden,"",-3.948104,-3.308164,-2.589119,-4.027209,jobs,Nonfarm payrolls,22:34:02  4 Sep 2020,40000
+2020,President,polls-plus,9/4/2020,Trump,Biden,"",.6458718,.7545512,1.473596,.0355066,inflation,Consumer price index,22:34:02  4 Sep 2020,40000
+2020,President,polls-plus,9/4/2020,Trump,Biden,"",2.891383,2.732637,3.451682,2.013592,income,Real disposable personal income,22:34:02  4 Sep 2020,40000
+2020,President,polls-plus,9/4/2020,Trump,Biden,"",-.5822374,-.2662673,.242174,-.7747086,combined,Average of all six indicators,22:34:02  4 Sep 2020,40000
+2020,President,polls-plus,9/3/2020,Trump,Biden,"",1.015404,.8896283,1.614213,.1650435,stock market,S&P 500,21:55:03  3 Sep 2020,40000
+2020,President,polls-plus,9/3/2020,Trump,Biden,"",-1.979027,-1.14414,-.4195554,-1.868725,spending,Personal consumption expenditures,21:55:03  3 Sep 2020,40000
+2020,President,polls-plus,9/3/2020,Trump,Biden,"",-2.057216,-1.420358,-.6957733,-2.144943,manufacturing,Industrial production,21:55:03  3 Sep 2020,40000
+2020,President,polls-plus,9/3/2020,Trump,Biden,"",-3.932809,-3.275621,-2.551036,-4.000206,jobs,Nonfarm payrolls,21:55:03  3 Sep 2020,40000
+2020,President,polls-plus,9/3/2020,Trump,Biden,"",.6458718,.7563432,1.480928,.0317585,inflation,Consumer price index,21:55:03  3 Sep 2020,40000
+2020,President,polls-plus,9/3/2020,Trump,Biden,"",2.891383,2.73082,3.455405,2.006236,income,Real disposable personal income,21:55:03  3 Sep 2020,40000
+2020,President,polls-plus,9/3/2020,Trump,Biden,"",-.5693988,-.2438879,.2684709,-.7562466,combined,Average of all six indicators,21:55:03  3 Sep 2020,40000
+2020,President,polls-plus,9/2/2020,Trump,Biden,"",1.269996,1.131295,1.86096,.4016309,stock market,S&P 500,21:52:26  2 Sep 2020,40000
+2020,President,polls-plus,9/2/2020,Trump,Biden,"",-1.979027,-1.090404,-.3607396,-1.820068,spending,Personal consumption expenditures,21:52:26  2 Sep 2020,40000
+2020,President,polls-plus,9/2/2020,Trump,Biden,"",-2.057216,-1.363762,-.6340973,-2.093426,manufacturing,Industrial production,21:52:26  2 Sep 2020,40000
+2020,President,polls-plus,9/2/2020,Trump,Biden,"",-3.932809,-3.238501,-2.508837,-3.968165,jobs,Nonfarm payrolls,21:52:26  2 Sep 2020,40000
+2020,President,polls-plus,9/2/2020,Trump,Biden,"",.6458718,.7581874,1.487852,.0285231,inflation,Consumer price index,21:52:26  2 Sep 2020,40000
+2020,President,polls-plus,9/2/2020,Trump,Biden,"",2.891383,2.732169,3.461833,2.002505,income,Real disposable personal income,21:52:26  2 Sep 2020,40000
+2020,President,polls-plus,9/2/2020,Trump,Biden,"",-.5269667,-.1785025,.3374481,-.6944531,combined,Average of all six indicators,21:52:26  2 Sep 2020,40000
+2020,President,polls-plus,9/1/2020,Trump,Biden,"",1.16377,1.028271,1.763361,.2931808,stock market,S&P 500,19:06:02  1 Sep 2020,40000
+2020,President,polls-plus,9/1/2020,Trump,Biden,"",-1.979027,-1.093513,-.3584228,-1.828603,spending,Personal consumption expenditures,19:06:02  1 Sep 2020,40000
+2020,President,polls-plus,9/1/2020,Trump,Biden,"",-2.057216,-1.371854,-.6367637,-2.106944,manufacturing,Industrial production,19:06:02  1 Sep 2020,40000
+2020,President,polls-plus,9/1/2020,Trump,Biden,"",-3.932809,-3.236248,-2.501158,-3.971338,jobs,Nonfarm payrolls,19:06:02  1 Sep 2020,40000
+2020,President,polls-plus,9/1/2020,Trump,Biden,"",.6458718,.7600316,1.495121,.0249417,inflation,Consumer price index,19:06:02  1 Sep 2020,40000
+2020,President,polls-plus,9/1/2020,Trump,Biden,"",2.891383,2.725701,3.460791,1.990611,income,Real disposable personal income,19:06:02  1 Sep 2020,40000
+2020,President,polls-plus,9/1/2020,Trump,Biden,"",-.5446709,-.1979351,.3218519,-.7177222,combined,Average of all six indicators,19:06:02  1 Sep 2020,40000
+2020,President,polls-plus,8/31/2020,Trump,Biden,"",1.113552,.9788297,1.719569,.2380899,stock market,S&P 500,19:00:04 31 Aug 2020,40000
+2020,President,polls-plus,8/31/2020,Trump,Biden,"",-1.979027,-1.087967,-.3472273,-1.828707,spending,Personal consumption expenditures,19:00:04 31 Aug 2020,40000
+2020,President,polls-plus,8/31/2020,Trump,Biden,"",-2.057216,-1.370131,-.6293908,-2.11087,manufacturing,Industrial production,19:00:04 31 Aug 2020,40000
+2020,President,polls-plus,8/31/2020,Trump,Biden,"",-3.932809,-3.228709,-2.487969,-3.969449,jobs,Nonfarm payrolls,19:00:04 31 Aug 2020,40000
+2020,President,polls-plus,8/31/2020,Trump,Biden,"",.6458718,.7618757,1.502615,.021136,inflation,Consumer price index,19:00:04 31 Aug 2020,40000
+2020,President,polls-plus,8/31/2020,Trump,Biden,"",2.891383,2.72041,3.46115,1.97967,income,Real disposable personal income,19:00:04 31 Aug 2020,40000
+2020,President,polls-plus,8/31/2020,Trump,Biden,"",-.5530407,-.2042819,.3195002,-.7280639,combined,Average of all six indicators,19:00:04 31 Aug 2020,40000
+2020,President,polls-plus,8/30/2020,Trump,Biden,"",1.134259,.996945,1.7434,.2504902,stock market,S&P 500,20:23:02 30 Aug 2020,40000
+2020,President,polls-plus,8/30/2020,Trump,Biden,"",-1.979027,-1.070984,-.3245291,-1.817439,spending,Personal consumption expenditures,20:23:02 30 Aug 2020,40000
+2020,President,polls-plus,8/30/2020,Trump,Biden,"",-2.057216,-1.35533,-.6088754,-2.101785,manufacturing,Industrial production,20:23:02 30 Aug 2020,40000
+2020,President,polls-plus,8/30/2020,Trump,Biden,"",-3.932809,-3.214113,-2.467658,-3.960567,jobs,Nonfarm payrolls,20:23:02 30 Aug 2020,40000
+2020,President,polls-plus,8/30/2020,Trump,Biden,"",.6458718,.7637199,1.510175,.0172651,inflation,Consumer price index,20:23:02 30 Aug 2020,40000
+2020,President,polls-plus,8/30/2020,Trump,Biden,"",2.891383,2.716715,3.46317,1.97026,income,Real disposable personal income,20:23:02 30 Aug 2020,40000
+2020,President,polls-plus,8/30/2020,Trump,Biden,"",-.5495895,-.1938411,.3339821,-.7216644,combined,Average of all six indicators,20:23:02 30 Aug 2020,40000
+2020,President,polls-plus,8/29/2020,Trump,Biden,"",1.134259,.9942605,1.744925,.243596,stock market,S&P 500,19:00:02 29 Aug 2020,40000
+2020,President,polls-plus,8/29/2020,Trump,Biden,"",-2.967396,-2.025276,-1.274612,-2.775941,spending,Personal consumption expenditures,19:00:02 29 Aug 2020,40000
+2020,President,polls-plus,8/29/2020,Trump,Biden,"",-2.057216,-1.344337,-.593673,-2.095002,manufacturing,Industrial production,19:00:02 29 Aug 2020,40000
+2020,President,polls-plus,8/29/2020,Trump,Biden,"",-3.932809,-3.201572,-2.450907,-3.952236,jobs,Nonfarm payrolls,19:00:02 29 Aug 2020,40000
+2020,President,polls-plus,8/29/2020,Trump,Biden,"",.6458718,.7655641,1.516229,.0148996,inflation,Consumer price index,19:00:02 29 Aug 2020,40000
+2020,President,polls-plus,8/29/2020,Trump,Biden,"",3.169111,3.058796,3.809461,2.308132,income,Real disposable personal income,19:00:02 29 Aug 2020,40000
+2020,President,polls-plus,8/29/2020,Trump,Biden,"",-.6680298,-.2920941,.2387059,-.822894,combined,Average of all six indicators,19:00:02 29 Aug 2020,40000
+2020,President,polls-plus,8/28/2020,Trump,Biden,"",1.134259,.991576,1.747796,.2353555,stock market,S&P 500,19:00:03 28 Aug 2020,40000
+2020,President,polls-plus,8/28/2020,Trump,Biden,"",-2.967396,-2.010895,-1.254674,-2.767115,spending,Personal consumption expenditures,19:00:03 28 Aug 2020,40000
+2020,President,polls-plus,8/28/2020,Trump,Biden,"",-2.057216,-1.333345,-.5771242,-2.089565,manufacturing,Industrial production,19:00:03 28 Aug 2020,40000
+2020,President,polls-plus,8/28/2020,Trump,Biden,"",-3.932809,-3.189031,-2.43281,-3.945251,jobs,Nonfarm payrolls,19:00:03 28 Aug 2020,40000
+2020,President,polls-plus,8/28/2020,Trump,Biden,"",.6458718,.7674083,1.523629,.0111878,inflation,Consumer price index,19:00:03 28 Aug 2020,40000
+2020,President,polls-plus,8/28/2020,Trump,Biden,"",3.169111,3.055456,3.811676,2.299235,income,Real disposable personal income,19:00:03 28 Aug 2020,40000
+2020,President,polls-plus,8/28/2020,Trump,Biden,"",-.6680298,-.2864718,.2482568,-.8212004,combined,Average of all six indicators,19:00:03 28 Aug 2020,40000
+2020,President,polls-plus,8/27/2020,Trump,Biden,"",1.089816,.9480487,1.70817,.1879275,stock market,S&P 500,19:00:04 27 Aug 2020,40000
+2020,President,polls-plus,8/27/2020,Trump,Biden,"",-3.246625,-2.271841,-1.51172,-3.031962,spending,Personal consumption expenditures,19:00:04 27 Aug 2020,40000
+2020,President,polls-plus,8/27/2020,Trump,Biden,"",-2.057216,-1.331139,-.5710176,-2.09126,manufacturing,Industrial production,19:00:04 27 Aug 2020,40000
+2020,President,polls-plus,8/27/2020,Trump,Biden,"",-3.932809,-3.181244,-2.421123,-3.941365,jobs,Nonfarm payrolls,19:00:04 27 Aug 2020,40000
+2020,President,polls-plus,8/27/2020,Trump,Biden,"",.6458718,.7692524,1.529374,.0091312,inflation,Consumer price index,19:00:04 27 Aug 2020,40000
+2020,President,polls-plus,8/27/2020,Trump,Biden,"",2.912607,2.810072,3.570193,2.049951,income,Real disposable personal income,19:00:04 27 Aug 2020,40000
+2020,President,polls-plus,8/27/2020,Trump,Biden,"",-.7647259,-.3761419,.1613449,-.9136288,combined,Average of all six indicators,19:00:04 27 Aug 2020,40000
+2020,President,polls-plus,8/26/2020,Trump,Biden,"",1.081501,.9387347,1.704498,.1729709,stock market,S&P 500,19:01:03 26 Aug 2020,40000
+2020,President,polls-plus,8/26/2020,Trump,Biden,"",-3.246625,-2.258756,-1.492992,-3.02452,spending,Personal consumption expenditures,19:01:03 26 Aug 2020,40000
+2020,President,polls-plus,8/26/2020,Trump,Biden,"",-2.057216,-1.321993,-.5562295,-2.087757,manufacturing,Industrial production,19:01:03 26 Aug 2020,40000
+2020,President,polls-plus,8/26/2020,Trump,Biden,"",-3.932809,-3.169706,-2.403942,-3.93547,jobs,Nonfarm payrolls,19:01:03 26 Aug 2020,40000
+2020,President,polls-plus,8/26/2020,Trump,Biden,"",.6458718,.7710966,1.53686,.0053328,inflation,Consumer price index,19:01:03 26 Aug 2020,40000
+2020,President,polls-plus,8/26/2020,Trump,Biden,"",2.912607,2.806834,3.572598,2.04107,income,Real disposable personal income,19:01:03 26 Aug 2020,40000
+2020,President,polls-plus,8/26/2020,Trump,Biden,"",-.7661117,-.3722984,.1691784,-.9137751,combined,Average of all six indicators,19:01:03 26 Aug 2020,40000
+2020,President,polls-plus,8/25/2020,Trump,Biden,"",1.012269,.8720858,1.64343,.100741,stock market,S&P 500,23:50:03 25 Aug 2020,40000
+2020,President,polls-plus,8/25/2020,Trump,Biden,"",-3.246625,-2.256322,-1.484977,-3.027667,spending,Personal consumption expenditures,23:50:03 25 Aug 2020,40000
+2020,President,polls-plus,8/25/2020,Trump,Biden,"",-2.057216,-1.325204,-.5538592,-2.096549,manufacturing,Industrial production,23:50:03 25 Aug 2020,40000
+2020,President,polls-plus,8/25/2020,Trump,Biden,"",-3.932809,-3.164862,-2.393517,-3.936206,jobs,Nonfarm payrolls,23:50:03 25 Aug 2020,40000
+2020,President,polls-plus,8/25/2020,Trump,Biden,"",.6458718,.7729408,1.544286,.001596,inflation,Consumer price index,23:50:03 25 Aug 2020,40000
+2020,President,polls-plus,8/25/2020,Trump,Biden,"",2.912607,2.802046,3.57339,2.030701,income,Real disposable personal income,23:50:03 25 Aug 2020,40000
+2020,President,polls-plus,8/25/2020,Trump,Biden,"",-.7776502,-.3832192,.1622039,-.9286423,combined,Average of all six indicators,23:50:03 25 Aug 2020,40000
+2020,President,polls-plus,8/24/2020,Trump,Biden,"",.9901701,.8499128,1.626912,.0729132,stock market,S&P 500,20:38:02 24 Aug 2020,40000
+2020,President,polls-plus,8/24/2020,Trump,Biden,"",-3.246625,-2.245877,-1.468877,-3.022877,spending,Personal consumption expenditures,20:38:02 24 Aug 2020,40000
+2020,President,polls-plus,8/24/2020,Trump,Biden,"",-2.057216,-1.319163,-.5421638,-2.096163,manufacturing,Industrial production,20:38:02 24 Aug 2020,40000
+2020,President,polls-plus,8/24/2020,Trump,Biden,"",-3.932809,-3.155011,-2.378011,-3.932011,jobs,Nonfarm payrolls,20:38:02 24 Aug 2020,40000
+2020,President,polls-plus,8/24/2020,Trump,Biden,"",.6458718,.7747849,1.551785,-.0022147,inflation,Consumer price index,20:38:02 24 Aug 2020,40000
+2020,President,polls-plus,8/24/2020,Trump,Biden,"",2.912607,2.798409,3.575409,2.021409,income,Real disposable personal income,20:38:02 24 Aug 2020,40000
+2020,President,polls-plus,8/24/2020,Trump,Biden,"",-.7813335,-.3828242,.1665976,-.9322459,combined,Average of all six indicators,20:38:02 24 Aug 2020,40000
+2020,President,polls-plus,8/23/2020,Trump,Biden,"",.923339,.7858249,1.568341,.0033084,stock market,S&P 500,19:00:03 23 Aug 2020,40000
+2020,President,polls-plus,8/23/2020,Trump,Biden,"",-3.246625,-2.243495,-1.460979,-3.026011,spending,Personal consumption expenditures,19:00:03 23 Aug 2020,40000
+2020,President,polls-plus,8/23/2020,Trump,Biden,"",-2.057216,-1.322526,-.5400099,-2.105043,manufacturing,Industrial production,19:00:03 23 Aug 2020,40000
+2020,President,polls-plus,8/23/2020,Trump,Biden,"",-3.932809,-3.150262,-2.367745,-3.932778,jobs,Nonfarm payrolls,19:00:03 23 Aug 2020,40000
+2020,President,polls-plus,8/23/2020,Trump,Biden,"",.6458718,.7766291,1.559146,-.0058874,inflation,Consumer price index,19:00:03 23 Aug 2020,40000
+2020,President,polls-plus,8/23/2020,Trump,Biden,"",2.912607,2.79358,3.576096,2.011063,income,Real disposable personal income,19:00:03 23 Aug 2020,40000
+2020,President,polls-plus,8/23/2020,Trump,Biden,"",-.792472,-.3933749,.1599477,-.9466977,combined,Average of all six indicators,19:00:03 23 Aug 2020,40000
+2020,President,polls-plus,8/22/2020,Trump,Biden,"",.923339,.7835637,1.571625,-.0044979,stock market,S&P 500,19:00:03 22 Aug 2020,40000
+2020,President,polls-plus,8/22/2020,Trump,Biden,"",-3.246625,-2.229249,-1.441187,-3.01731,spending,Personal consumption expenditures,19:00:03 22 Aug 2020,40000
+2020,President,polls-plus,8/22/2020,Trump,Biden,"",-2.057216,-1.312106,-.5240442,-2.100167,manufacturing,Industrial production,19:00:03 22 Aug 2020,40000
+2020,President,polls-plus,8/22/2020,Trump,Biden,"",-3.932809,-3.138043,-2.349982,-3.926105,jobs,Nonfarm payrolls,19:00:03 22 Aug 2020,40000
+2020,President,polls-plus,8/22/2020,Trump,Biden,"",.6458718,.7784733,1.566535,-.0095884,inflation,Consumer price index,19:00:03 22 Aug 2020,40000
+2020,President,polls-plus,8/22/2020,Trump,Biden,"",2.912607,2.790485,3.578547,2.002424,income,Real disposable personal income,19:00:03 22 Aug 2020,40000
+2020,President,polls-plus,8/22/2020,Trump,Biden,"",-.792472,-.3878126,.1694311,-.9450563,combined,Average of all six indicators,19:00:03 22 Aug 2020,40000
+2020,President,polls-plus,8/21/2020,Trump,Biden,"",.923339,.7813026,1.574909,-.0123041,stock market,S&P 500,19:26:02 21 Aug 2020,40000
+2020,President,polls-plus,8/21/2020,Trump,Biden,"",-3.246625,-2.215003,-1.421396,-3.008609,spending,Personal consumption expenditures,19:26:02 21 Aug 2020,40000
+2020,President,polls-plus,8/21/2020,Trump,Biden,"",-2.057216,-1.301685,-.5080785,-2.095292,manufacturing,Industrial production,19:26:02 21 Aug 2020,40000
+2020,President,polls-plus,8/21/2020,Trump,Biden,"",-3.932809,-3.125824,-2.332218,-3.919431,jobs,Nonfarm payrolls,19:26:02 21 Aug 2020,40000
+2020,President,polls-plus,8/21/2020,Trump,Biden,"",.6458718,.7803174,1.573924,-.0132894,inflation,Consumer price index,19:26:02 21 Aug 2020,40000
+2020,President,polls-plus,8/21/2020,Trump,Biden,"",2.912607,2.787391,3.580997,1.993784,income,Real disposable personal income,19:26:02 21 Aug 2020,40000
+2020,President,polls-plus,8/21/2020,Trump,Biden,"",-.792472,-.3822502,.1789145,-.9434149,combined,Average of all six indicators,19:26:02 21 Aug 2020,40000
+2020,President,polls-plus,8/20/2020,Trump,Biden,"",.9023111,.7603636,1.559667,-.0389395,stock market,S&P 500,19:00:04 20 Aug 2020,40000
+2020,President,polls-plus,8/20/2020,Trump,Biden,"",-3.246625,-2.204738,-1.405435,-3.004041,spending,Personal consumption expenditures,19:00:04 20 Aug 2020,40000
+2020,President,polls-plus,8/20/2020,Trump,Biden,"",-2.057216,-1.295925,-.4966217,-2.095228,manufacturing,Industrial production,19:00:04 20 Aug 2020,40000
+2020,President,polls-plus,8/20/2020,Trump,Biden,"",-3.932809,-3.116136,-2.316833,-3.915439,jobs,Nonfarm payrolls,19:00:04 20 Aug 2020,40000
+2020,President,polls-plus,8/20/2020,Trump,Biden,"",.6458718,.7821616,1.581465,-.0171415,inflation,Consumer price index,19:00:04 20 Aug 2020,40000
+2020,President,polls-plus,8/20/2020,Trump,Biden,"",2.912607,2.783701,3.583004,1.984398,income,Real disposable personal income,19:00:04 20 Aug 2020,40000
+2020,President,polls-plus,8/20/2020,Trump,Biden,"",-.7959766,-.3817621,.1834306,-.9469547,combined,Average of all six indicators,19:00:04 20 Aug 2020,40000
+2020,President,polls-plus,8/19/2020,Trump,Biden,"",.883284,.7413503,1.546482,-.0637814,stock market,S&P 500,23:52:08 19 Aug 2020,40000
+2020,President,polls-plus,8/19/2020,Trump,Biden,"",-3.246625,-2.194199,-1.389067,-2.99933,spending,Personal consumption expenditures,23:52:08 19 Aug 2020,40000
+2020,President,polls-plus,8/19/2020,Trump,Biden,"",-2.057216,-1.289857,-.4847257,-2.094989,manufacturing,Industrial production,23:52:08 19 Aug 2020,40000
+2020,President,polls-plus,8/19/2020,Trump,Biden,"",-3.932809,-3.106283,-2.301151,-3.911414,jobs,Nonfarm payrolls,23:52:08 19 Aug 2020,40000
+2020,President,polls-plus,8/19/2020,Trump,Biden,"",.6458718,.7840058,1.589137,-.0211259,inflation,Consumer price index,23:52:08 19 Aug 2020,40000
+2020,President,polls-plus,8/19/2020,Trump,Biden,"",2.912607,2.780047,3.585179,1.974916,income,Real disposable personal income,23:52:08 19 Aug 2020,40000
+2020,President,polls-plus,8/19/2020,Trump,Biden,"",-.7991478,-.3808226,.1884914,-.9501367,combined,Average of all six indicators,23:52:08 19 Aug 2020,40000
+2020,President,polls-plus,8/18/2020,Trump,Biden,"",.9182777,.7726326,1.583354,-.0380885,stock market,S&P 500,19:23:03 18 Aug 2020,40000
+2020,President,polls-plus,8/18/2020,Trump,Biden,"",-3.246625,-2.173597,-1.362876,-2.984318,spending,Personal consumption expenditures,19:23:03 18 Aug 2020,40000
+2020,President,polls-plus,8/18/2020,Trump,Biden,"",-2.057216,-1.27199,-.4612688,-2.082711,manufacturing,Industrial production,19:23:03 18 Aug 2020,40000
+2020,President,polls-plus,8/18/2020,Trump,Biden,"",-3.932809,-3.090019,-2.279298,-3.90074,jobs,Nonfarm payrolls,19:23:03 18 Aug 2020,40000
+2020,President,polls-plus,8/18/2020,Trump,Biden,"",.6458718,.7858499,1.596571,-.0248711,inflation,Consumer price index,19:23:03 18 Aug 2020,40000
+2020,President,polls-plus,8/18/2020,Trump,Biden,"",2.912607,2.777906,3.588627,1.967185,income,Real disposable personal income,19:23:03 18 Aug 2020,40000
+2020,President,polls-plus,8/18/2020,Trump,Biden,"",-.7933155,-.3665363,.2067301,-.9398027,combined,Average of all six indicators,19:23:03 18 Aug 2020,40000
+2020,President,polls-plus,8/17/2020,Trump,Biden,"",.9053224,.7593727,1.575796,-.0570504,stock market,S&P 500,22:43:02 17 Aug 2020,40000
+2020,President,polls-plus,8/17/2020,Trump,Biden,"",-3.246625,-2.161975,-1.345552,-2.978398,spending,Personal consumption expenditures,22:43:02 17 Aug 2020,40000
+2020,President,polls-plus,8/17/2020,Trump,Biden,"",-2.057216,-1.264659,-.4482356,-2.081082,manufacturing,Industrial production,22:43:02 17 Aug 2020,40000
+2020,President,polls-plus,8/17/2020,Trump,Biden,"",-3.932809,-3.07948,-2.263057,-3.895903,jobs,Nonfarm payrolls,22:43:02 17 Aug 2020,40000
+2020,President,polls-plus,8/17/2020,Trump,Biden,"",.6458718,.7876941,1.604117,-.028729,inflation,Consumer price index,22:43:02 17 Aug 2020,40000
+2020,President,polls-plus,8/17/2020,Trump,Biden,"",2.912607,2.774413,3.590836,1.95799,income,Real disposable personal income,22:43:02 17 Aug 2020,40000
+2020,President,polls-plus,8/17/2020,Trump,Biden,"",-.7954748,-.3641057,.2131926,-.941404,combined,Average of all six indicators,22:43:02 17 Aug 2020,40000
+2020,President,polls-plus,8/16/2020,Trump,Biden,"",.8907912,.7446991,1.566822,-.0774241,stock market,S&P 500,20:17:02 16 Aug 2020,40000
+2020,President,polls-plus,8/16/2020,Trump,Biden,"",-3.246625,-2.15072,-1.328597,-2.972843,spending,Personal consumption expenditures,20:17:02 16 Aug 2020,40000
+2020,President,polls-plus,8/16/2020,Trump,Biden,"",-2.057216,-1.25777,-.4356469,-2.079893,manufacturing,Industrial production,20:17:02 16 Aug 2020,40000
+2020,President,polls-plus,8/16/2020,Trump,Biden,"",-3.932809,-3.069184,-2.247061,-3.891307,jobs,Nonfarm payrolls,20:17:02 16 Aug 2020,40000
+2020,President,polls-plus,8/16/2020,Trump,Biden,"",.6458718,.7895383,1.611661,-.0325849,inflation,Consumer price index,20:17:02 16 Aug 2020,40000
+2020,President,polls-plus,8/16/2020,Trump,Biden,"",2.912607,2.77086,3.592983,1.948737,income,Real disposable personal income,20:17:02 16 Aug 2020,40000
+2020,President,polls-plus,8/16/2020,Trump,Biden,"",-.7978966,-.3620961,.2192328,-.9434249,combined,Average of all six indicators,20:17:02 16 Aug 2020,40000
+2020,President,polls-plus,8/15/2020,Trump,Biden,"",.8907912,.742537,1.570211,-.0851368,stock market,S&P 500,19:00:05 15 Aug 2020,40000
+2020,President,polls-plus,8/15/2020,Trump,Biden,"",-3.246625,-2.136545,-1.308871,-2.964219,spending,Personal consumption expenditures,19:00:05 15 Aug 2020,40000
+2020,President,polls-plus,8/15/2020,Trump,Biden,"",-2.057216,-1.247447,-.419773,-2.075121,manufacturing,Industrial production,19:00:05 15 Aug 2020,40000
+2020,President,polls-plus,8/15/2020,Trump,Biden,"",-3.932809,-3.057019,-2.229346,-3.884693,jobs,Nonfarm payrolls,19:00:05 15 Aug 2020,40000
+2020,President,polls-plus,8/15/2020,Trump,Biden,"",.6458718,.7913824,1.619056,-.0362914,inflation,Consumer price index,19:00:05 15 Aug 2020,40000
+2020,President,polls-plus,8/15/2020,Trump,Biden,"",2.912607,2.76775,3.595423,1.940076,income,Real disposable personal income,19:00:05 15 Aug 2020,40000
+2020,President,polls-plus,8/15/2020,Trump,Biden,"",-.7978966,-.356557,.2286967,-.9418108,combined,Average of all six indicators,19:00:05 15 Aug 2020,40000
+2020,President,polls-plus,8/14/2020,Trump,Biden,"",.9086453,.7562163,1.583076,-.0706431,stock market,S&P 500,19:00:02 14 Aug 2020,40000
+2020,President,polls-plus,8/14/2020,Trump,Biden,"",-3.246625,-2.118927,-1.292068,-2.945786,spending,Personal consumption expenditures,19:00:02 14 Aug 2020,40000
+2020,President,polls-plus,8/14/2020,Trump,Biden,"",-2.897711,-2.19077,-1.36391,-3.017629,manufacturing,Industrial production,19:00:02 14 Aug 2020,40000
+2020,President,polls-plus,8/14/2020,Trump,Biden,"",-3.932809,-3.04264,-2.215781,-3.869499,jobs,Nonfarm payrolls,19:00:02 14 Aug 2020,40000
+2020,President,polls-plus,8/14/2020,Trump,Biden,"",.8142259,.9572022,1.784062,.1303428,inflation,Consumer price index,19:00:02 14 Aug 2020,40000
+2020,President,polls-plus,8/14/2020,Trump,Biden,"",2.912607,2.765168,3.592028,1.938309,income,Real disposable personal income,19:00:02 14 Aug 2020,40000
+2020,President,polls-plus,8/14/2020,Trump,Biden,"",-.9069445,-.4789583,.1057195,-1.063636,combined,Average of all six indicators,19:00:02 14 Aug 2020,40000
+2020,President,polls-plus,8/13/2020,Trump,Biden,"",.9131616,.7592029,1.592683,-.0742771,stock market,S&P 500,21:50:04 13 Aug 2020,40000
+2020,President,polls-plus,8/13/2020,Trump,Biden,"",-3.246625,-2.103999,-1.270519,-2.937479,spending,Personal consumption expenditures,21:50:04 13 Aug 2020,40000
+2020,President,polls-plus,8/13/2020,Trump,Biden,"",-2.843096,-2.122691,-1.289211,-2.956171,manufacturing,Industrial production,21:50:04 13 Aug 2020,40000
+2020,President,polls-plus,8/13/2020,Trump,Biden,"",-3.932809,-3.029986,-2.196506,-3.863466,jobs,Nonfarm payrolls,21:50:04 13 Aug 2020,40000
+2020,President,polls-plus,8/13/2020,Trump,Biden,"",.8142259,.9589389,1.792419,.1254589,inflation,Consumer price index,21:50:04 13 Aug 2020,40000
+2020,President,polls-plus,8/13/2020,Trump,Biden,"",2.912607,2.762177,3.595657,1.928697,income,Real disposable personal income,21:50:04 13 Aug 2020,40000
+2020,President,polls-plus,8/13/2020,Trump,Biden,"",-.8970892,-.4627262,.1266331,-1.052086,combined,Average of all six indicators,21:50:04 13 Aug 2020,40000
+2020,President,polls-plus,8/12/2020,Trump,Biden,"",.9310586,.7745144,1.613713,-.0646839,stock market,S&P 500,23:41:03 12 Aug 2020,40000
+2020,President,polls-plus,8/12/2020,Trump,Biden,"",-3.246625,-2.010087,-1.170888,-2.849285,spending,Personal consumption expenditures,23:41:03 12 Aug 2020,40000
+2020,President,polls-plus,8/12/2020,Trump,Biden,"",-2.843096,-2.050599,-1.211401,-2.889797,manufacturing,Industrial production,23:41:03 12 Aug 2020,40000
+2020,President,polls-plus,8/12/2020,Trump,Biden,"",-3.932809,-2.968939,-2.12974,-3.808137,jobs,Nonfarm payrolls,23:41:03 12 Aug 2020,40000
+2020,President,polls-plus,8/12/2020,Trump,Biden,"",.8142259,.9606755,1.799874,.1214772,inflation,Consumer price index,23:41:03 12 Aug 2020,40000
+2020,President,polls-plus,8/12/2020,Trump,Biden,"",2.912607,2.801445,3.640644,1.962247,income,Real disposable personal income,23:41:03 12 Aug 2020,40000
+2020,President,polls-plus,8/12/2020,Trump,Biden,"",-.8941063,-.4154982,.1779046,-1.008901,combined,Average of all six indicators,23:41:03 12 Aug 2020,40000
+2020,President,polls-plus,8/11/2020,Trump,Biden,"",.8343312,.6845887,1.529175,-.159998,stock market,S&P 500,19:08:03 11 Aug 2020,40000
+2020,President,polls-plus,8/11/2020,Trump,Biden,"",-3.246625,-2.014651,-1.170064,-2.859237,spending,Personal consumption expenditures,19:08:03 11 Aug 2020,40000
+2020,President,polls-plus,8/11/2020,Trump,Biden,"",-2.843096,-2.06373,-1.219143,-2.908316,manufacturing,Industrial production,19:08:03 11 Aug 2020,40000
+2020,President,polls-plus,8/11/2020,Trump,Biden,"",-3.932809,-2.968907,-2.124321,-3.813494,jobs,Nonfarm payrolls,19:08:03 11 Aug 2020,40000
+2020,President,polls-plus,8/11/2020,Trump,Biden,"",.8142259,.9624122,1.806999,.1178256,inflation,Consumer price index,19:08:03 11 Aug 2020,40000
+2020,President,polls-plus,8/11/2020,Trump,Biden,"",2.912607,2.795761,3.640348,1.951174,income,Real disposable personal income,19:08:03 11 Aug 2020,40000
+2020,President,polls-plus,8/11/2020,Trump,Biden,"",-.9102276,-.4340876,.1631254,-1.031301,combined,Average of all six indicators,19:08:03 11 Aug 2020,40000
+2020,President,polls-plus,8/10/2020,Trump,Biden,"",.8945068,.7386118,1.588931,-.1117073,stock market,S&P 500,23:50:02 10 Aug 2020,40000
+2020,President,polls-plus,8/10/2020,Trump,Biden,"",-3.246625,-1.987651,-1.137332,-2.83797,spending,Personal consumption expenditures,23:50:02 10 Aug 2020,40000
+2020,President,polls-plus,8/10/2020,Trump,Biden,"",-2.843096,-2.0394,-1.189081,-2.889719,manufacturing,Industrial production,23:50:02 10 Aug 2020,40000
+2020,President,polls-plus,8/10/2020,Trump,Biden,"",-3.932809,-2.948464,-2.098145,-3.798783,jobs,Nonfarm payrolls,23:50:02 10 Aug 2020,40000
+2020,President,polls-plus,8/10/2020,Trump,Biden,"",.8142259,.9641489,1.814468,.1138298,inflation,Consumer price index,23:50:02 10 Aug 2020,40000
+2020,President,polls-plus,8/10/2020,Trump,Biden,"",2.912607,2.794983,3.645303,1.944664,income,Real disposable personal income,23:50:02 10 Aug 2020,40000
+2020,President,polls-plus,8/10/2020,Trump,Biden,"",-.9001983,-.4129617,.1883047,-1.014228,combined,Average of all six indicators,23:50:02 10 Aug 2020,40000
+2020,President,polls-plus,8/9/2020,Trump,Biden,"",.8790978,.7234454,1.579495,-.1326045,stock market,S&P 500,10:15:37 10 Aug 2020,40000
+2020,President,polls-plus,8/9/2020,Trump,Biden,"",-3.246625,-1.97597,-1.11992,-2.832019,spending,Personal consumption expenditures,10:15:37 10 Aug 2020,40000
+2020,President,polls-plus,8/9/2020,Trump,Biden,"",-2.843096,-2.033267,-1.177218,-2.889317,manufacturing,Industrial production,10:15:37 10 Aug 2020,40000
+2020,President,polls-plus,8/9/2020,Trump,Biden,"",-3.932809,-2.937939,-2.081889,-3.793988,jobs,Nonfarm payrolls,10:15:37 10 Aug 2020,40000
+2020,President,polls-plus,8/9/2020,Trump,Biden,"",.8142259,.9658856,1.821935,.1098358,inflation,Consumer price index,10:15:37 10 Aug 2020,40000
+2020,President,polls-plus,8/9/2020,Trump,Biden,"",2.912607,2.791818,3.647868,1.935768,income,Real disposable personal income,10:15:37 10 Aug 2020,40000
+2020,President,polls-plus,8/9/2020,Trump,Biden,"",-.9027665,-.4110045,.1943142,-1.016323,combined,Average of all six indicators,10:15:37 10 Aug 2020,40000
+2020,President,polls-plus,8/8/2020,Trump,Biden,"",.8790978,.721337,1.582905,-.1402308,stock market,S&P 500,10:19:17 10 Aug 2020,40000
+2020,President,polls-plus,8/8/2020,Trump,Biden,"",-3.246625,-1.960929,-1.099361,-2.822497,spending,Personal consumption expenditures,10:19:17 10 Aug 2020,40000
+2020,President,polls-plus,8/8/2020,Trump,Biden,"",-2.843096,-2.023141,-1.161574,-2.884709,manufacturing,Industrial production,10:19:17 10 Aug 2020,40000
+2020,President,polls-plus,8/8/2020,Trump,Biden,"",-3.932809,-2.925236,-2.063668,-3.786804,jobs,Nonfarm payrolls,10:19:17 10 Aug 2020,40000
+2020,President,polls-plus,8/8/2020,Trump,Biden,"",.8142259,.9676223,1.82919,.1060544,inflation,Consumer price index,10:19:17 10 Aug 2020,40000
+2020,President,polls-plus,8/8/2020,Trump,Biden,"",2.912607,2.789177,3.650745,1.927609,income,Real disposable personal income,10:19:17 10 Aug 2020,40000
+2020,President,polls-plus,8/8/2020,Trump,Biden,"",-.9027665,-.4051949,.2040255,-1.014415,combined,Average of all six indicators,10:19:17 10 Aug 2020,40000
+2020,President,polls-plus,8/7/2020,Trump,Biden,"",.8790978,.7192287,1.586315,-.1478571,stock market,S&P 500,10:19:37 10 Aug 2020,40000
+2020,President,polls-plus,8/7/2020,Trump,Biden,"",-3.246625,-1.945888,-1.078802,-2.812974,spending,Personal consumption expenditures,10:19:37 10 Aug 2020,40000
+2020,President,polls-plus,8/7/2020,Trump,Biden,"",-2.843096,-2.013015,-1.145929,-2.880101,manufacturing,Industrial production,10:19:37 10 Aug 2020,40000
+2020,President,polls-plus,8/7/2020,Trump,Biden,"",-3.932809,-2.912533,-2.045447,-3.779619,jobs,Nonfarm payrolls,10:19:37 10 Aug 2020,40000
+2020,President,polls-plus,8/7/2020,Trump,Biden,"",.8142259,.9693589,1.836445,.1022731,inflation,Consumer price index,10:19:37 10 Aug 2020,40000
+2020,President,polls-plus,8/7/2020,Trump,Biden,"",2.912607,2.786537,3.653623,1.919451,income,Real disposable personal income,10:19:37 10 Aug 2020,40000
+2020,President,polls-plus,8/7/2020,Trump,Biden,"",-.9027665,-.3993854,.2137369,-1.012508,combined,Average of all six indicators,10:19:37 10 Aug 2020,40000
+2020,President,polls-plus,8/6/2020,Trump,Biden,"",.8777651,.7169809,1.589823,-.1558612,stock market,S&P 500,10:19:52 10 Aug 2020,40000
+2020,President,polls-plus,8/6/2020,Trump,Biden,"",-3.246625,-1.93137,-1.058527,-2.804212,spending,Personal consumption expenditures,10:19:52 10 Aug 2020,40000
+2020,President,polls-plus,8/6/2020,Trump,Biden,"",-2.843096,-2.003513,-1.130671,-2.876355,manufacturing,Industrial production,10:19:52 10 Aug 2020,40000
+2020,President,polls-plus,8/6/2020,Trump,Biden,"",-3.932809,-2.900171,-2.027329,-3.773013,jobs,Nonfarm payrolls,10:19:52 10 Aug 2020,40000
+2020,President,polls-plus,8/6/2020,Trump,Biden,"",.8142259,.9710956,1.843938,.0982535,inflation,Consumer price index,10:19:52 10 Aug 2020,40000
+2020,President,polls-plus,8/6/2020,Trump,Biden,"",2.912607,2.783813,3.656655,1.910971,income,Real disposable personal income,10:19:52 10 Aug 2020,40000
+2020,President,polls-plus,8/6/2020,Trump,Biden,"",-.9029886,-.3938606,.2233319,-1.011053,combined,Average of all six indicators,10:19:52 10 Aug 2020,40000
+2020,President,polls-plus,8/5/2020,Trump,Biden,"",.8350078,.6771618,1.55559,-.2012667,stock market,S&P 500,10:19:56 10 Aug 2020,40000
+2020,President,polls-plus,8/5/2020,Trump,Biden,"",-3.246625,-1.925714,-1.047285,-2.804142,spending,Personal consumption expenditures,10:19:56 10 Aug 2020,40000
+2020,President,polls-plus,8/5/2020,Trump,Biden,"",-2.843096,-2.004622,-1.126193,-2.88305,manufacturing,Industrial production,10:19:56 10 Aug 2020,40000
+2020,President,polls-plus,8/5/2020,Trump,Biden,"",-3.932809,-2.893604,-2.015175,-3.772032,jobs,Nonfarm payrolls,10:19:56 10 Aug 2020,40000
+2020,President,polls-plus,8/5/2020,Trump,Biden,"",.8142259,.9728323,1.851261,.0944039,inflation,Consumer price index,10:19:56 10 Aug 2020,40000
+2020,President,polls-plus,8/5/2020,Trump,Biden,"",2.912607,2.779679,3.658107,1.90125,income,Real disposable personal income,10:19:56 10 Aug 2020,40000
+2020,President,polls-plus,8/5/2020,Trump,Biden,"",-.9101148,-.3990444,.2220983,-1.020187,combined,Average of all six indicators,10:19:56 10 Aug 2020,40000
+2020,President,polls-plus,8/4/2020,Trump,Biden,"",.7922188,.6373982,1.516008,-.2412119,stock market,S&P 500,10:22:17 10 Aug 2020,40000
+2020,President,polls-plus,8/4/2020,Trump,Biden,"",-3.246625,-1.920248,-1.041638,-2.798858,spending,Personal consumption expenditures,10:22:17 10 Aug 2020,40000
+2020,President,polls-plus,8/4/2020,Trump,Biden,"",-2.843096,-2.005986,-1.127376,-2.884596,manufacturing,Industrial production,10:22:17 10 Aug 2020,40000
+2020,President,polls-plus,8/4/2020,Trump,Biden,"",-4.738862,-3.890361,-3.011751,-4.768971,jobs,Nonfarm payrolls,10:22:17 10 Aug 2020,40000
+2020,President,polls-plus,8/4/2020,Trump,Biden,"",.8142259,.974569,1.853179,.0959588,inflation,Consumer price index,10:22:17 10 Aug 2020,40000
+2020,President,polls-plus,8/4/2020,Trump,Biden,"",2.912607,2.775503,3.654113,1.896893,income,Real disposable personal income,10:22:17 10 Aug 2020,40000
+2020,President,polls-plus,8/4/2020,Trump,Biden,"",-1.051589,-.5715208,.0497504,-1.192792,combined,Average of all six indicators,10:22:17 10 Aug 2020,40000
+2020,President,polls-plus,8/3/2020,Trump,Biden,"",.7695446,.6157985,1.499788,-.268191,stock market,S&P 500,10:25:40 10 Aug 2020,40000
+2020,President,polls-plus,8/3/2020,Trump,Biden,"",-3.246625,-1.911243,-1.027254,-2.795233,spending,Personal consumption expenditures,10:25:40 10 Aug 2020,40000
+2020,President,polls-plus,8/3/2020,Trump,Biden,"",-2.843096,-2.002313,-1.118323,-2.886302,manufacturing,Industrial production,10:25:40 10 Aug 2020,40000
+2020,President,polls-plus,8/3/2020,Trump,Biden,"",-4.738862,-3.882107,-2.998118,-4.766097,jobs,Nonfarm payrolls,10:25:40 10 Aug 2020,40000
+2020,President,polls-plus,8/3/2020,Trump,Biden,"",.8142259,.9761707,1.86016,.0921812,inflation,Consumer price index,10:25:40 10 Aug 2020,40000
+2020,President,polls-plus,8/3/2020,Trump,Biden,"",2.912607,2.771067,3.655057,1.887078,income,Real disposable personal income,10:25:40 10 Aug 2020,40000
+2020,President,polls-plus,8/3/2020,Trump,Biden,"",-1.055367,-.5721045,.0529704,-1.197179,combined,Average of all six indicators,10:25:40 10 Aug 2020,40000
+2020,President,polls-plus,8/2/2020,Trump,Biden,"",.7223313,.572164,1.461571,-.3172426,stock market,S&P 500,10:26:03 10 Aug 2020,40000
+2020,President,polls-plus,8/2/2020,Trump,Biden,"",-3.246625,-1.907677,-1.01827,-2.797084,spending,Personal consumption expenditures,10:26:03 10 Aug 2020,40000
+2020,President,polls-plus,8/2/2020,Trump,Biden,"",-2.843096,-2.005218,-1.115811,-2.894624,manufacturing,Industrial production,10:26:03 10 Aug 2020,40000
+2020,President,polls-plus,8/2/2020,Trump,Biden,"",-4.738862,-3.877455,-2.988048,-4.766861,jobs,Nonfarm payrolls,10:26:03 10 Aug 2020,40000
+2020,President,polls-plus,8/2/2020,Trump,Biden,"",.8142259,.9777724,1.867179,.0883657,inflation,Consumer price index,10:26:03 10 Aug 2020,40000
+2020,President,polls-plus,8/2/2020,Trump,Biden,"",2.912607,2.76574,3.655147,1.876333,income,Real disposable personal income,10:26:03 10 Aug 2020,40000
+2020,President,polls-plus,8/2/2020,Trump,Biden,"",-1.063236,-.5791122,.0497933,-1.208018,combined,Average of all six indicators,10:26:03 10 Aug 2020,40000
+2020,President,polls-plus,8/1/2020,Trump,Biden,"",.7223313,.5702786,1.464995,-.3244378,stock market,S&P 500,10:26:11 10 Aug 2020,40000
+2020,President,polls-plus,8/1/2020,Trump,Biden,"",-3.246625,-1.893586,-.99887,-2.788303,spending,Personal consumption expenditures,10:26:11 10 Aug 2020,40000
+2020,President,polls-plus,8/1/2020,Trump,Biden,"",-2.843096,-1.995479,-1.100763,-2.890196,manufacturing,Industrial production,10:26:11 10 Aug 2020,40000
+2020,President,polls-plus,8/1/2020,Trump,Biden,"",-4.738862,-3.865891,-2.971175,-4.760608,jobs,Nonfarm payrolls,10:26:11 10 Aug 2020,40000
+2020,President,polls-plus,8/1/2020,Trump,Biden,"",.8142259,.979374,1.87409,.0846576,inflation,Consumer price index,10:26:11 10 Aug 2020,40000
+2020,President,polls-plus,8/1/2020,Trump,Biden,"",2.912607,2.762105,3.656821,1.867389,income,Real disposable personal income,10:26:11 10 Aug 2020,40000
+2020,President,polls-plus,8/1/2020,Trump,Biden,"",-1.063236,-.5738665,.0587935,-1.206527,combined,Average of all six indicators,10:26:11 10 Aug 2020,40000
+2020,President,polls-plus,7/31/2020,Trump,Biden,"",.7223313,.5683932,1.468419,-.3316331,stock market,S&P 500,10:26:36 10 Aug 2020,40000
+2020,President,polls-plus,7/31/2020,Trump,Biden,"",-3.246625,-1.879496,-.9794696,-2.779522,spending,Personal consumption expenditures,10:26:36 10 Aug 2020,40000
+2020,President,polls-plus,7/31/2020,Trump,Biden,"",-2.843096,-1.985741,-1.085714,-2.885767,manufacturing,Industrial production,10:26:36 10 Aug 2020,40000
+2020,President,polls-plus,7/31/2020,Trump,Biden,"",-4.738862,-3.854328,-2.954302,-4.754354,jobs,Nonfarm payrolls,10:26:36 10 Aug 2020,40000
+2020,President,polls-plus,7/31/2020,Trump,Biden,"",.8142259,.9809757,1.881002,.0809494,inflation,Consumer price index,10:26:36 10 Aug 2020,40000
+2020,President,polls-plus,7/31/2020,Trump,Biden,"",2.912607,2.75847,3.658496,1.858444,income,Real disposable personal income,10:26:36 10 Aug 2020,40000
+2020,President,polls-plus,7/31/2020,Trump,Biden,"",-1.063236,-.5686209,.0677938,-1.205036,combined,Average of all six indicators,10:26:36 10 Aug 2020,40000
+2020,President,polls-plus,7/30/2020,Trump,Biden,"",.6708095,.5212771,1.389023,-.3464688,stock market,S&P 500,10:28:57 10 Aug 2020,40000
+2020,President,polls-plus,7/30/2020,Trump,Biden,"",-6.192026,-4.753782,-3.886036,-5.621528,spending,Personal consumption expenditures,10:28:57 10 Aug 2020,40000
+2020,President,polls-plus,7/30/2020,Trump,Biden,"",-2.843096,-1.990281,-1.122535,-2.858027,manufacturing,Industrial production,10:28:57 10 Aug 2020,40000
+2020,President,polls-plus,7/30/2020,Trump,Biden,"",-4.738862,-3.850587,-2.982841,-4.718333,jobs,Nonfarm payrolls,10:28:57 10 Aug 2020,40000
+2020,President,polls-plus,7/30/2020,Trump,Biden,"",.8142259,.9825774,1.850323,.1148314,inflation,Consumer price index,10:28:57 10 Aug 2020,40000
+2020,President,polls-plus,7/30/2020,Trump,Biden,"",4.050807,3.974924,4.842669,3.107178,income,Real disposable personal income,10:28:57 10 Aug 2020,40000
+2020,President,polls-plus,7/30/2020,Trump,Biden,"",-1.373024,-.8526454,-.2390563,-1.466234,combined,Average of all six indicators,10:28:57 10 Aug 2020,40000
+2020,President,polls-plus,7/29/2020,Trump,Biden,"",.7008775,.5470969,1.420048,-.3258537,stock market,S&P 500,10:32:02 10 Aug 2020,40000
+2020,President,polls-plus,7/29/2020,Trump,Biden,"",-6.192026,-4.730998,-3.858047,-5.603948,spending,Personal consumption expenditures,10:32:02 10 Aug 2020,40000
+2020,President,polls-plus,7/29/2020,Trump,Biden,"",-2.843096,-1.972845,-1.099894,-2.845796,manufacturing,Industrial production,10:32:02 10 Aug 2020,40000
+2020,President,polls-plus,7/29/2020,Trump,Biden,"",-4.738862,-3.83481,-2.961859,-4.70776,jobs,Nonfarm payrolls,10:32:02 10 Aug 2020,40000
+2020,President,polls-plus,7/29/2020,Trump,Biden,"",.8142259,.9841791,1.85713,.1112285,inflation,Consumer price index,10:32:02 10 Aug 2020,40000
+2020,President,polls-plus,7/29/2020,Trump,Biden,"",4.050807,3.972367,4.845318,3.099417,income,Real disposable personal income,10:32:02 10 Aug 2020,40000
+2020,President,polls-plus,7/29/2020,Trump,Biden,"",-1.368012,-.8391681,-.2218988,-1.456437,combined,Average of all six indicators,10:32:02 10 Aug 2020,40000
+2020,President,polls-plus,7/28/2020,Trump,Biden,"",.6153275,.4699879,1.347982,-.4080062,stock market,S&P 500,10:32:31 10 Aug 2020,40000
+2020,President,polls-plus,7/28/2020,Trump,Biden,"",-6.192026,-4.734233,-3.856239,-5.612227,spending,Personal consumption expenditures,10:32:31 10 Aug 2020,40000
+2020,President,polls-plus,7/28/2020,Trump,Biden,"",-2.843096,-1.987066,-1.109072,-2.86506,manufacturing,Industrial production,10:32:31 10 Aug 2020,40000
+2020,President,polls-plus,7/28/2020,Trump,Biden,"",-4.738862,-3.836389,-2.958395,-4.714383,jobs,Nonfarm payrolls,10:32:31 10 Aug 2020,40000
+2020,President,polls-plus,7/28/2020,Trump,Biden,"",.8142259,.9857808,1.863775,.1077866,inflation,Consumer price index,10:32:31 10 Aug 2020,40000
+2020,President,polls-plus,7/28/2020,Trump,Biden,"",4.050807,3.965481,4.843475,3.087487,income,Real disposable personal income,10:32:31 10 Aug 2020,40000
+2020,President,polls-plus,7/28/2020,Trump,Biden,"",-1.38227,-.856073,-.2352374,-1.476909,combined,Average of all six indicators,10:32:31 10 Aug 2020,40000
+2020,President,polls-plus,7/27/2020,Trump,Biden,"",.6648234,.5129575,1.396131,-.3702164,stock market,S&P 500,10:32:26 10 Aug 2020,40000
+2020,President,polls-plus,7/27/2020,Trump,Biden,"",-6.192026,-4.707049,-3.823875,-5.590223,spending,Personal consumption expenditures,10:32:26 10 Aug 2020,40000
+2020,President,polls-plus,7/27/2020,Trump,Biden,"",-2.843096,-1.964261,-1.081087,-2.847435,manufacturing,Industrial production,10:32:26 10 Aug 2020,40000
+2020,President,polls-plus,7/27/2020,Trump,Biden,"",-4.738862,-3.817664,-2.93449,-4.700838,jobs,Nonfarm payrolls,10:32:26 10 Aug 2020,40000
+2020,President,polls-plus,7/27/2020,Trump,Biden,"",.8142259,.9873824,1.870556,.1042085,inflation,Consumer price index,10:32:26 10 Aug 2020,40000
+2020,President,polls-plus,7/27/2020,Trump,Biden,"",4.050807,3.963663,4.846837,3.080489,income,Real disposable personal income,10:32:26 10 Aug 2020,40000
+2020,President,polls-plus,7/27/2020,Trump,Biden,"",-1.374021,-.8374952,-.212997,-1.461993,combined,Average of all six indicators,10:32:26 10 Aug 2020,40000
+2020,President,polls-plus,7/26/2020,Trump,Biden,"",.6165572,.469289,1.357562,-.4189836,stock market,S&P 500,10:33:13 10 Aug 2020,40000
+2020,President,polls-plus,7/26/2020,Trump,Biden,"",-6.192026,-4.702084,-3.813811,-5.590356,spending,Personal consumption expenditures,10:33:13 10 Aug 2020,40000
+2020,President,polls-plus,7/26/2020,Trump,Biden,"",-2.843096,-1.968577,-1.080304,-2.856849,manufacturing,Industrial production,10:33:13 10 Aug 2020,40000
+2020,President,polls-plus,7/26/2020,Trump,Biden,"",-4.738862,-3.813822,-2.925549,-4.702095,jobs,Nonfarm payrolls,10:33:13 10 Aug 2020,40000
+2020,President,polls-plus,7/26/2020,Trump,Biden,"",.8142259,.9889841,1.877257,.1007115,inflation,Consumer price index,10:33:13 10 Aug 2020,40000
+2020,President,polls-plus,7/26/2020,Trump,Biden,"",4.050807,3.958115,4.846388,3.069843,income,Real disposable personal income,10:33:13 10 Aug 2020,40000
+2020,President,polls-plus,7/26/2020,Trump,Biden,"",-1.382066,-.8446823,-.2165788,-1.472786,combined,Average of all six indicators,10:33:13 10 Aug 2020,40000
+2020,President,polls-plus,7/25/2020,Trump,Biden,"",.6165572,.4676724,1.36103,-.4256846,stock market,S&P 500,10:35:37 10 Aug 2020,40000
+2020,President,polls-plus,7/25/2020,Trump,Biden,"",-6.192026,-4.685824,-3.792467,-5.579182,spending,Personal consumption expenditures,10:35:37 10 Aug 2020,40000
+2020,President,polls-plus,7/25/2020,Trump,Biden,"",-2.843096,-1.959107,-1.06575,-2.852464,manufacturing,Industrial production,10:35:37 10 Aug 2020,40000
+2020,President,polls-plus,7/25/2020,Trump,Biden,"",-4.738862,-3.802415,-2.909058,-4.695772,jobs,Nonfarm payrolls,10:35:37 10 Aug 2020,40000
+2020,President,polls-plus,7/25/2020,Trump,Biden,"",.8142259,.9905858,1.883943,.0972288,inflation,Consumer price index,10:35:37 10 Aug 2020,40000
+2020,President,polls-plus,7/25/2020,Trump,Biden,"",4.050807,3.954463,4.84782,3.061106,income,Real disposable personal income,10:35:37 10 Aug 2020,40000
+2020,President,polls-plus,7/25/2020,Trump,Biden,"",-1.382066,-.8391041,-.2074053,-1.470803,combined,Average of all six indicators,10:35:37 10 Aug 2020,40000
+2020,President,polls-plus,7/24/2020,Trump,Biden,"",.6165572,.4660558,1.364497,-.4323856,stock market,S&P 500,10:38:25 10 Aug 2020,40000
+2020,President,polls-plus,7/24/2020,Trump,Biden,"",-6.192026,-4.669565,-3.771123,-5.568006,spending,Personal consumption expenditures,10:38:25 10 Aug 2020,40000
+2020,President,polls-plus,7/24/2020,Trump,Biden,"",-2.843096,-1.949637,-1.051196,-2.848078,manufacturing,Industrial production,10:38:25 10 Aug 2020,40000
+2020,President,polls-plus,7/24/2020,Trump,Biden,"",-4.738862,-3.791008,-2.892567,-4.68945,jobs,Nonfarm payrolls,10:38:25 10 Aug 2020,40000
+2020,President,polls-plus,7/24/2020,Trump,Biden,"",.8142259,.9921875,1.890629,.0937461,inflation,Consumer price index,10:38:25 10 Aug 2020,40000
+2020,President,polls-plus,7/24/2020,Trump,Biden,"",4.050807,3.950811,4.849252,3.05237,income,Real disposable personal income,10:38:25 10 Aug 2020,40000
+2020,President,polls-plus,7/24/2020,Trump,Biden,"",-1.382066,-.833526,-.198232,-1.46882,combined,Average of all six indicators,10:38:25 10 Aug 2020,40000
+2020,President,polls-plus,7/23/2020,Trump,Biden,"",.6640027,.5068089,1.410349,-.3967318,stock market,S&P 500,10:38:51 10 Aug 2020,40000
+2020,President,polls-plus,7/23/2020,Trump,Biden,"",-6.192026,-4.642592,-3.739051,-5.546133,spending,Personal consumption expenditures,10:38:51 10 Aug 2020,40000
+2020,President,polls-plus,7/23/2020,Trump,Biden,"",-2.843096,-1.926981,-1.023441,-2.830522,manufacturing,Industrial production,10:38:51 10 Aug 2020,40000
+2020,President,polls-plus,7/23/2020,Trump,Biden,"",-4.738862,-3.772351,-2.868811,-4.675892,jobs,Nonfarm payrolls,10:38:51 10 Aug 2020,40000
+2020,President,polls-plus,7/23/2020,Trump,Biden,"",.8142259,.9937892,1.89733,.0902485,inflation,Consumer price index,10:38:51 10 Aug 2020,40000
+2020,President,polls-plus,7/23/2020,Trump,Biden,"",4.050807,3.948997,4.852538,3.045456,income,Real disposable personal income,10:38:51 10 Aug 2020,40000
+2020,President,polls-plus,7/23/2020,Trump,Biden,"",-1.374158,-.8153882,-.1764885,-1.454288,combined,Average of all six indicators,10:38:51 10 Aug 2020,40000
+2020,President,polls-plus,7/22/2020,Trump,Biden,"",.7552286,.585817,1.494366,-.3227319,stock market,S&P 500,10:38:41 10 Aug 2020,40000
+2020,President,polls-plus,7/22/2020,Trump,Biden,"",-6.192026,-4.605224,-3.696675,-5.513773,spending,Personal consumption expenditures,10:38:41 10 Aug 2020,40000
+2020,President,polls-plus,7/22/2020,Trump,Biden,"",-2.843096,-1.891454,-.9829046,-2.800002,manufacturing,Industrial production,10:38:41 10 Aug 2020,40000
+2020,President,polls-plus,7/22/2020,Trump,Biden,"",-4.738862,-3.746606,-2.838057,-4.655155,jobs,Nonfarm payrolls,10:38:41 10 Aug 2020,40000
+2020,President,polls-plus,7/22/2020,Trump,Biden,"",.8142259,.9953908,1.90394,.086842,inflation,Consumer price index,10:38:41 10 Aug 2020,40000
+2020,President,polls-plus,7/22/2020,Trump,Biden,"",4.050807,3.948995,4.857544,3.040447,income,Real disposable personal income,10:38:41 10 Aug 2020,40000
+2020,President,polls-plus,7/22/2020,Trump,Biden,"",-1.358954,-.7855134,-.1430723,-1.427954,combined,Average of all six indicators,10:38:41 10 Aug 2020,40000
+2020,President,polls-plus,7/21/2020,Trump,Biden,"",.7173409,.5518336,1.465539,-.3618713,stock market,S&P 500,10:39:48 10 Aug 2020,40000
+2020,President,polls-plus,7/21/2020,Trump,Biden,"",-6.192026,-4.598071,-3.684366,-5.511775,spending,Personal consumption expenditures,10:39:48 10 Aug 2020,40000
+2020,President,polls-plus,7/21/2020,Trump,Biden,"",-2.843096,-1.893158,-.979453,-2.806863,manufacturing,Industrial production,10:39:48 10 Aug 2020,40000
+2020,President,polls-plus,7/21/2020,Trump,Biden,"",-4.738862,-3.741339,-2.827634,-4.655044,jobs,Nonfarm payrolls,10:39:48 10 Aug 2020,40000
+2020,President,polls-plus,7/21/2020,Trump,Biden,"",.8142259,.9969925,1.910697,.0832876,inflation,Consumer price index,10:39:48 10 Aug 2020,40000
+2020,President,polls-plus,7/21/2020,Trump,Biden,"",4.050807,3.943793,4.857498,3.030088,income,Real disposable personal income,10:39:48 10 Aug 2020,40000
+2020,President,polls-plus,7/21/2020,Trump,Biden,"",-1.365268,-.7899914,-.1439044,-1.436078,combined,Average of all six indicators,10:39:48 10 Aug 2020,40000
+2020,President,polls-plus,7/20/2020,Trump,Biden,"",.708505,.5432712,1.462215,-.3756729,stock market,S&P 500,10:42:12 10 Aug 2020,40000
+2020,President,polls-plus,7/20/2020,Trump,Biden,"",-6.192026,-4.584142,-3.665198,-5.503087,spending,Personal consumption expenditures,10:42:12 10 Aug 2020,40000
+2020,President,polls-plus,7/20/2020,Trump,Biden,"",-2.843096,-1.88652,-.9675755,-2.805464,manufacturing,Industrial production,10:42:12 10 Aug 2020,40000
+2020,President,polls-plus,7/20/2020,Trump,Biden,"",-4.738862,-3.731484,-2.81254,-4.650428,jobs,Nonfarm payrolls,10:42:12 10 Aug 2020,40000
+2020,President,polls-plus,7/20/2020,Trump,Biden,"",.8142259,.9985942,1.917538,.0796501,inflation,Consumer price index,10:42:12 10 Aug 2020,40000
+2020,President,polls-plus,7/20/2020,Trump,Biden,"",4.050807,3.939754,4.858699,3.02081,income,Real disposable personal income,10:42:12 10 Aug 2020,40000
+2020,President,polls-plus,7/20/2020,Trump,Biden,"",-1.366741,-.7867543,-.1369627,-1.436546,combined,Average of all six indicators,10:42:12 10 Aug 2020,40000
+2020,President,polls-plus,7/19/2020,Trump,Biden,"",.6529305,.494131,1.418185,-.4299227,stock market,S&P 500,10:44:46 10 Aug 2020,40000
+2020,President,polls-plus,7/19/2020,Trump,Biden,"",-6.192026,-4.581419,-3.657365,-5.505473,spending,Personal consumption expenditures,10:44:46 10 Aug 2020,40000
+2020,President,polls-plus,7/19/2020,Trump,Biden,"",-2.843096,-1.893792,-.9697387,-2.817846,manufacturing,Industrial production,10:44:46 10 Aug 2020,40000
+2020,President,polls-plus,7/19/2020,Trump,Biden,"",-4.738862,-3.729294,-2.805241,-4.653348,jobs,Nonfarm payrolls,10:44:46 10 Aug 2020,40000
+2020,President,polls-plus,7/19/2020,Trump,Biden,"",.8142259,1.000196,1.92425,.0761422,inflation,Consumer price index,10:44:46 10 Aug 2020,40000
+2020,President,polls-plus,7/19/2020,Trump,Biden,"",4.050807,3.933749,4.857803,3.009696,income,Real disposable personal income,10:44:46 10 Aug 2020,40000
+2020,President,polls-plus,7/19/2020,Trump,Biden,"",-1.376003,-.7960715,-.1426669,-1.449476,combined,Average of all six indicators,10:44:46 10 Aug 2020,40000
+2020,President,polls-plus,7/18/2020,Trump,Biden,"",.6529305,.492453,1.421592,-.4366861,stock market,S&P 500,10:45:11 10 Aug 2020,40000
+2020,President,polls-plus,7/18/2020,Trump,Biden,"",-6.192026,-4.565117,-3.635978,-5.494256,spending,Personal consumption expenditures,10:45:11 10 Aug 2020,40000
+2020,President,polls-plus,7/18/2020,Trump,Biden,"",-2.843096,-1.884254,-.9551151,-2.813393,manufacturing,Industrial production,10:45:11 10 Aug 2020,40000
+2020,President,polls-plus,7/18/2020,Trump,Biden,"",-4.738862,-3.717848,-2.788709,-4.646987,jobs,Nonfarm payrolls,10:45:11 10 Aug 2020,40000
+2020,President,polls-plus,7/18/2020,Trump,Biden,"",.8142259,1.001798,1.930937,.0726585,inflation,Consumer price index,10:45:11 10 Aug 2020,40000
+2020,President,polls-plus,7/18/2020,Trump,Biden,"",4.050807,3.93011,4.85925,3.000971,income,Real disposable personal income,10:45:11 10 Aug 2020,40000
+2020,President,polls-plus,7/18/2020,Trump,Biden,"",-1.376003,-.7904764,-.1334758,-1.447477,combined,Average of all six indicators,10:45:11 10 Aug 2020,40000
+2020,President,polls-plus,7/17/2020,Trump,Biden,"",.6529305,.490775,1.425,-.4434496,stock market,S&P 500,10:44:52 10 Aug 2020,40000
+2020,President,polls-plus,7/17/2020,Trump,Biden,"",-6.192026,-4.548816,-3.614591,-5.48304,spending,Personal consumption expenditures,10:44:52 10 Aug 2020,40000
+2020,President,polls-plus,7/17/2020,Trump,Biden,"",-2.843096,-1.874716,-.9404914,-2.808941,manufacturing,Industrial production,10:44:52 10 Aug 2020,40000
+2020,President,polls-plus,7/17/2020,Trump,Biden,"",-4.738862,-3.706401,-2.772177,-4.640626,jobs,Nonfarm payrolls,10:44:52 10 Aug 2020,40000
+2020,President,polls-plus,7/17/2020,Trump,Biden,"",.8142259,1.003399,1.937624,.0691746,inflation,Consumer price index,10:44:52 10 Aug 2020,40000
+2020,President,polls-plus,7/17/2020,Trump,Biden,"",4.050807,3.926472,4.860696,2.992247,income,Real disposable personal income,10:44:52 10 Aug 2020,40000
+2020,President,polls-plus,7/17/2020,Trump,Biden,"",-1.376003,-.7848812,-.1242846,-1.445478,combined,Average of all six indicators,10:44:52 10 Aug 2020,40000
+2020,President,polls-plus,7/16/2020,Trump,Biden,"",.6357057,.4751042,1.414524,-.4643152,stock market,S&P 500,10:46:23 10 Aug 2020,40000
+2020,President,polls-plus,7/16/2020,Trump,Biden,"",-6.192026,-4.537104,-3.597684,-5.476523,spending,Personal consumption expenditures,10:46:23 10 Aug 2020,40000
+2020,President,polls-plus,7/16/2020,Trump,Biden,"",-2.843096,-1.870902,-.931483,-2.810322,manufacturing,Industrial production,10:46:23 10 Aug 2020,40000
+2020,President,polls-plus,7/16/2020,Trump,Biden,"",-4.738862,-3.698112,-2.758693,-4.637532,jobs,Nonfarm payrolls,10:46:23 10 Aug 2020,40000
+2020,President,polls-plus,7/16/2020,Trump,Biden,"",.8142259,1.005001,1.94442,.0655815,inflation,Consumer price index,10:46:23 10 Aug 2020,40000
+2020,President,polls-plus,7/16/2020,Trump,Biden,"",4.050807,3.922017,4.861437,2.982598,income,Real disposable personal income,10:46:23 10 Aug 2020,40000
+2020,President,polls-plus,7/16/2020,Trump,Biden,"",-1.378874,-.7839993,-.1197295,-1.448269,combined,Average of all six indicators,10:46:23 10 Aug 2020,40000
+2020,President,polls-plus,7/15/2020,Trump,Biden,"",.7016242,.5292825,1.454422,-.3958565,stock market,S&P 500,10:48:47 10 Aug 2020,40000
+2020,President,polls-plus,7/15/2020,Trump,Biden,"",-6.192026,-4.505227,-3.580088,-5.430366,spending,Personal consumption expenditures,10:48:47 10 Aug 2020,40000
+2020,President,polls-plus,7/15/2020,Trump,Biden,"",-4.2255,-3.398729,-2.47359,-4.323868,manufacturing,Industrial production,10:48:47 10 Aug 2020,40000
+2020,President,polls-plus,7/15/2020,Trump,Biden,"",-4.738862,-3.675931,-2.750793,-4.60107,jobs,Nonfarm payrolls,10:48:47 10 Aug 2020,40000
+2020,President,polls-plus,7/15/2020,Trump,Biden,"",1.008668,1.196711,2.12185,.2715716,inflation,Consumer price index,10:48:47 10 Aug 2020,40000
+2020,President,polls-plus,7/15/2020,Trump,Biden,"",4.050807,3.921155,4.846294,2.996016,income,Real disposable personal income,10:48:47 10 Aug 2020,40000
+2020,President,polls-plus,7/15/2020,Trump,Biden,"",-1.565881,-.9887899,-.3346178,-1.642962,combined,Average of all six indicators,10:48:47 10 Aug 2020,40000
+2020,President,polls-plus,7/14/2020,Trump,Biden,"",.6394486,.4751685,1.405254,-.4549166,stock market,S&P 500,10:51:08 10 Aug 2020,40000
+2020,President,polls-plus,7/14/2020,Trump,Biden,"",-6.192026,-3.985807,-3.055722,-4.915892,spending,Personal consumption expenditures,10:51:08 10 Aug 2020,40000
+2020,President,polls-plus,7/14/2020,Trump,Biden,"",-4.2255,-3.015786,-2.085701,-3.945872,manufacturing,Industrial production,10:51:08 10 Aug 2020,40000
+2020,President,polls-plus,7/14/2020,Trump,Biden,"",-4.738862,-3.354617,-2.424531,-4.284702,jobs,Nonfarm payrolls,10:51:08 10 Aug 2020,40000
+2020,President,polls-plus,7/14/2020,Trump,Biden,"",1.008668,1.198186,2.128271,.2681009,inflation,Consumer price index,10:51:08 10 Aug 2020,40000
+2020,President,polls-plus,7/14/2020,Trump,Biden,"",4.050807,4.195326,5.125411,3.265241,income,Real disposable personal income,10:51:08 10 Aug 2020,40000
+2020,President,polls-plus,7/14/2020,Trump,Biden,"",-1.576244,-.7479216,-.0902521,-1.405591,combined,Average of all six indicators,10:51:08 10 Aug 2020,40000
+2020,President,polls-plus,7/13/2020,Trump,Biden,"",.5463575,.3947687,1.32973,-.5401928,stock market,S&P 500,10:51:31 10 Aug 2020,40000
+2020,President,polls-plus,7/13/2020,Trump,Biden,"",-6.192026,-3.98874,-3.053779,-4.923702,spending,Personal consumption expenditures,10:51:31 10 Aug 2020,40000
+2020,President,polls-plus,7/13/2020,Trump,Biden,"",-4.2255,-3.032882,-2.097921,-3.967844,manufacturing,Industrial production,10:51:31 10 Aug 2020,40000
+2020,President,polls-plus,7/13/2020,Trump,Biden,"",-4.738862,-3.356712,-2.421751,-4.291674,jobs,Nonfarm payrolls,10:51:31 10 Aug 2020,40000
+2020,President,polls-plus,7/13/2020,Trump,Biden,"",1.008668,1.199661,2.134623,.2647,inflation,Consumer price index,10:51:31 10 Aug 2020,40000
+2020,President,polls-plus,7/13/2020,Trump,Biden,"",4.050807,4.189637,5.124598,3.254675,income,Real disposable personal income,10:51:31 10 Aug 2020,40000
+2020,President,polls-plus,7/13/2020,Trump,Biden,"",-1.591759,-.7657114,-.1045938,-1.426829,combined,Average of all six indicators,10:51:31 10 Aug 2020,40000
+2020,President,polls-plus,7/12/2020,Trump,Biden,"",.6165068,.4538071,1.393695,-.4860806,stock market,S&P 500,10:51:04 10 Aug 2020,40000
+2020,President,polls-plus,7/12/2020,Trump,Biden,"",-6.192026,-3.95128,-3.011392,-4.891168,spending,Personal consumption expenditures,10:51:04 10 Aug 2020,40000
+2020,President,polls-plus,7/12/2020,Trump,Biden,"",-4.2255,-2.999334,-2.059446,-3.939222,manufacturing,Industrial production,10:51:04 10 Aug 2020,40000
+2020,President,polls-plus,7/12/2020,Trump,Biden,"",-4.738862,-3.330836,-2.390949,-4.270724,jobs,Nonfarm payrolls,10:51:04 10 Aug 2020,40000
+2020,President,polls-plus,7/12/2020,Trump,Biden,"",1.008668,1.201137,2.141025,.2612492,inflation,Consumer price index,10:51:04 10 Aug 2020,40000
+2020,President,polls-plus,7/12/2020,Trump,Biden,"",4.050807,4.191219,5.131107,3.251331,income,Real disposable personal income,10:51:04 10 Aug 2020,40000
+2020,President,polls-plus,7/12/2020,Trump,Biden,"",-1.580068,-.7392146,-.0746136,-1.403816,combined,Average of all six indicators,10:51:04 10 Aug 2020,40000
+2020,President,polls-plus,7/11/2020,Trump,Biden,"",.6165068,.4522151,1.397081,-.4926507,stock market,S&P 500,10:52:57 10 Aug 2020,40000
+2020,President,polls-plus,7/11/2020,Trump,Biden,"",-6.192026,-3.930778,-2.985912,-4.875644,spending,Personal consumption expenditures,10:52:57 10 Aug 2020,40000
+2020,President,polls-plus,7/11/2020,Trump,Biden,"",-4.2255,-2.987053,-2.042187,-3.931919,manufacturing,Industrial production,10:52:57 10 Aug 2020,40000
+2020,President,polls-plus,7/11/2020,Trump,Biden,"",-4.738862,-3.316708,-2.371842,-4.261573,jobs,Nonfarm payrolls,10:52:57 10 Aug 2020,40000
+2020,President,polls-plus,7/11/2020,Trump,Biden,"",1.008668,1.202612,2.147478,.2577466,inflation,Consumer price index,10:52:57 10 Aug 2020,40000
+2020,President,polls-plus,7/11/2020,Trump,Biden,"",4.050807,4.189746,5.134612,3.244881,income,Real disposable personal income,10:52:57 10 Aug 2020,40000
+2020,President,polls-plus,7/11/2020,Trump,Biden,"",-1.580068,-.7316608,-.0635398,-1.399782,combined,Average of all six indicators,10:52:57 10 Aug 2020,40000
+2020,President,polls-plus,7/10/2020,Trump,Biden,"",.6165068,.450623,1.400467,-.4992208,stock market,S&P 500,10:55:24 10 Aug 2020,40000
+2020,President,polls-plus,7/10/2020,Trump,Biden,"",-6.192026,-3.910275,-2.960432,-4.860119,spending,Personal consumption expenditures,10:55:24 10 Aug 2020,40000
+2020,President,polls-plus,7/10/2020,Trump,Biden,"",-4.2255,-2.974772,-2.024928,-3.924616,manufacturing,Industrial production,10:55:24 10 Aug 2020,40000
+2020,President,polls-plus,7/10/2020,Trump,Biden,"",-4.738862,-3.302579,-2.352735,-4.252423,jobs,Nonfarm payrolls,10:55:24 10 Aug 2020,40000
+2020,President,polls-plus,7/10/2020,Trump,Biden,"",1.008668,1.204088,2.153932,.2542439,inflation,Consumer price index,10:55:24 10 Aug 2020,40000
+2020,President,polls-plus,7/10/2020,Trump,Biden,"",4.050807,4.188274,5.138118,3.23843,income,Real disposable personal income,10:55:24 10 Aug 2020,40000
+2020,President,polls-plus,7/10/2020,Trump,Biden,"",-1.580068,-.724107,-.052466,-1.395748,combined,Average of all six indicators,10:55:24 10 Aug 2020,40000
+2020,President,polls-plus,7/9/2020,Trump,Biden,"",.5443977,.3888593,1.343578,-.5658593,stock market,S&P 500,10:57:25 10 Aug 2020,40000
+2020,President,polls-plus,7/9/2020,Trump,Biden,"",-6.192026,-3.908495,-2.953776,-4.863214,spending,Personal consumption expenditures,10:57:25 10 Aug 2020,40000
+2020,President,polls-plus,7/9/2020,Trump,Biden,"",-4.2255,-2.986132,-2.031413,-3.94085,manufacturing,Industrial production,10:57:25 10 Aug 2020,40000
+2020,President,polls-plus,7/9/2020,Trump,Biden,"",-4.738862,-3.301529,-2.34681,-4.256248,jobs,Nonfarm payrolls,10:57:25 10 Aug 2020,40000
+2020,President,polls-plus,7/9/2020,Trump,Biden,"",1.008668,1.205563,2.160282,.2508446,inflation,Consumer price index,10:57:25 10 Aug 2020,40000
+2020,President,polls-plus,7/9/2020,Trump,Biden,"",4.050807,4.183369,5.138088,3.228651,income,Real disposable personal income,10:57:25 10 Aug 2020,40000
+2020,President,polls-plus,7/9/2020,Trump,Biden,"",-1.592086,-.736394,-.061306,-1.411482,combined,Average of all six indicators,10:57:25 10 Aug 2020,40000
+2020,President,polls-plus,7/8/2020,Trump,Biden,"",.5873923,.4243665,1.384108,-.535375,stock market,S&P 500,10:57:48 10 Aug 2020,40000
+2020,President,polls-plus,7/8/2020,Trump,Biden,"",-6.192026,-3.877578,-2.917837,-4.83732,spending,Personal consumption expenditures,10:57:48 10 Aug 2020,40000
+2020,President,polls-plus,7/8/2020,Trump,Biden,"",-4.2255,-2.960718,-2.000976,-3.92046,manufacturing,Industrial production,10:57:48 10 Aug 2020,40000
+2020,President,polls-plus,7/8/2020,Trump,Biden,"",-4.738862,-3.280137,-2.320395,-4.239879,jobs,Nonfarm payrolls,10:57:48 10 Aug 2020,40000
+2020,President,polls-plus,7/8/2020,Trump,Biden,"",1.008668,1.207039,2.16678,.2472971,inflation,Consumer price index,10:57:48 10 Aug 2020,40000
+2020,President,polls-plus,7/8/2020,Trump,Biden,"",4.050807,4.1838,5.143541,3.224058,income,Real disposable personal income,10:57:48 10 Aug 2020,40000
+2020,President,polls-plus,7/8/2020,Trump,Biden,"",-1.58492,-.7172047,-.038565,-1.395844,combined,Average of all six indicators,10:57:48 10 Aug 2020,40000
+2020,President,polls-plus,7/7/2020,Trump,Biden,"",.5341107,.3787943,1.343492,-.5859032,stock market,S&P 500,10:57:16 10 Aug 2020,40000
+2020,President,polls-plus,7/7/2020,Trump,Biden,"",-6.192026,-3.871244,-2.906546,-4.835941,spending,Personal consumption expenditures,10:57:16 10 Aug 2020,40000
+2020,President,polls-plus,7/7/2020,Trump,Biden,"",-4.2255,-2.966403,-2.001706,-3.9311,manufacturing,Industrial production,10:57:16 10 Aug 2020,40000
+2020,President,polls-plus,7/7/2020,Trump,Biden,"",-4.738862,-3.275957,-2.31126,-4.240655,jobs,Nonfarm payrolls,10:57:16 10 Aug 2020,40000
+2020,President,polls-plus,7/7/2020,Trump,Biden,"",1.008668,1.208514,2.173212,.2438167,inflation,Consumer price index,10:57:16 10 Aug 2020,40000
+2020,President,polls-plus,7/7/2020,Trump,Biden,"",4.050807,4.179702,5.144399,3.215004,income,Real disposable personal income,10:57:16 10 Aug 2020,40000
+2020,President,polls-plus,7/7/2020,Trump,Biden,"",-1.5938,-.7244324,-.0422883,-1.406577,combined,Average of all six indicators,10:57:16 10 Aug 2020,40000
+2020,President,polls-plus,7/6/2020,Trump,Biden,"",.6140568,.445124,1.414713,-.5244646,stock market,S&P 500,10:59:26 10 Aug 2020,40000
+2020,President,polls-plus,7/6/2020,Trump,Biden,"",-6.192026,-3.830706,-2.861117,-4.800294,spending,Personal consumption expenditures,10:59:26 10 Aug 2020,40000
+2020,President,polls-plus,7/6/2020,Trump,Biden,"",-4.2255,-2.928744,-1.959156,-3.898333,manufacturing,Industrial production,10:59:26 10 Aug 2020,40000
+2020,President,polls-plus,7/6/2020,Trump,Biden,"",-4.738862,-3.247779,-2.27819,-4.217368,jobs,Nonfarm payrolls,10:59:26 10 Aug 2020,40000
+2020,President,polls-plus,7/6/2020,Trump,Biden,"",1.008668,1.209989,2.179578,.2404008,inflation,Consumer price index,10:59:26 10 Aug 2020,40000
+2020,President,polls-plus,7/6/2020,Trump,Biden,"",4.050807,4.181931,5.15152,3.212343,income,Real disposable personal income,10:59:26 10 Aug 2020,40000
+2020,President,polls-plus,7/6/2020,Trump,Biden,"",-1.580476,-.6950307,-.0094281,-1.380633,combined,Average of all six indicators,10:59:26 10 Aug 2020,40000
+2020,President,polls-plus,7/5/2020,Trump,Biden,"",.5040413,.352358,1.297043,-.5923272,stock market,S&P 500,11:01:55 10 Aug 2020,40000
+2020,President,polls-plus,7/5/2020,Trump,Biden,"",-6.192026,-3.839231,-2.894546,-4.783916,spending,Personal consumption expenditures,11:01:55 10 Aug 2020,40000
+2020,President,polls-plus,7/5/2020,Trump,Biden,"",-4.2255,-2.95336,-2.008675,-3.898045,manufacturing,Industrial production,11:01:55 10 Aug 2020,40000
+2020,President,polls-plus,7/5/2020,Trump,Biden,"",-6.736466,-5.552008,-4.607322,-6.496693,jobs,Nonfarm payrolls,11:01:55 10 Aug 2020,40000
+2020,President,polls-plus,7/5/2020,Trump,Biden,"",1.008668,1.211465,2.15615,.2667796,inflation,Consumer price index,11:01:55 10 Aug 2020,40000
+2020,President,polls-plus,7/5/2020,Trump,Biden,"",4.050807,4.175048,5.119734,3.230363,income,Real disposable personal income,11:01:55 10 Aug 2020,40000
+2020,President,polls-plus,7/5/2020,Trump,Biden,"",-1.931746,-1.100955,-.4329612,-1.768948,combined,Average of all six indicators,11:01:55 10 Aug 2020,40000
+2020,President,polls-plus,7/4/2020,Trump,Biden,"",.5040413,.3510319,1.300538,-.598474,stock market,S&P 500,11:03:40 10 Aug 2020,40000
+2020,President,polls-plus,7/4/2020,Trump,Biden,"",-6.192026,-3.818906,-2.869401,-4.768412,spending,Personal consumption expenditures,11:03:40 10 Aug 2020,40000
+2020,President,polls-plus,7/4/2020,Trump,Biden,"",-4.2255,-2.941368,-1.991862,-3.890874,manufacturing,Industrial production,11:03:40 10 Aug 2020,40000
+2020,President,polls-plus,7/4/2020,Trump,Biden,"",-6.736466,-5.539049,-4.589543,-6.488555,jobs,Nonfarm payrolls,11:03:40 10 Aug 2020,40000
+2020,President,polls-plus,7/4/2020,Trump,Biden,"",1.008668,1.21294,2.162446,.2634345,inflation,Consumer price index,11:03:40 10 Aug 2020,40000
+2020,President,polls-plus,7/4/2020,Trump,Biden,"",4.050807,4.17352,5.123025,3.224014,income,Real disposable personal income,11:03:40 10 Aug 2020,40000
+2020,President,polls-plus,7/4/2020,Trump,Biden,"",-1.931746,-1.093639,-.4222366,-1.765041,combined,Average of all six indicators,11:03:40 10 Aug 2020,40000
+2020,President,polls-plus,7/3/2020,Trump,Biden,"",.5040413,.3497328,1.30422,-.6047544,stock market,S&P 500,11:04:06 10 Aug 2020,40000
+2020,President,polls-plus,7/3/2020,Trump,Biden,"",-6.192026,-3.797612,-2.843125,-4.7521,spending,Personal consumption expenditures,11:04:06 10 Aug 2020,40000
+2020,President,polls-plus,7/3/2020,Trump,Biden,"",-4.2255,-2.92818,-1.973693,-3.882667,manufacturing,Industrial production,11:04:06 10 Aug 2020,40000
+2020,President,polls-plus,7/3/2020,Trump,Biden,"",-6.736466,-5.523757,-4.569269,-6.478244,jobs,Nonfarm payrolls,11:04:06 10 Aug 2020,40000
+2020,President,polls-plus,7/3/2020,Trump,Biden,"",1.008668,1.214305,2.168792,.2598175,inflation,Consumer price index,11:04:06 10 Aug 2020,40000
+2020,President,polls-plus,7/3/2020,Trump,Biden,"",4.050807,4.170327,5.124815,3.21584,income,Real disposable personal income,11:04:06 10 Aug 2020,40000
+2020,President,polls-plus,7/3/2020,Trump,Biden,"",-1.931746,-1.085864,-.4109397,-1.760788,combined,Average of all six indicators,11:04:06 10 Aug 2020,40000
+2020,President,polls-plus,7/2/2020,Trump,Biden,"",.5040413,.3484337,1.307902,-.6110348,stock market,S&P 500,11:03:27 10 Aug 2020,40000
+2020,President,polls-plus,7/2/2020,Trump,Biden,"",-6.192026,-3.776319,-2.81685,-4.735787,spending,Personal consumption expenditures,11:03:27 10 Aug 2020,40000
+2020,President,polls-plus,7/2/2020,Trump,Biden,"",-4.2255,-2.914991,-1.955523,-3.87446,manufacturing,Industrial production,11:03:27 10 Aug 2020,40000
+2020,President,polls-plus,7/2/2020,Trump,Biden,"",-6.736466,-5.508463,-4.548995,-6.467932,jobs,Nonfarm payrolls,11:03:27 10 Aug 2020,40000
+2020,President,polls-plus,7/2/2020,Trump,Biden,"",1.008668,1.215669,2.175138,.2562007,inflation,Consumer price index,11:03:27 10 Aug 2020,40000
+2020,President,polls-plus,7/2/2020,Trump,Biden,"",4.050807,4.167134,5.126603,3.207666,income,Real disposable personal income,11:03:27 10 Aug 2020,40000
+2020,President,polls-plus,7/2/2020,Trump,Biden,"",-1.931746,-1.078089,-.3996428,-1.756536,combined,Average of all six indicators,11:03:27 10 Aug 2020,40000
+2020,President,polls-plus,7/1/2020,Trump,Biden,"",.4742025,.323089,1.287632,-.6414537,stock market,S&P 500,11:05:57 10 Aug 2020,40000
+2020,President,polls-plus,7/1/2020,Trump,Biden,"",-6.192026,-3.763386,-2.798843,-4.727929,spending,Personal consumption expenditures,11:05:57 10 Aug 2020,40000
+2020,President,polls-plus,7/1/2020,Trump,Biden,"",-4.2255,-2.91253,-1.947988,-3.877073,manufacturing,Industrial production,11:05:57 10 Aug 2020,40000
+2020,President,polls-plus,7/1/2020,Trump,Biden,"",-6.736466,-5.499128,-4.534585,-6.463671,jobs,Nonfarm payrolls,11:05:57 10 Aug 2020,40000
+2020,President,polls-plus,7/1/2020,Trump,Biden,"",1.008668,1.217034,2.181576,.2524908,inflation,Consumer price index,11:05:57 10 Aug 2020,40000
+2020,President,polls-plus,7/1/2020,Trump,Biden,"",4.050807,4.162347,5.12689,3.197804,income,Real disposable personal income,11:05:57 10 Aug 2020,40000
+2020,President,polls-plus,7/1/2020,Trump,Biden,"",-1.936719,-1.078762,-.3967277,-1.760797,combined,Average of all six indicators,11:05:57 10 Aug 2020,40000
+2020,President,polls-plus,6/30/2020,Trump,Biden,"",.4408508,.2949552,1.264526,-.6746154,stock market,S&P 500,11:08:25 10 Aug 2020,40000
+2020,President,polls-plus,6/30/2020,Trump,Biden,"",-6.192026,-3.751455,-2.781884,-4.721025,spending,Personal consumption expenditures,11:08:25 10 Aug 2020,40000
+2020,President,polls-plus,6/30/2020,Trump,Biden,"",-4.2255,-2.911412,-1.941842,-3.880983,manufacturing,Industrial production,11:08:25 10 Aug 2020,40000
+2020,President,polls-plus,6/30/2020,Trump,Biden,"",-6.736466,-5.490545,-4.520974,-6.460115,jobs,Nonfarm payrolls,11:08:25 10 Aug 2020,40000
+2020,President,polls-plus,6/30/2020,Trump,Biden,"",1.008668,1.218398,2.187968,.2488274,inflation,Consumer price index,11:08:25 10 Aug 2020,40000
+2020,President,polls-plus,6/30/2020,Trump,Biden,"",4.050807,4.157347,5.126917,3.187776,income,Real disposable personal income,11:08:25 10 Aug 2020,40000
+2020,President,polls-plus,6/30/2020,Trump,Biden,"",-1.942278,-1.080452,-.3948621,-1.766042,combined,Average of all six indicators,11:08:25 10 Aug 2020,40000
+2020,President,polls-plus,6/29/2020,Trump,Biden,"",.3332596,.2060234,1.084677,-.6726301,stock market,S&P 500,11:09:55 10 Aug 2020,40000
+2020,President,polls-plus,6/29/2020,Trump,Biden,"",-10.7598,-8.222619,-7.343966,-9.101273,spending,Personal consumption expenditures,11:09:55 10 Aug 2020,40000
+2020,President,polls-plus,6/29/2020,Trump,Biden,"",-4.2255,-2.935935,-2.057281,-3.814589,manufacturing,Industrial production,11:09:55 10 Aug 2020,40000
+2020,President,polls-plus,6/29/2020,Trump,Biden,"",-6.736466,-5.496223,-4.61757,-6.374877,jobs,Nonfarm payrolls,11:09:55 10 Aug 2020,40000
+2020,President,polls-plus,6/29/2020,Trump,Biden,"",1.008668,1.219762,2.098416,.3411088,inflation,Consumer price index,11:09:55 10 Aug 2020,40000
+2020,President,polls-plus,6/29/2020,Trump,Biden,"",6.979816,7.132764,8.011418,6.254111,income,Real disposable personal income,11:09:55 10 Aug 2020,40000
+2020,President,polls-plus,6/29/2020,Trump,Biden,"",-2.233337,-1.349371,-.7280694,-1.970673,combined,Average of all six indicators,11:09:55 10 Aug 2020,40000
+2020,President,polls-plus,6/28/2020,Trump,Biden,"",.2312708,.1219991,1.004933,-.7609343,stock market,S&P 500,11:10:24 10 Aug 2020,40000
+2020,President,polls-plus,6/28/2020,Trump,Biden,"",-10.7598,-8.225035,-7.342102,-9.107968,spending,Personal consumption expenditures,11:10:24 10 Aug 2020,40000
+2020,President,polls-plus,6/28/2020,Trump,Biden,"",-4.2255,-2.959008,-2.076075,-3.841941,manufacturing,Industrial production,11:10:24 10 Aug 2020,40000
+2020,President,polls-plus,6/28/2020,Trump,Biden,"",-6.736466,-5.501121,-4.618188,-6.384054,jobs,Nonfarm payrolls,11:10:24 10 Aug 2020,40000
+2020,President,polls-plus,6/28/2020,Trump,Biden,"",1.008668,1.221127,2.10406,.3381934,inflation,Consumer price index,11:10:24 10 Aug 2020,40000
+2020,President,polls-plus,6/28/2020,Trump,Biden,"",6.979816,7.122041,8.004974,6.239108,income,Real disposable personal income,11:10:24 10 Aug 2020,40000
+2020,President,polls-plus,6/28/2020,Trump,Biden,"",-2.250335,-1.369999,-.7456712,-1.994328,combined,Average of all six indicators,11:10:24 10 Aug 2020,40000
+2020,President,polls-plus,6/27/2020,Trump,Biden,"",.2312708,.1214699,1.008881,-.7659417,stock market,S&P 500,11:09:37 10 Aug 2020,40000
+2020,President,polls-plus,6/27/2020,Trump,Biden,"",-10.7598,-8.199814,-7.312402,-9.087226,spending,Personal consumption expenditures,11:09:37 10 Aug 2020,40000
+2020,President,polls-plus,6/27/2020,Trump,Biden,"",-4.2255,-2.946441,-2.059029,-3.833852,manufacturing,Industrial production,11:09:37 10 Aug 2020,40000
+2020,President,polls-plus,6/27/2020,Trump,Biden,"",-6.736466,-5.486205,-4.598793,-6.373616,jobs,Nonfarm payrolls,11:09:37 10 Aug 2020,40000
+2020,President,polls-plus,6/27/2020,Trump,Biden,"",1.008668,1.222491,2.109903,.3350796,inflation,Consumer price index,11:09:37 10 Aug 2020,40000
+2020,President,polls-plus,6/27/2020,Trump,Biden,"",6.979816,7.116657,8.004068,6.229245,income,Real disposable personal income,11:09:37 10 Aug 2020,40000
+2020,President,polls-plus,6/27/2020,Trump,Biden,"",-2.250335,-1.361974,-.7344788,-1.989468,combined,Average of all six indicators,11:09:37 10 Aug 2020,40000
+2020,President,polls-plus,6/26/2020,Trump,Biden,"",.2312708,.1209407,1.01283,-.7709491,stock market,S&P 500,11:12:25 10 Aug 2020,40000
+2020,President,polls-plus,6/26/2020,Trump,Biden,"",-10.7598,-8.174593,-7.282703,-9.066483,spending,Personal consumption expenditures,11:12:25 10 Aug 2020,40000
+2020,President,polls-plus,6/26/2020,Trump,Biden,"",-4.2255,-2.933873,-2.041984,-3.825763,manufacturing,Industrial production,11:12:25 10 Aug 2020,40000
+2020,President,polls-plus,6/26/2020,Trump,Biden,"",-6.736466,-5.471288,-4.579399,-6.363178,jobs,Nonfarm payrolls,11:12:25 10 Aug 2020,40000
+2020,President,polls-plus,6/26/2020,Trump,Biden,"",1.008668,1.223856,2.115745,.3319659,inflation,Consumer price index,11:12:25 10 Aug 2020,40000
+2020,President,polls-plus,6/26/2020,Trump,Biden,"",6.979816,7.111272,8.003162,6.219383,income,Real disposable personal income,11:12:25 10 Aug 2020,40000
+2020,President,polls-plus,6/26/2020,Trump,Biden,"",-2.250335,-1.353948,-.7232863,-1.984609,combined,Average of all six indicators,11:12:25 10 Aug 2020,40000
+2020,President,polls-plus,6/25/2020,Trump,Biden,"",.4069038,.2624562,1.158407,-.6334944,stock market,S&P 500,11:14:55 10 Aug 2020,40000
+2020,President,polls-plus,6/25/2020,Trump,Biden,"",-10.7598,-8.102395,-7.206444,-8.998345,spending,Personal consumption expenditures,11:14:55 10 Aug 2020,40000
+2020,President,polls-plus,6/25/2020,Trump,Biden,"",-4.2255,-2.860122,-1.964171,-3.756073,manufacturing,Industrial production,11:14:55 10 Aug 2020,40000
+2020,President,polls-plus,6/25/2020,Trump,Biden,"",-6.736466,-5.42228,-4.526329,-6.318231,jobs,Nonfarm payrolls,11:14:55 10 Aug 2020,40000
+2020,President,polls-plus,6/25/2020,Trump,Biden,"",1.008668,1.22522,2.121171,.3292693,inflation,Consumer price index,11:14:55 10 Aug 2020,40000
+2020,President,polls-plus,6/25/2020,Trump,Biden,"",6.979816,7.115183,8.011134,6.219233,income,Real disposable personal income,11:14:55 10 Aug 2020,40000
+2020,President,polls-plus,6/25/2020,Trump,Biden,"",-2.221063,-1.29699,-.6634567,-1.930522,combined,Average of all six indicators,11:14:55 10 Aug 2020,40000
+2020,President,polls-plus,6/24/2020,Trump,Biden,"",.3310905,.2006916,1.101043,-.6996596,stock market,S&P 500,11:16:09 10 Aug 2020,40000
+2020,President,polls-plus,6/24/2020,Trump,Biden,"",-10.7598,-8.098073,-7.197722,-8.998425,spending,Personal consumption expenditures,11:16:09 10 Aug 2020,40000
+2020,President,polls-plus,6/24/2020,Trump,Biden,"",-4.2255,-2.874691,-1.97434,-3.775043,manufacturing,Industrial production,11:16:09 10 Aug 2020,40000
+2020,President,polls-plus,6/24/2020,Trump,Biden,"",-6.736466,-5.422473,-4.522122,-6.322824,jobs,Nonfarm payrolls,11:16:09 10 Aug 2020,40000
+2020,President,polls-plus,6/24/2020,Trump,Biden,"",1.008668,1.226584,2.126936,.3262331,inflation,Consumer price index,11:16:09 10 Aug 2020,40000
+2020,President,polls-plus,6/24/2020,Trump,Biden,"",6.979816,7.105693,8.006044,6.205342,income,Real disposable personal income,11:16:09 10 Aug 2020,40000
+2020,President,polls-plus,6/24/2020,Trump,Biden,"",-2.233698,-1.310378,-.6737335,-1.947022,combined,Average of all six indicators,11:16:09 10 Aug 2020,40000
+2020,President,polls-plus,6/23/2020,Trump,Biden,"",.5183388,.3505695,1.254887,-.5537478,stock market,S&P 500,11:16:41 10 Aug 2020,40000
+2020,President,polls-plus,6/23/2020,Trump,Biden,"",-10.7598,-8.022254,-7.117937,-8.926571,spending,Personal consumption expenditures,11:16:41 10 Aug 2020,40000
+2020,President,polls-plus,6/23/2020,Trump,Biden,"",-4.2255,-2.795821,-1.891504,-3.700139,manufacturing,Industrial production,11:16:41 10 Aug 2020,40000
+2020,President,polls-plus,6/23/2020,Trump,Biden,"",-6.736466,-5.370564,-4.466246,-6.274881,jobs,Nonfarm payrolls,11:16:41 10 Aug 2020,40000
+2020,President,polls-plus,6/23/2020,Trump,Biden,"",1.008668,1.227949,2.132266,.3236315,inflation,Consumer price index,11:16:41 10 Aug 2020,40000
+2020,President,polls-plus,6/23/2020,Trump,Biden,"",6.979816,7.110468,8.014785,6.206151,income,Real disposable personal income,11:16:41 10 Aug 2020,40000
+2020,President,polls-plus,6/23/2020,Trump,Biden,"",-2.20249,-1.249942,-.6104931,-1.889391,combined,Average of all six indicators,11:16:41 10 Aug 2020,40000
+2020,President,polls-plus,6/22/2020,Trump,Biden,"",.4900356,.3272957,1.23614,-.5815482,stock market,S&P 500,11:15:47 10 Aug 2020,40000
+2020,President,polls-plus,6/22/2020,Trump,Biden,"",-10.7598,-8.004995,-7.096151,-8.913839,spending,Personal consumption expenditures,11:15:47 10 Aug 2020,40000
+2020,President,polls-plus,6/22/2020,Trump,Biden,"",-4.2255,-2.793463,-1.884619,-3.702307,manufacturing,Industrial production,11:15:47 10 Aug 2020,40000
+2020,President,polls-plus,6/22/2020,Trump,Biden,"",-6.736466,-5.361315,-4.452471,-6.270159,jobs,Nonfarm payrolls,11:15:47 10 Aug 2020,40000
+2020,President,polls-plus,6/22/2020,Trump,Biden,"",1.008668,1.229313,2.138157,.3204694,inflation,Consumer price index,11:15:47 10 Aug 2020,40000
+2020,President,polls-plus,6/22/2020,Trump,Biden,"",6.979816,7.103568,8.012411,6.194724,income,Real disposable personal income,11:15:47 10 Aug 2020,40000
+2020,President,polls-plus,6/22/2020,Trump,Biden,"",-2.207207,-1.249933,-.6072831,-1.892582,combined,Average of all six indicators,11:15:47 10 Aug 2020,40000
+2020,President,polls-plus,6/21/2020,Trump,Biden,"",.4465198,.2919726,1.20538,-.6214345,stock market,S&P 500,11:18:56 10 Aug 2020,40000
+2020,President,polls-plus,6/21/2020,Trump,Biden,"",-10.7598,-7.991981,-7.078574,-8.905388,spending,Personal consumption expenditures,11:18:56 10 Aug 2020,40000
+2020,President,polls-plus,6/21/2020,Trump,Biden,"",-4.2255,-2.796734,-1.883327,-3.710141,manufacturing,Industrial production,11:18:56 10 Aug 2020,40000
+2020,President,polls-plus,6/21/2020,Trump,Biden,"",-6.736466,-5.355216,-4.441808,-6.268623,jobs,Nonfarm payrolls,11:18:56 10 Aug 2020,40000
+2020,President,polls-plus,6/21/2020,Trump,Biden,"",1.008668,1.230678,2.144085,.3172705,inflation,Consumer price index,11:18:56 10 Aug 2020,40000
+2020,President,polls-plus,6/21/2020,Trump,Biden,"",6.979816,7.09579,8.009197,6.182383,income,Real disposable personal income,11:18:56 10 Aug 2020,40000
+2020,President,polls-plus,6/21/2020,Trump,Biden,"",-2.21446,-1.254248,-.6083722,-1.900125,combined,Average of all six indicators,11:18:56 10 Aug 2020,40000
+2020,President,polls-plus,6/20/2020,Trump,Biden,"",.4465198,.2908453,1.208726,-.6270356,stock market,S&P 500,11:21:24 10 Aug 2020,40000
+2020,President,polls-plus,6/20/2020,Trump,Biden,"",-10.7598,-7.966545,-7.048664,-8.884426,spending,Personal consumption expenditures,11:21:24 10 Aug 2020,40000
+2020,President,polls-plus,6/20/2020,Trump,Biden,"",-4.2255,-2.78371,-1.86583,-3.701591,manufacturing,Industrial production,11:21:24 10 Aug 2020,40000
+2020,President,polls-plus,6/20/2020,Trump,Biden,"",-6.736466,-5.340023,-4.422142,-6.257904,jobs,Nonfarm payrolls,11:21:24 10 Aug 2020,40000
+2020,President,polls-plus,6/20/2020,Trump,Biden,"",1.008668,1.232042,2.149923,.3141612,inflation,Consumer price index,11:21:24 10 Aug 2020,40000
+2020,President,polls-plus,6/20/2020,Trump,Biden,"",6.979816,7.090512,8.008393,6.172631,income,Real disposable personal income,11:21:24 10 Aug 2020,40000
+2020,President,polls-plus,6/20/2020,Trump,Biden,"",-2.21446,-1.246146,-.5971066,-1.895186,combined,Average of all six indicators,11:21:24 10 Aug 2020,40000
+2020,President,polls-plus,6/19/2020,Trump,Biden,"",.4465198,.289718,1.212073,-.6326367,stock market,S&P 500,11:45:11 10 Aug 2020,40000
+2020,President,polls-plus,6/19/2020,Trump,Biden,"",-10.7598,-7.941109,-7.018754,-8.863463,spending,Personal consumption expenditures,11:45:11 10 Aug 2020,40000
+2020,President,polls-plus,6/19/2020,Trump,Biden,"",-4.2255,-2.770687,-1.848332,-3.693041,manufacturing,Industrial production,11:45:11 10 Aug 2020,40000
+2020,President,polls-plus,6/19/2020,Trump,Biden,"",-6.736466,-5.324829,-4.402474,-6.247184,jobs,Nonfarm payrolls,11:45:11 10 Aug 2020,40000
+2020,President,polls-plus,6/19/2020,Trump,Biden,"",1.008668,1.233406,2.155761,.3110517,inflation,Consumer price index,11:45:11 10 Aug 2020,40000
+2020,President,polls-plus,6/19/2020,Trump,Biden,"",6.979816,7.085235,8.007589,6.16288,income,Real disposable personal income,11:45:11 10 Aug 2020,40000
+2020,President,polls-plus,6/19/2020,Trump,Biden,"",-2.21446,-1.238044,-.585841,-1.890248,combined,Average of all six indicators,11:45:11 10 Aug 2020,40000
+2020,President,polls-plus,6/18/2020,Trump,Biden,"",.4893447,.3229578,1.249795,-.6038796,stock market,S&P 500,11:46:38 10 Aug 2020,40000
+2020,President,polls-plus,6/18/2020,Trump,Biden,"",-10.7598,-7.904316,-6.977479,-8.831154,spending,Personal consumption expenditures,11:46:38 10 Aug 2020,40000
+2020,President,polls-plus,6/18/2020,Trump,Biden,"",-4.2255,-2.742626,-1.815789,-3.669464,manufacturing,Industrial production,11:46:38 10 Aug 2020,40000
+2020,President,polls-plus,6/18/2020,Trump,Biden,"",-6.736466,-5.301227,-4.37439,-6.228065,jobs,Nonfarm payrolls,11:46:38 10 Aug 2020,40000
+2020,President,polls-plus,6/18/2020,Trump,Biden,"",1.008668,1.234771,2.161608,.3079334,inflation,Consumer price index,11:46:38 10 Aug 2020,40000
+2020,President,polls-plus,6/18/2020,Trump,Biden,"",6.979816,7.082295,8.009132,6.155457,income,Real disposable personal income,11:46:38 10 Aug 2020,40000
+2020,President,polls-plus,6/18/2020,Trump,Biden,"",-2.207323,-1.218024,-.5626514,-1.873397,combined,Average of all six indicators,11:46:38 10 Aug 2020,40000
+2020,President,polls-plus,6/17/2020,Trump,Biden,"",.4875406,.3209704,1.252436,-.610495,stock market,S&P 500,11:47:02 10 Aug 2020,40000
+2020,President,polls-plus,6/17/2020,Trump,Biden,"",-10.7598,-7.879879,-6.948413,-8.811344,spending,Personal consumption expenditures,11:47:02 10 Aug 2020,40000
+2020,President,polls-plus,6/17/2020,Trump,Biden,"",-4.2255,-2.730895,-1.799429,-3.66236,manufacturing,Industrial production,11:47:02 10 Aug 2020,40000
+2020,President,polls-plus,6/17/2020,Trump,Biden,"",-6.736466,-5.286753,-4.355287,-6.218218,jobs,Nonfarm payrolls,11:47:02 10 Aug 2020,40000
+2020,President,polls-plus,6/17/2020,Trump,Biden,"",1.008668,1.236135,2.167601,.3046698,inflation,Consumer price index,11:47:02 10 Aug 2020,40000
+2020,President,polls-plus,6/17/2020,Trump,Biden,"",6.979816,7.076823,8.008288,6.145358,income,Real disposable personal income,11:47:02 10 Aug 2020,40000
+2020,President,polls-plus,6/17/2020,Trump,Biden,"",-2.207623,-1.2106,-.5519542,-1.869245,combined,Average of all six indicators,11:47:02 10 Aug 2020,40000
+2020,President,polls-plus,6/16/2020,Trump,Biden,"",.5156969,.3424913,1.27858,-.5935976,stock market,S&P 500,11:25:22 10 Aug 2020,40000
+2020,President,polls-plus,6/16/2020,Trump,Biden,"",-10.7598,-7.847074,-6.910985,-8.783163,spending,Personal consumption expenditures,11:25:22 10 Aug 2020,40000
+2020,President,polls-plus,6/16/2020,Trump,Biden,"",-4.2255,-2.708039,-1.77195,-3.644128,manufacturing,Industrial production,11:25:22 10 Aug 2020,40000
+2020,President,polls-plus,6/16/2020,Trump,Biden,"",-6.736466,-5.266052,-4.329963,-6.202141,jobs,Nonfarm payrolls,11:25:22 10 Aug 2020,40000
+2020,President,polls-plus,6/16/2020,Trump,Biden,"",1.008668,1.2375,2.173589,.3014107,inflation,Consumer price index,11:25:22 10 Aug 2020,40000
+2020,President,polls-plus,6/16/2020,Trump,Biden,"",6.979816,7.07309,8.009179,6.137001,income,Real disposable personal income,11:25:22 10 Aug 2020,40000
+2020,President,polls-plus,6/16/2020,Trump,Biden,"",-2.202931,-1.194681,-.5327659,-1.856596,combined,Average of all six indicators,11:25:22 10 Aug 2020,40000
+2020,President,polls-plus,6/15/2020,Trump,Biden,"",.3826116,.237964,1.178187,-.7022586,stock market,S&P 500,11:27:55 10 Aug 2020,40000
+2020,President,polls-plus,6/15/2020,Trump,Biden,"",-10.7598,-7.859488,-6.919266,-8.799711,spending,Personal consumption expenditures,11:27:55 10 Aug 2020,40000
+2020,President,polls-plus,6/15/2020,Trump,Biden,"",-4.2255,-2.745417,-1.805194,-3.685639,manufacturing,Industrial production,11:27:55 10 Aug 2020,40000
+2020,President,polls-plus,6/15/2020,Trump,Biden,"",-6.736466,-5.279081,-4.338859,-6.219304,jobs,Nonfarm payrolls,11:27:55 10 Aug 2020,40000
+2020,President,polls-plus,6/15/2020,Trump,Biden,"",1.008668,1.238864,2.179087,.2986415,inflation,Consumer price index,11:27:55 10 Aug 2020,40000
+2020,President,polls-plus,6/15/2020,Trump,Biden,"",6.979816,7.059917,8.00014,6.119695,income,Real disposable personal income,11:27:55 10 Aug 2020,40000
+2020,President,polls-plus,6/15/2020,Trump,Biden,"",-2.225111,-1.22454,-.5597023,-1.889378,combined,Average of all six indicators,11:27:55 10 Aug 2020,40000
+2020,President,polls-plus,6/14/2020,Trump,Biden,"",.3361953,.200768,1.140658,-.7391223,stock market,S&P 500,11:51:25 10 Aug 2020,40000
+2020,President,polls-plus,6/14/2020,Trump,Biden,"",-10.7598,-8.093788,-7.153898,-9.033678,spending,Personal consumption expenditures,11:51:25 10 Aug 2020,40000
+2020,President,polls-plus,6/14/2020,Trump,Biden,"",-4.591266,-3.528558,-2.588667,-4.468448,manufacturing,Industrial production,11:51:25 10 Aug 2020,40000
+2020,President,polls-plus,6/14/2020,Trump,Biden,"",-6.736466,-5.42804,-4.488149,-6.36793,jobs,Nonfarm payrolls,11:51:25 10 Aug 2020,40000
+2020,President,polls-plus,6/14/2020,Trump,Biden,"",.9519582,1.197694,2.137585,.257804,inflation,Consumer price index,11:51:25 10 Aug 2020,40000
+2020,President,polls-plus,6/14/2020,Trump,Biden,"",6.979816,6.920662,7.860552,5.980772,income,Real disposable personal income,11:51:25 10 Aug 2020,40000
+2020,President,polls-plus,6/14/2020,Trump,Biden,"",-2.30326,-1.45521,-.7906076,-2.119813,combined,Average of all six indicators,11:51:25 10 Aug 2020,40000
+2020,President,polls-plus,6/13/2020,Trump,Biden,"",.3361953,.19995,1.144291,-.7443905,stock market,S&P 500,11:52:52 10 Aug 2020,40000
+2020,President,polls-plus,6/13/2020,Trump,Biden,"",-10.7598,-8.070064,-7.125723,-9.014404,spending,Personal consumption expenditures,11:52:52 10 Aug 2020,40000
+2020,President,polls-plus,6/13/2020,Trump,Biden,"",-4.591266,-3.517733,-2.573393,-4.462074,manufacturing,Industrial production,11:52:52 10 Aug 2020,40000
+2020,President,polls-plus,6/13/2020,Trump,Biden,"",-6.736466,-5.414056,-4.469715,-6.358397,jobs,Nonfarm payrolls,11:52:52 10 Aug 2020,40000
+2020,President,polls-plus,6/13/2020,Trump,Biden,"",.9519582,1.199219,2.143559,.2548783,inflation,Consumer price index,11:52:52 10 Aug 2020,40000
+2020,President,polls-plus,6/13/2020,Trump,Biden,"",6.979816,6.914541,7.858881,5.9702,income,Real disposable personal income,11:52:52 10 Aug 2020,40000
+2020,President,polls-plus,6/13/2020,Trump,Biden,"",-2.30326,-1.448024,-.7802742,-2.115773,combined,Average of all six indicators,11:52:52 10 Aug 2020,40000
+2020,President,polls-plus,6/12/2020,Trump,Biden,"",.3361953,.1991321,1.147923,-.7496587,stock market,S&P 500,11:22:22 10 Aug 2020,40000
+2020,President,polls-plus,6/12/2020,Trump,Biden,"",-10.7598,-8.046338,-7.097547,-8.995129,spending,Personal consumption expenditures,11:22:22 10 Aug 2020,40000
+2020,President,polls-plus,6/12/2020,Trump,Biden,"",-4.591266,-3.506908,-2.558118,-4.455699,manufacturing,Industrial production,11:22:22 10 Aug 2020,40000
+2020,President,polls-plus,6/12/2020,Trump,Biden,"",-6.736466,-5.400072,-4.451281,-6.348863,jobs,Nonfarm payrolls,11:22:22 10 Aug 2020,40000
+2020,President,polls-plus,6/12/2020,Trump,Biden,"",.9519582,1.200743,2.149534,.2519526,inflation,Consumer price index,11:22:22 10 Aug 2020,40000
+2020,President,polls-plus,6/12/2020,Trump,Biden,"",6.979816,6.90842,7.857211,5.959629,income,Real disposable personal income,11:22:22 10 Aug 2020,40000
+2020,President,polls-plus,6/12/2020,Trump,Biden,"",-2.30326,-1.440837,-.7699409,-2.111734,combined,Average of all six indicators,11:22:22 10 Aug 2020,40000
+2020,President,polls-plus,6/11/2020,Trump,Biden,"",.2451606,.1284725,1.081506,-.8245605,stock market,S&P 500,11:31:50 10 Aug 2020,40000
+2020,President,polls-plus,6/11/2020,Trump,Biden,"",-10.7598,-8.049109,-7.096076,-9.002142,spending,Personal consumption expenditures,11:31:50 10 Aug 2020,40000
+2020,President,polls-plus,6/11/2020,Trump,Biden,"",-4.591266,-3.531708,-2.578676,-4.484742,manufacturing,Industrial production,11:31:50 10 Aug 2020,40000
+2020,President,polls-plus,6/11/2020,Trump,Biden,"",-6.736466,-5.406079,-4.453046,-6.359112,jobs,Nonfarm payrolls,11:31:50 10 Aug 2020,40000
+2020,President,polls-plus,6/11/2020,Trump,Biden,"",.9519582,1.202268,2.155301,.2492352,inflation,Consumer price index,11:31:50 10 Aug 2020,40000
+2020,President,polls-plus,6/11/2020,Trump,Biden,"",6.979816,6.896646,7.849679,5.943613,income,Real disposable personal income,11:31:50 10 Aug 2020,40000
+2020,President,polls-plus,6/11/2020,Trump,Biden,"",-2.318433,-1.459918,-.7860221,-2.133814,combined,Average of all six indicators,11:31:50 10 Aug 2020,40000
+2020,President,polls-plus,6/10/2020,Trump,Biden,"",.6686627,.4528901,1.408856,-.5030753,stock market,S&P 500,11:34:24 10 Aug 2020,40000
+2020,President,polls-plus,6/10/2020,Trump,Biden,"",-10.7598,-7.904923,-6.948957,-8.860888,spending,Personal consumption expenditures,11:34:24 10 Aug 2020,40000
+2020,President,polls-plus,6/10/2020,Trump,Biden,"",-4.591266,-3.358653,-2.402688,-4.314619,manufacturing,Industrial production,11:34:24 10 Aug 2020,40000
+2020,President,polls-plus,6/10/2020,Trump,Biden,"",-6.736466,-5.30103,-4.345065,-6.256996,jobs,Nonfarm payrolls,11:34:24 10 Aug 2020,40000
+2020,President,polls-plus,6/10/2020,Trump,Biden,"",.9519582,1.203793,2.159758,.2478272,inflation,Consumer price index,11:34:24 10 Aug 2020,40000
+2020,President,polls-plus,6/10/2020,Trump,Biden,"",6.979816,6.916322,7.872287,5.960356,income,Real disposable personal income,11:34:24 10 Aug 2020,40000
+2020,President,polls-plus,6/10/2020,Trump,Biden,"",-2.247849,-1.331934,-.655964,-2.007903,combined,Average of all six indicators,11:34:24 10 Aug 2020,40000
+2020,President,polls-plus,6/9/2020,Trump,Biden,"",.7088988,.4831597,1.443602,-.4772825,stock market,S&P 500,11:57:35 10 Aug 2020,40000
+2020,President,polls-plus,6/9/2020,Trump,Biden,"",-10.7598,-7.869875,-6.909433,-8.830317,spending,Personal consumption expenditures,11:57:35 10 Aug 2020,40000
+2020,President,polls-plus,6/9/2020,Trump,Biden,"",-4.591266,-3.332276,-2.371833,-4.292718,manufacturing,Industrial production,11:57:35 10 Aug 2020,40000
+2020,President,polls-plus,6/9/2020,Trump,Biden,"",-6.736466,-5.278279,-4.317837,-6.238721,jobs,Nonfarm payrolls,11:57:35 10 Aug 2020,40000
+2020,President,polls-plus,6/9/2020,Trump,Biden,"",.9519582,1.205317,2.16576,.2448751,inflation,Consumer price index,11:57:35 10 Aug 2020,40000
+2020,President,polls-plus,6/9/2020,Trump,Biden,"",6.979816,6.912737,7.873179,5.952295,income,Real disposable personal income,11:57:35 10 Aug 2020,40000
+2020,President,polls-plus,6/9/2020,Trump,Biden,"",-2.241143,-1.313203,-.6340674,-1.992338,combined,Average of all six indicators,11:57:35 10 Aug 2020,40000
+2020,President,polls-plus,6/8/2020,Trump,Biden,"",.7668824,.5268562,1.491683,-.4379705,stock market,S&P 500,11:59:04 10 Aug 2020,40000
+2020,President,polls-plus,6/8/2020,Trump,Biden,"",-10.7598,-7.829643,-6.864817,-8.79447,spending,Personal consumption expenditures,11:59:04 10 Aug 2020,40000
+2020,President,polls-plus,6/8/2020,Trump,Biden,"",-4.591266,-3.298822,-2.333995,-4.263649,manufacturing,Industrial production,11:59:04 10 Aug 2020,40000
+2020,President,polls-plus,6/8/2020,Trump,Biden,"",-6.736466,-5.251544,-4.286718,-6.216371,jobs,Nonfarm payrolls,11:59:04 10 Aug 2020,40000
+2020,President,polls-plus,6/8/2020,Trump,Biden,"",.9519582,1.206842,2.171669,.2420152,inflation,Consumer price index,11:59:04 10 Aug 2020,40000
+2020,President,polls-plus,6/8/2020,Trump,Biden,"",6.979816,6.910297,7.875124,5.945471,income,Real disposable personal income,11:59:04 10 Aug 2020,40000
+2020,President,polls-plus,6/8/2020,Trump,Biden,"",-2.231479,-1.289336,-.6071002,-1.971571,combined,Average of all six indicators,11:59:04 10 Aug 2020,40000
+2020,President,polls-plus,6/7/2020,Trump,Biden,"",.683283,.462959,1.432039,-.506121,stock market,S&P 500,11:28:26 10 Aug 2020,40000
+2020,President,polls-plus,6/7/2020,Trump,Biden,"",-10.7598,-7.830236,-6.861156,-8.799316,spending,Personal consumption expenditures,11:28:26 10 Aug 2020,40000
+2020,President,polls-plus,6/7/2020,Trump,Biden,"",-4.591266,-3.32063,-2.35155,-4.28971,manufacturing,Industrial production,11:28:26 10 Aug 2020,40000
+2020,President,polls-plus,6/7/2020,Trump,Biden,"",-6.736466,-5.255864,-4.286784,-6.224944,jobs,Nonfarm payrolls,11:28:26 10 Aug 2020,40000
+2020,President,polls-plus,6/7/2020,Trump,Biden,"",.9519582,1.208367,2.177446,.2392866,inflation,Consumer price index,11:28:26 10 Aug 2020,40000
+2020,President,polls-plus,6/7/2020,Trump,Biden,"",6.979816,6.899012,7.868092,5.929932,income,Real disposable personal income,11:28:26 10 Aug 2020,40000
+2020,President,polls-plus,6/7/2020,Trump,Biden,"",-2.245412,-1.306065,-.6208224,-1.991308,combined,Average of all six indicators,11:28:26 10 Aug 2020,40000
+2020,President,polls-plus,6/6/2020,Trump,Biden,"",.683283,.461176,1.434697,-.512345,stock market,S&P 500,11:47:23 10 Aug 2020,40000
+2020,President,polls-plus,6/6/2020,Trump,Biden,"",-10.7598,-7.806159,-6.832638,-8.77968,spending,Personal consumption expenditures,11:47:23 10 Aug 2020,40000
+2020,President,polls-plus,6/6/2020,Trump,Biden,"",-4.591266,-3.309058,-2.335537,-4.282579,manufacturing,Industrial production,11:47:23 10 Aug 2020,40000
+2020,President,polls-plus,6/6/2020,Trump,Biden,"",-6.736466,-5.241427,-4.267906,-6.214948,jobs,Nonfarm payrolls,11:47:23 10 Aug 2020,40000
+2020,President,polls-plus,6/6/2020,Trump,Biden,"",.9519582,1.209891,2.183412,.2363701,inflation,Consumer price index,11:47:23 10 Aug 2020,40000
+2020,President,polls-plus,6/6/2020,Trump,Biden,"",6.979816,6.893066,7.866587,5.919546,income,Real disposable personal income,11:47:23 10 Aug 2020,40000
+2020,President,polls-plus,6/6/2020,Trump,Biden,"",-2.245412,-1.298752,-.6103685,-1.987135,combined,Average of all six indicators,11:47:23 10 Aug 2020,40000
+2020,President,polls-plus,6/5/2020,Trump,Biden,"",.683283,.4593931,1.437355,-.518569,stock market,S&P 500,11:40:55 10 Aug 2020,40000
+2020,President,polls-plus,6/5/2020,Trump,Biden,"",-10.7598,-7.782082,-6.80412,-8.760044,spending,Personal consumption expenditures,11:40:55 10 Aug 2020,40000
+2020,President,polls-plus,6/5/2020,Trump,Biden,"",-4.591266,-3.297486,-2.319524,-4.275448,manufacturing,Industrial production,11:40:55 10 Aug 2020,40000
+2020,President,polls-plus,6/5/2020,Trump,Biden,"",-6.736466,-5.226991,-4.249029,-6.204953,jobs,Nonfarm payrolls,11:40:55 10 Aug 2020,40000
+2020,President,polls-plus,6/5/2020,Trump,Biden,"",.9519582,1.211416,2.189378,.2334537,inflation,Consumer price index,11:40:55 10 Aug 2020,40000
+2020,President,polls-plus,6/5/2020,Trump,Biden,"",6.979816,6.887121,7.865083,5.909159,income,Real disposable personal income,11:40:55 10 Aug 2020,40000
+2020,President,polls-plus,6/5/2020,Trump,Biden,"",-2.245412,-1.291438,-.5999145,-1.982962,combined,Average of all six indicators,11:40:55 10 Aug 2020,40000
+2020,President,polls-plus,6/4/2020,Trump,Biden,"",.4981917,.3200221,1.28184,-.6417959,stock market,S&P 500,12:03:40 10 Aug 2020,40000
+2020,President,polls-plus,6/4/2020,Trump,Biden,"",-10.7598,-7.812701,-6.850883,-8.774519,spending,Personal consumption expenditures,12:03:40 10 Aug 2020,40000
+2020,President,polls-plus,6/4/2020,Trump,Biden,"",-4.591266,-3.360519,-2.398701,-4.322337,manufacturing,Industrial production,12:03:40 10 Aug 2020,40000
+2020,President,polls-plus,6/4/2020,Trump,Biden,"",-7.845784,-6.760264,-5.798446,-7.722082,jobs,Nonfarm payrolls,12:03:40 10 Aug 2020,40000
+2020,President,polls-plus,6/4/2020,Trump,Biden,"",.9519582,1.21294,2.174758,.2511222,inflation,Consumer price index,12:03:40 10 Aug 2020,40000
+2020,President,polls-plus,6/4/2020,Trump,Biden,"",6.979816,6.869116,7.830935,5.907298,income,Real disposable personal income,12:03:40 10 Aug 2020,40000
+2020,President,polls-plus,6/4/2020,Trump,Biden,"",-2.461147,-1.588567,-.9084594,-2.268676,combined,Average of all six indicators,12:03:40 10 Aug 2020,40000
+2020,President,polls-plus,6/3/2020,Trump,Biden,"",.5244246,.3391895,1.305371,-.6269922,stock market,S&P 500,11:24:29 10 Aug 2020,40000
+2020,President,polls-plus,6/3/2020,Trump,Biden,"",-10.7598,-7.781172,-6.814991,-8.747354,spending,Personal consumption expenditures,11:24:29 10 Aug 2020,40000
+2020,President,polls-plus,6/3/2020,Trump,Biden,"",-4.591266,-3.338948,-2.372767,-4.30513,manufacturing,Industrial production,11:24:29 10 Aug 2020,40000
+2020,President,polls-plus,6/3/2020,Trump,Biden,"",-7.845784,-6.740066,-5.773884,-7.706247,jobs,Nonfarm payrolls,11:24:29 10 Aug 2020,40000
+2020,President,polls-plus,6/3/2020,Trump,Biden,"",.9519582,1.214261,2.180442,.2480791,inflation,Consumer price index,11:24:29 10 Aug 2020,40000
+2020,President,polls-plus,6/3/2020,Trump,Biden,"",6.979816,6.862531,7.828713,5.896349,income,Real disposable personal income,11:24:29 10 Aug 2020,40000
+2020,President,polls-plus,6/3/2020,Trump,Biden,"",-2.456775,-1.574034,-.8908406,-2.257228,combined,Average of all six indicators,11:24:29 10 Aug 2020,40000
+2020,President,polls-plus,6/2/2020,Trump,Biden,"",.4291241,.267785,1.238005,-.7024354,stock market,S&P 500,11:34:32 10 Aug 2020,40000
+2020,President,polls-plus,6/2/2020,Trump,Biden,"",-10.7598,-7.785295,-6.815074,-8.755515,spending,Personal consumption expenditures,11:34:32 10 Aug 2020,40000
+2020,President,polls-plus,6/2/2020,Trump,Biden,"",-4.591266,-3.366228,-2.396008,-4.336449,manufacturing,Industrial production,11:34:32 10 Aug 2020,40000
+2020,President,polls-plus,6/2/2020,Trump,Biden,"",-7.845784,-6.747392,-5.777171,-7.717612,jobs,Nonfarm payrolls,11:34:32 10 Aug 2020,40000
+2020,President,polls-plus,6/2/2020,Trump,Biden,"",.9519582,1.215581,2.185802,.2453608,inflation,Consumer price index,11:34:32 10 Aug 2020,40000
+2020,President,polls-plus,6/2/2020,Trump,Biden,"",6.979816,6.848004,7.818224,5.877783,income,Real disposable personal income,11:34:32 10 Aug 2020,40000
+2020,President,polls-plus,6/2/2020,Trump,Biden,"",-2.472658,-1.594591,-.9085414,-2.28064,combined,Average of all six indicators,11:34:32 10 Aug 2020,40000
+2020,President,polls-plus,6/1/2020,Trump,Biden,"",.3726307,.2254873,1.199921,-.7489465,stock market,S&P 500,11:53:49 10 Aug 2020,40000
+2020,President,polls-plus,6/1/2020,Trump,Biden,"",-10.7598,-7.778107,-6.803673,-8.752541,spending,Personal consumption expenditures,11:53:49 10 Aug 2020,40000
+2020,President,polls-plus,6/1/2020,Trump,Biden,"",-4.591266,-3.378169,-2.403735,-4.352603,manufacturing,Industrial production,11:53:49 10 Aug 2020,40000
+2020,President,polls-plus,6/1/2020,Trump,Biden,"",-7.845784,-6.746094,-5.77166,-7.720528,jobs,Nonfarm payrolls,11:53:49 10 Aug 2020,40000
+2020,President,polls-plus,6/1/2020,Trump,Biden,"",.9519582,1.216902,2.191335,.2424678,inflation,Consumer price index,11:53:49 10 Aug 2020,40000
+2020,President,polls-plus,6/1/2020,Trump,Biden,"",6.979816,6.835937,7.810371,5.861503,income,Real disposable personal income,11:53:49 10 Aug 2020,40000
+2020,President,polls-plus,6/1/2020,Trump,Biden,"",-2.482074,-1.604007,-.9149786,-2.293036,combined,Average of all six indicators,11:53:49 10 Aug 2020,40000
