@@ -1,0 +1,86 @@
+---
+title: "Week 6, Day 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+
+# Build an urn with 500 red beads, 490 blue beads, and 10 yellow beads. The urn
+# should have two variables: ID and color. Mix up the beads in the urn randomly.
+# That is, we don't want all the red beads to have ID 1 through 500 and so on.
+# Sort the urn by ID.
+
+beads <- c(rep("red", 500), 
+           rep("blue", 490), 
+           rep("yellow", 10))
+
+urn <- tibble(color = beads) %>% 
+  sample_frac() %>% 
+  mutate(ID = 1:1000) %>% 
+  select(ID, color)
+
+# Using the book, where a very similar example is given, is highly recommended.
+# But, this example is trickier than the book because you have to mix up the
+# beads before you assign the `ID` values. `sample_frac()` is a handy function.
+# Check out other functions in the sample_* family. I keep thinking that there
+# is a better function to use, something which only mixes stuff up, but I could
+# not find it. Perhaps a simpler approach:
+
+urn <- tibble(ID = 1:1000,
+              color = sample(beads))
+
+# If you don't tell sample() how many you want, it just gives you back
+# everything, reordered.
+              
+```
+
+We are learning about sampling this week. We are taking the theory of Chapter 5 and applying it in a not-too-toyish example. There is a single, true, unknown parameter. What is your posterior distribution for that parameter? Once you have that posterior, how can you use it to make forecasts about the future? 
+
+
+## Scene 1
+
+**Prompt:** Without using rep_sample_n(), sample 30 beads at random from the urn five times. The resulting tibble should have two columns: `replicate` (with a value of 1 to 5) and `samp` (a list column in which each item is a tibble with 30 rows sampled, with replacement, from `urn`). Each tibble in `samp` will have the same two columns as `urn`.
+
+```{r sc1}
+
+# First, make an empty tibble with 5 "slots" for samples
+tibble(replicate = 1:5) %>% 
+  
+  # Make a list-column and take a sample of size 30 from urn with each of those.
+  # replace = TRUE means we will put back each bead as we sample it, instead of 
+  # storing the ones we've already sampled aside.
+  
+  mutate(samp = map(replicate, ~ sample_n(urn, 30, replace = TRUE))) 
+
+```
+
+
+## Scene 2
+
+**Prompt:** What is the probability that, if you sample 50 beads at random, there will be more red than blue beads in the sample?
+
+
+```{r sc2}
+tibble(replicate = 1:1000) %>% 
+  
+  # Very similar to the code above! Just changing some constants.
+  
+  mutate(samp = map(replicate, ~ sample_n(urn, 50, replace = TRUE))) %>% 
+  
+  # We now use the list-column we created, samp, to make integer values.
+  # That's why we use map_int and not map.
+  
+  mutate(numb_red = map_int(samp, ~ sum(.$color == "red"))) %>% 
+  mutate(numb_blue = map_int(samp, ~ sum(.$color == "blue"))) %>% 
+  
+  # Now we can simply compare two integer values
+  
+  mutate(red_wins = ifelse(numb_red > numb_blue, TRUE, FALSE)) %>% 
+  summarize(prob = sum(red_wins)/n())
+
+
+```
+
+## Scenes 3-5 coming on Thursday!
