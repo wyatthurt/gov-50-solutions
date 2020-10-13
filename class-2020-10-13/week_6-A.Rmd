@@ -83,4 +83,43 @@ tibble(replicate = 1:1000) %>%
 
 ```
 
-## Scenes 3-5 coming on Thursday!
+## Scene 3
+
+**Prompt:** When performing inference, it is often useful to ask: What are the range of things which might happen if X is true? We saw that in several examples in chapter 5. Assume that a person is sick, how likely is she to test positive for the disease? Assume that there is one white marble in the bag, how likely are we to draw zero white marbles out of three?
+
+Let's follow that same intuition in the case of the urn. We have an urn with 1,000 beads. Assume that there are 400 red beads. (This is not true! In fact, we know that there are 500 red beads in the urn. But make the assumption anyway.)
+
+* Using `rbinom()` calculate the number of red beads we might draw from the urn with a paddle of size 25. Hint: `n` is 1 in this case. What does it mean if we set `n` equal to 10?
+
+* Create a tibble with two columns: `numb_red_urn` and `numb_red_paddle`. Initially, the tibble has one row, with `numb_red_urn` set to 400, as in the previous question, and `numb_red_paddle` being the number of red drawn using `rbinom`.
+
+* Extend that tibble to have 7 rows, with `numb_red_urn` set to 100, 200, ..., 700. Make sure that the results in `numb_red_paddle` make sense. `seq()` and `map_int()` are useful.
+
+* Still using a tibble with those 7 rows, call `rbinom()` with `n = 10`. (This may require other changes in your code.) Turn the resulting tibble, in which `numb_red_paddle` is a list column into an easier-to-work-with tibble in which `numb_red_paddle` is an integer. Hint: `unnest()`. Interpret the resulting object.
+
+```{r}
+
+# Using `rbinom()` calculate the number of red beads we might draw from the urn with a paddle of size 25. Hint: `n` is 1 in this case. What does it mean if we set `n` equal to 10?
+
+rbinom(n = 1, size = 25, prob = 400/1000)
+
+# This works for one row.
+
+tibble(numb_red_urn = 400) %>% 
+  mutate(numb_red_paddle = rbinom(n = 1, size = 25, prob = numb_red_urn/1000))
+
+# But not for multiple rows! 
+tibble(numb_red_urn = seq(100, 700, by = 100)) %>% 
+  mutate(numb_red_paddle = rbinom(n = 1, size = 25, prob = numb_red_urn/1000))
+
+# For that, you need map.
+tibble(numb_red_urn = seq(100, 700, by = 100)) %>% 
+  mutate(numb_red_paddle = map_int(numb_red_urn, ~ rbinom(n = 1, size = 25, prob = ./1000)))
+
+# More experiments and unnesting for convenience. 
+tibble(numb_red_urn = seq(100, 700, by = 100)) %>% 
+  mutate(numb_red_paddle = map(numb_red_urn, ~ rbinom(n = 10, size = 25, prob = ./1000))) %>% 
+  unnest(numb_red_paddle)
+```
+
+## Original scenes 3-5 coming on Thursday!
