@@ -1,0 +1,244 @@
+---
+title: "Problem Set 3"
+author: "Gov 50"
+date: "7/28/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(ggthemes)
+library(PPBDS.data)
+library(gt)
+```
+
+For this problem set, we will use a dataset from ["Concentrated Burdens: How Self-Interest and Partisanship Shape Opinion on Opioid Treatment Policy"](https://www.cambridge.org/core/journals/american-political-science-review/article/concentrated-burdens-how-selfinterest-and-partisanship-shape-opinion-on-opioid-treatment-policy/1E4E901EF49ED0C5A33A002687017326) by Justin de Benedictis-Kessner and Michael Hankinson. The authors study the influence of self-interest on public opinion about opioid treatment clinics. We will focus on a survey experiment contained in the paper that investigates how the placement of potential treatment clinics alters policy preferences.
+
+The authors cite research showing that "people often fear that the construction of addiction treatment infrastructure will deteriorate public safety, decrease property values, and diminish overall quality of life (e.g. Banker 2017)" (pg. 1). The authors hypothesize that these feelings lead people to see it in their own self-interest to avoid having necessary facilities built near their own homes, even if they support the existence of those facilities in principle. If self-interest operates in this way, then inequalities in political efficacy may lead those with more political power to push the costs of such public policies onto more vulnerable communities.
+
+In the experiment, survey recipients were told about a proposal to build an opioid treatment clinic. Respondents were randomly assigned to be told either that this clinic would be built near their home (1/4 miles away) or far away from it (2 miles away). The authors then asked whether or not respondents supported the construction of the clinic. The authors hypothesized that respondents would be less likely to support a proposed treatment center closer to their home.
+
+Here are the columns in the dataset from their paper that we will use: 
+
+-------------------------------------------------------------------------------
+ Name                 Description
+ -------------------- ---------------------------------------------------------
+ `CaseId`             Numeric survey ID.
+ 
+ `STARTDT`            Date and time of survey start.
+ 
+ `ENDDT`              Date and time of survey end.
+ 
+ `state`              Respondent's state.
+ 
+ `region`             Respondent's region (Midwest, South, etc.).
+ 
+ `exposure`           Answer to "Do you know anyone with opioid addiction?"
+ 
+ `female`             Respondent is a women (binary).
+ 
+ `own`                Respondent is a homeowner (binary).
+ 
+ `age`                Respondent's age (numeric).
+ 
+ `dem`                Respondent is a democrat (binary).
+ 
+ `college`            Respondent is a college graduate (binary).
+
+ `distance`           Experimental treatment condition - "near" or "far."
+ 
+ `support_binary`     Experimental outcome - supporting building opioid clinic.
+-------------------------------------------------------------------------------
+
+## Question 1
+
+First, let's document prior exposure to the opioid epidemic using the survey data. We have placed a .csv file in the "Files" section on Canvas called `opioid_survey.csv`. Create a folder in your project called `raw_data` and place this .csv file inside it. 
+
+Then, create a new .Rmd called `ps_3.Rmd` (with exactly that spelling and capialization) and use `read_csv` to read the .csv file into a `tibble` called `survey`. Review the example from Chapter 2 about the `col_types` argument, and set appropriate column types given the table above. Reasonable types include `col_number()` and `col_character()`. The `exposure` variable must be `col_factor()`. 
+
+Replicate the plot below that shows reported levels of exposure to the opioid epidemic in each region of the country. The following steps and hints will be helpful:
+
+1. `exposure` is a factor, and by default will not show up on your plot in the appropriate order. Remember from Chapter 2 that you can reorder the contents of a factor variable with functions like `factor()` and `fct_relevel()`. Here, use the `levels` argument inside the `factor()` function to reorder your exposure variable in the order shown in the plot. You can run `?factor` for a reminder and examples about how to do this. Note that the values in your `levels` argument need to exactly match (i.e. capitalization, spelling, etc.) the values in your dataset.
+2. You may also find that the text of your x-axis labels are overlapping. You can avoid this by adding line-breaks (i.e. by pressing enter) into your labels. You can add newlines to these labels by using the `labels` argument inside of `scale_x_discrete()` and retyping your axis labels with newline characters in them (i.e. by typing a backslash followed by n).
+3. The color of the bars is `darkseagreen4` and the theme is `ggthemes::fivethirtyeight()`.
+4. This plot contains an additional call to `theme()` after `theme_fivethirtyeight()` to customize the typeface. Run `?theme` in your console to see all of the options available to you. Scroll down to see examples, particularly examples with `element_text()`. Set the `axis.text` argument to a font size of 8, the `strip.text` argument to a "bold" face, the `axis.title` argument to a font size of 10, and the `plot.caption` argument to an "italic" face. Here, `strip.text` refers to the titles automatically generated by your facets. In general, you can edit any text in a `ggplot` by finding the appropriate argument in `theme` and setting arguments in the `element_text()` function. 
+
+```{r q1}
+survey <- read_csv("raw_data/opioid_survey.csv", 
+                   
+                   # Exposure is a categorical variable of text, factor seems good
+                   
+                   col_types = cols(CaseId = col_number(),
+                                    STARTDT = col_character(),
+                                    ENDDT = col_character(),
+                                    exposure = col_factor(),
+                                    state = col_character(),
+                                    female = col_number(),
+                                    own = col_number(),
+                                    dem = col_number(),
+                                    college = col_number(),
+                                    distance = col_character()))
+
+survey %>% 
+  
+  # Reorder `exposure` in a sensible way 
+  # personal exposure -> distant friend exposure, end with no one.
+  
+  mutate(exposure = factor(exposure, 
+                           levels = c("Self", "Family Member", "Close friend", 
+                                      "Acquaintance", "No one"))) %>%
+  ggplot(aes(x = exposure)) + 
+  
+  # Google "R colors" to find lots of lists of all available colors by default.
+  # You can specify any color using HEX symbols or make your own with functions
+  # like rgb(). Google them!
+  
+  geom_bar(fill = "darkseagreen4") + 
+  facet_wrap(~region) + 
+  
+  # Here, we're using \n newlines to make the labels nicer.
+  
+  scale_x_discrete(labels = c("Self", "Family \n Member", 
+                              "Close \n friend", "Acquaintance", 
+                              "No one", "NA")) + 
+  theme_fivethirtyeight() + 
+  theme(axis.text = element_text(size = 8), 
+        strip.text = element_text(face = "bold"),
+        axis.title = element_text(size = 10), 
+        plot.caption = element_text(face = "italic")) + 
+  labs(title = "Exposure to Opioid Epidemic by Region",
+       subtitle = "Do you know anyone with opioid addiction?",
+       caption = "Source: de-Benedictis Kessner & Hankinson (2020)",
+       y = "Count",
+       x = "Opioid Exposure")
+
+```
+        
+## Question 2
+
+One of the primary benefits of randomization is treatment **balance** - that is, that the treatment and control groups will be similar on average in all observable and unobservable ways with the exception of the treatment. Researchers will often perform analyses called "balance checks" on their data to explore whether large average differences between their treatment and control groups. Perform the following steps to replicate the plot below:
+
+1. For each value of the treatment (`distance`), create new columns that take the average of the following variables within that group. You may need to remove some `NA` values when calculating means.
+- `female_avg` - proportion of women.
+- `own_avg` - proportion of homeowners. 
+- `dem_avg` - proportion of self-reported Democrats. 
+- `college_avg` - proportion of college graduates. 
+2. Use pivoting to transform your dataset into long format. You will need to set the `cols`, `names_to`, and `values_to` arguments. Name the new column that will contain the *column names* of the original data `covariate`, name the column containing the *values* of the original data `proportion`, and pivot all four of your summarised columns from step 1. 
+3. Create the grouped bar plot below. You can use `scale_fill_manual()` to set a custom legend title and give custom colors (these are "salmon" and "dodgerblue"). The `labels` argument in `scale_x_discrete()` will let you rename the x-axis values. 
+4. Use `ggthemes::theme_clean()`. Make sure to set the title and axis labels!
+
+**Note**: researchers publish these sorts of balance checks all the time. If you read the original paper, this plot roughly corresponds to Table A3. Notice how the original authors also include measurements of uncertainty in their table - we will learn how to do this very soon!
+
+```{r q2}
+survey %>% 
+  group_by(distance) %>% 
+  
+  # Remove NAs when necessary. If none, 
+  # you can just ignore the argument. 
+  
+  summarize(female_avg = mean(female),
+            own_avg = mean(own, na.rm = T),
+            dem_avg = mean(dem, na.rm = T),
+            college_avg = mean(college),
+            .groups = "drop") %>%
+  
+  # Pivots are hard! This code says we want to pivot
+  # the dataset so far (try removing the previous %>% before
+  # this comment and running that code alone to better understand
+  # what we have at this point - a summarized 2 (distance) x 5 (columns)
+  # dataset). 
+  
+  # This code says take the columns between and including 
+  # female to college from left to right in my data (female, own, 
+  # democrat, college), and pivot them longer so that each combination of 
+  # distance and covariate (female, own, democrat, college) is a single row. 
+  # `names_to` says the new column containing the original column names will
+  # be named "covariate", while `values_to` says the new column containing 
+  # the values (the numbers originally under each of the 4 columns) will 
+  # be called "proportion". 
+
+  # To better understand the transformation, try running (1) the code up to 
+  # and including the summarize block, and then (2) the code up to and including
+  # the call to pivot_longer(). Look at both objects and go back and forth, you 
+  # will be able to see where each of the individual values in (1) end up in (2)
+  # better understand the transformation! 
+  
+  pivot_longer(cols = female_avg:college_avg,
+               names_to = "covariate",
+               values_to = "proportion") %>% 
+  ggplot(aes(x = covariate, y = proportion, fill = distance)) + 
+  
+  # Remember "dodge" puts bars side-by-side instead of stacking them.
+  
+    geom_col(position = "dodge") + 
+    scale_fill_manual(name = "Treatment", 
+                      values = c("salmon", "dodgerblue")) + 
+    scale_x_discrete(labels = c("Female", "Homeowner", "Democrat", "College")) + 
+    theme_linedraw() + 
+    labs(title = "Treatment Group Balance",
+         x = "Covariate",
+         y = "Proportion")
+```
+
+## Question 3
+
+With balance established above, let's now move on to actually analyzing the results of this experiment! Create a small `tibble` called `q3` that contains only the observations with 190, 1903, or 2050 as their `CaseId`. `select` only the columns `CaseId`, `distance`, and `support_binary`. Look at the resulting object in your RStudio console.
+
+The code below creates an empty Preceptor Table for you with three columns - one for each treatment condition in this experiment and a third for the individual treatment effect. Remember that you will have to load the `gt` package! Use the output of `q4` that you see to replace the temporary "x" values. If the potential outcome for the entry in the table is observed in `q4`, enter the value in the table. If that value is not observed, enter a "?". No values will have an "x" when you're done, since everything is either observed or unobserved. Be sure to remove actual code from your output when you knit this to PDF so that only the table, and not the code to produce it, remains.
+
+```{r q3, echo=TRUE}
+library(gt) 
+
+q3 <- survey %>%
+  filter(CaseId %in% c(190, 1903, 2050)) %>%
+  select(CaseId, distance, support_binary)
+
+tibble(subject = c("190", "1903 ", "2050"),
+       ynear = c("?", "0", "1"),
+       yfar = c("1", "?", "?"),
+       ydiff = c("?", "?", "?")) %>%
+    
+    # table setup
+    gt() %>%
+    cols_label(subject = "CaseID",
+               ynear = "Y_Near",
+               yfar = "Y_Far",
+               ydiff = "Y_Near - Y_Far") %>%
+    tab_style(cell_borders(sides = "right"),
+              location = cells_body(columns = vars(subject))) %>%
+    tab_style(cell_text(weight = "bold"),
+              location = cells_body(columns = vars(subject))) %>%
+    cols_align(align = "center", columns = TRUE) %>%
+    fmt_markdown(columns = TRUE) 
+
+```
+
+## Question 4
+
+Answer the two questions below in a few sentences each:
+
+(1) Recall that the authors intended to estimate the causal effect of *spatial self-interest* on support for building an opioid treatment clinic. That is, the authors hoped that the average difference in support levels between groups who were randomly assigned to hear the clinic would be "near" vs. "far" away from their home is a good measure of the effect of self-interest. Using the concept of *Wisdom*, critically examine the authors' decision to operationalize the effect of self-interest in this way. Do you think this estimand properly maps onto the concept that the authors are interested in?
+
+(2) Using the concept of *Temperance*, consider how these results may map onto similar substantive areas of interest. The NIMBY ("Not In My Backyard") movement generally opposes the construction of new housing, particularly low-income housing. Would you expect to find similar results if the substantive focus of this experiment were changed from opioid clinics to low-income housing? How about a new community theater?
+
+## Question 5
+
+Recall that it is impossible to observe all potential outcomes for any single individual in an experiment. However, randomization still allows us to estimate *average* causal effects even if we can never know the *individual-level* effect. There are lots of estimands we could use in practice, but the authors of the original paper were interested in the Average Treatment Effect.
+
+Create two new tibbles called `near` and `far` by filtering the survey to contain the observations within that treatment condition. Then, create an object called `ate` that stores only the numeric difference-in-means in support for opioid treatment clinics between the near and far groups (in that order). 
+
+```{r q5}
+near <- survey %>% filter(distance == "near")
+far  <- survey %>% filter(distance == "far")
+
+# Placing parentheses around an entire line will automatically print
+# the output! For example (ate <- ...) here would create the object AND
+# print the value out. 
+
+ate <- mean(near$support_binary, na.rm = T) - mean(far$support_binary, na.rm = T)
+```
+
+**Final Answer**: `ate`, a vector containing a single numeric value, the difference in means between the two groups specified above.

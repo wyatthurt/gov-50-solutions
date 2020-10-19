@@ -1,0 +1,300 @@
+---
+title: 'Problem Set #2'
+author: "Gov 50"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(fec16)
+library(tidyverse)
+library(ggthemes)
+```
+
+For this problem set, we will be using the `fec16` package, which contains a collection of datasets from the Federal Election Commission (FEC). As the [GitHub page](https://github.com/baumer-lab/fec16) for the package states (which you are encouraged to explore), the datasets contain inforrmation "pertaining to candidates, committees, results, contributions from committees and individuals, and other financial data for the United States 2015-2016 election cycle."
+
+## Question 1
+
+After installing and loading the `fec16` package with `install.packages()`, run `?fec16` in the RStudio to get an overview. Let's start with the `candidates` dataset, which is automatically loaded when calling `library(fec16)` along with all of the other package datasets.
+
+Perform the following steps on `candidates` to create a new `tibble` named `q1`: 
+
+1. Filter to only Democrats and Republicans.
+2. Select only the columns representing: `cand_name`, `cand_pty_affiliation`, `cand_office_st`, `cand_office`.
+3. Sort candidates in alphabetical order.
+4. Extract the first row - representing the first candidate in alphabetic order.
+
+```{r q1}
+q1 <- candidates %>% 
+  
+  # Run `table(candidates$cand_pty_affiliation)` to see
+  # why this is important - lots of unique parties!
+  
+  filter(cand_pty_affiliation %in% c("DEM", "REP")) %>% 
+  select(cand_name, cand_pty_affiliation, cand_office_st, cand_office) %>% 
+  
+  # arrange() detects that the `cand_name` column is a character and 
+  # knows how to arrange them, just like if the column were numeric.
+  
+  arrange(cand_name) %>% 
+  
+  # slice() is the dplyr() equivalent of base R of something called
+  # indexing. `candidates[1,]` and `candidates %>% slice(1)` will 
+  # return the same thing! 
+  
+  slice(1)
+
+```
+
+**Final Answer**: a tibble called `q1` with `r nrow(q1)` rows and `r ncol(q1)` columns as specified above. 
+
+## Question 2
+
+Using the `candidates` dataset again, perform the following steps to replicate the plot shown below:
+
+1. Filter to candidates only in the following states: California, Texas, Florida, and New York.
+2. Group by candidate state and office. 
+3. Summarize the grouped dataset into a new column, `cand_count`, which counts the number of rows in each group.
+4. Rename the state column to `State` (this will capitalize the legend in your plot!).
+5. Create a plot with office on the x-axis, `cand_count` on y, and `State` in the `fill` argument.
+6. Add a `geom_col` with `position = "dodge"`.
+7. Add the correct labels. Notice the x-axis says "House" and "Senate" instead of just "H" and "S" - you can use `scale_x_discrete()` to make this change.
+8. This plot uses the `theme_economist_white()` theme in the `ggthemes` package.
+
+```{r q2}
+candidates %>% 
+  
+  # Remove this line to see why filtering your plots
+  # to display only the data you want is important! 
+  
+  filter(cand_office_st %in% c("CA", "TX", "FL", "NY")) %>%
+  
+  # Summarise after a group_by() call will summarise across
+  # and remove a single layer of grouping starting at the last one
+  # in the original call. So, this summarise() call will summarise
+  # across `cand_office`, and not `cand_office_st`. 
+  
+  group_by(cand_office_st, cand_office) %>% 
+  
+  # This will count the number of each office in each state, and 
+  # NOT the number of states in each office. In this case, the 
+  # results are actually the same (try reversing the calls to 
+  # see for yourself!) -  but in some cases this can really matter! 
+
+  summarise(cand_count =  n(), .groups = "drop") %>% 
+  rename(State = cand_office_st) %>% 
+  ggplot(aes(x = cand_office, y = cand_count, fill = State)) + 
+  
+  # Recall the Ch. 1 discussion of `position = "dodge"`, which 
+  # will turn a stacked barplot into side-by-side. 
+  
+    geom_col(position = "dodge") +
+    labs(title = "Number of 2016 Candidates \n Per Office in 4 States",
+         x = "Office", 
+         y = "# of Candidates") + 
+  scale_x_discrete(limits = c("H", "S"),
+                   labels = c("House", "Senate")) + 
+  ggthemes::theme_economist_white()
+
+```
+
+## Question 3
+
+Let's take advantage of the full dataset by combining information about candidates and election results. Perform the following steps on `candidates` and save the results in an object called `q3`:
+
+1. Filter to House races in Alabama.
+2. Merge with the house results dataset by the alphanumeric candidate ID provided in both datasets. Select your merge so that rows in `candidates` are maintained only if there is a match with `results_house`. 
+3. Select the `cand_id`, `cand_name`, `party`, `incumbent`, `won`, and `general_percent` columns.
+4. Change the `cand_id` column so that it drops the first four characters in the string.
+
+```{r q3}
+q3 <- candidates %>% 
+  filter(cand_office_st == "AL" & cand_office == "H") %>% 
+  
+  # If two datasets that you'd like to merge have ID columns
+  # with two different names, you can either (1) rename them to 
+  # be the same or (2) include both ID names in the "by"
+  # argument with an equals sign like: by = c("a" = "b").
+  
+  inner_join(results_house, by = "cand_id") %>% 
+  select(cand_id, cand_name, party, incumbent, won) %>%
+  mutate(cand_id = str_sub(cand_id, 5, 9))
+
+```
+
+**Final Answer**: `q3` will be a `tibble` with `r nrow(q3)` rows and `r ncol(q3)` columns: `r colnames(q3)`. 
+
+## Question 4
+
+Let's investigate the relationship between Democratic presidential and Democratic house results in every state. If the Democratic presidential candidate performs well in a particular state, does the average Democratic house race do similarly well? Replicate this plot as closely as possible using `results_president` and `results_house`. Here are a few hints:
+
+1. You will need to modify both `results_president` and `results_house` before merging them. Modify each dataframe and save them into new objects before finally merging them for the plot.
+2. Notice you are looking for only Democratic candidates. In `results_president`, you will need to filter results to Democrats only and the Democratic presidential candidate id: "P00003392".
+3. `results_house` will have several Democratic candidates per state - take an average! Make sure you filter down to general election results only and exclude primary results - you can do this by checking values that are *not* NA with `!is.na(general_votes)`.
+4. The legend, `Democratic_Victory`, is a rename of the `won` column.
+5. For your geom, use `geom_text()` and use `aes()` to set the `label` and `color` values.
+6. Notice that you will need to set several parameters in your `ggplot`: `xlim`, `ylim`, `labs`. Also add `theme_bw()`!
+7. You can center a `ggplot` title with `theme(plot.title = element_text(hjust = 0.5))`.
+8. This plot uses `theme_clean()` from `ggthemes`.
+9. The custom legend is created using `scale_color_manual`. The color values are "dodgerblue" and "lightcoral".
+
+If you're extra interested and want to practice your R skills even further, you may notice a mistake in the plot below! If so, think about exploring the `results_president` dataset to find the source of the mistake.
+
+```{r q4}
+pres <- results_president %>% 
+  
+  # Every candidate gets a candidate id, 
+  # check the default `pres` dataset to see why
+  # we filter down to this one! 
+  
+  filter(cand_id == "P00003392" & party == "DEM") %>% 
+  
+  # We could manually set the legend title, 
+  # but this is okay for now.
+  
+  mutate(Democratic_Victory = won)
+
+house <- results_house %>% 
+  
+  # This dataset also contained primary results that
+  # we need to remove.
+  
+  filter(party == "D" & !is.na(general_votes)) %>% 
+  group_by(state) %>% 
+  summarise(house_dem_pct = mean(general_percent),
+            .groups = "drop")
+
+# We use `inner_join()` because `results_house` 
+# includes results for lots of US territories too! 
+# Try running unique(results_house$state) to see.
+
+inner_join(pres, house, by = "state") %>% 
+  ggplot(aes(x = general_percent, y = house_dem_pct)) + 
+  
+  # Here, the text is the geom you're plotting - it replaces
+  # another geom like geom_point(). Try replacing the geom_text()
+  # below with an empty call to geom_point() to experiment.
+  
+    geom_text(aes(label = state, color = Democratic_Victory)) + 
+    xlim(0, 1) + 
+    ylim(0, 1) + 
+    labs(title = "2016 Democratic Presidential vs. \n Average Dem. House Results",
+         x = "Democratic Presidential Results",
+         y = "Average Democratic House Result") + 
+  
+  # You can check out a lot of other cool themes by typing
+  # "theme_" in the RStudio console and waiting a second. 
+  # See what it'll autocomplete! 
+  
+    theme_bw() + 
+  
+  # You can edit nearly anything you want about a theme. 
+  # Type "theme(" into the RStudio console and press tab
+  # to see some of the options.
+  
+    theme(plot.title = element_text(hjust = 0.5)) + 
+    theme_clean() + 
+  
+  # The relative order of the values within each of these arguments 
+  # is important! The existing values, TRUE and FALSE, dictate the 
+  # proper positions for the other arguments. If you list TRUE first
+  # in "breaks", the value in the first position of the other 
+  # arguments will be assigned to replace the TRUE argument - that's 
+  # why "Democratic" replaces TRUE and not "Republican", for example.
+  
+    scale_color_manual(values = c("dodgerblue", "lightcoral"), 
+                       name = "Result",
+                       breaks = c("TRUE", "FALSE"),
+                       labels = c("Democratic", "Republican"))
+
+```
+
+## Question 5
+
+Let's investigate the relationship between campaign expenditures and general election performance. Perform the following steps on both `results_house` and `results_senate`, and save the results into new objects called `house` and `senate`. 
+
+1. Select only the following columns: `cand_id`, `general_percent`, and `incumbent`. 
+2. Create a new column called `office` that contains "House" or "Senate" as appropriate.
+
+Then, use the code `results <- rbind(house, senate)` to stack those two tibbles into one new tibble. Then, start with the `campaigns` dataset and join it to `results` so that only matching rows remain. Then, filter the results to only general elections with `!is.na(general_percent)`. Finally, recreate the plot below. as closely as possible. Here are a few hints:
+
+1. Notice that you'll have to rescale the x-axis again. You can use `scale_x_continuous()` with the arguments `breaks` and `labels` to fix it like we've seen above. These numbers can be fairly large, and it can be easier to type out "5e6" for the numeric value instead of "5000000".
+2. At the very end, you may notice that your plot facets are too close together and your custom axis labels are overlapping. You can use `theme(panel.spacing.x = unit(NUMBER, "mm"))` and replace the `NUMBER` to add additional space between the facets.
+3. This plot uses `theme_economist()`.
+4. You will need two `scale` calls for this plot: `scale_x_continuous()` will solve the x-axis labels, but notice that your auto-generated legend after coloring the points by incumbency needs to change as well. You can use a very similar call to scale_color_manual()` as in Question 4 to fix this one. The custom colors for `scale_color_manual()` are "salmon" and "royalblue".
+5. `theme_economist()`! This will reposition things like the legend so you don't need to spend time doing it yourself. 
+
+```{r q5}
+# We select only the columns we need both to be neat and because rbind()
+# requires the two objects we are stacking to have the same columns.
+
+house <- results_house %>% 
+  select(cand_id, general_percent, incumbent) %>% 
+  mutate(office = "House")
+
+senate <- results_senate %>% 
+  select(cand_id, general_percent, incumbent) %>% 
+  mutate(office = "Senate")
+
+# The "r" here stands for "rows". There is also a function called `cbind()`!
+
+results <- rbind(house, senate)
+
+campaigns %>%
+  inner_join(results, by = "cand_id") %>% 
+  
+  # No worries at all if this logic doesn't make sense at first - take a few
+  # minutes to think it through. We are filtering rows that do NOT have NA
+  # values. You can think of this as essentially equivalent to saying something
+  # like general_percents != NA, but R uses a function to check if something is
+  # equal to NA. Try it out! Try running is.na(results$general_percent) in your
+  # console - you'll get a long vector of TRUEs and FALSEs. This is a long list
+  # that tells R which rows do and do not meet that criteria.
+  
+  filter(!is.na(general_percent)) %>% 
+  ggplot(aes(x = ttl_receipts, 
+             y = general_percent, 
+             color = incumbent)) + 
+    geom_point(alpha = 0.6) + 
+  
+  # Notice how the House plot has noticably lower receipts than the Senate but
+  # still keeps the same x-axis. This is enforced by `facet_wrap()`, which gives
+  # every facet the same axes by default. You can use `facet_wrap(~office,
+  # scales = "free")` to have each facet set its own axes.
+  
+    facet_wrap(~office) +
+    labs(title = "2016 Campaign Receipts vs. Results",
+         x = "Total Receipts",
+         y = "General Election %") + 
+  
+  # Scales are very useful, but can be very counter-intuitive at first. The
+  # function names are more straightforward than they might seem - we're using
+  # `scale_x_continuous()` because we're rescaling an x-axis that contains a
+  # continuous value (here a numeric). We set "breaks" to edit the x-axis ticks
+  # we want to set, while "labels" fixes the displayed string values.
+  
+    scale_x_continuous(breaks = c(0, 5e6, 1e7, 
+                                  1.5e7, 2e7, 2.5e7),
+                       labels = c("0", "5 mil.", "10 mil.", 
+                                  "15 mil.", "20 mil.", "25 mil.")) +
+  
+  # Now, we need to scale_color_manual() because we set a "color" argument up
+  # above for incumbent. As before, the argument places are important - "FALSE",
+  # "royalblue", and "Challenger" are all linked to the same value. The original
+  # FALSE values of incumbency are displayed on the plot in "royalblue" and
+  # their legend value shows as "Challenger".
+  
+    scale_color_manual(values=c("royalblue", "salmon"), 
+                       name="Incumbent",
+                       breaks=c("FALSE", "TRUE"),
+                       labels=c("Challenger", "Incumbent")) +  
+    theme(panel.spacing.x = unit(1, "mm")) + 
+    theme_economist() 
+
+```
+
+
+
+
+
+

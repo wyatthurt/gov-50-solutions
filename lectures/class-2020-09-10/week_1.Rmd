@@ -1,0 +1,103 @@
+---
+title: "Class Exercises"
+author: "David Kane"
+date: '2020-09-10'
+output:
+  html_document: default
+---
+
+```{r setup, include=TRUE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(PPBDS.data)
+library(tidyverse)
+
+# Might need to add other packages like scales, ggtext, ggthemes and so on.
+
+# For the purpose of an in-class exercise, we clean up this data. The raw data
+# is a little too complex to deal with in week 1 of the course.
+
+x <- PPBDS.data::kenya %>%
+  mutate(county_split = str_split(block, pattern = "/"))  %>%
+  mutate(county = map_chr(county_split, ~ .[[1]])) %>%
+  select(-county_split, -block) %>% 
+  drop_na() %>% 
+  mutate(reg_inc = reg_byrv13) %>%
+  mutate(is_zero = ifelse(reg_inc == 0, TRUE, FALSE)) %>% 
+  rename(voters = rv13) %>% 
+  select(treatment, poverty, distance, pop_density, 
+         mean_age, reg_inc, voters, county)
+```
+
+Today's class will be based on the first chapter of the textbook, which covers how to make basic and advanced plots using the **tidyverse** package. We will be using the "kenya" data set from the **PPBDS.data** package. To learn more about this package, read the description [here](https://davidkane9.github.io/PPBDS.data/). Try `?kenya`. Data is from "Electoral Administration in Fledgling Democracies: Experimental Evidence from Kenya" ([pdf](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3520421)).
+
+### Scene 1
+
+**Prompt:** Let's first explore the data by creating a basic histogram using `mean_age`. Use the `bins` argument to set an appropriate number of bins in your histogram, and set your range of values to ignore outliers. As always, label your plot appropriately with axis labels and a title. What does your plot tell you about the general age of Kenya's voting population? Along the way, you and your posse should do the usual data exploration: `glimpse()`, `summary()`, `sample_n()`, `view()` and so on. `xlim()` may be a useful function.
+```{r scene_1}
+# The warning message is caused by xlim() cutting off three of the observations.
+# I could not find a way to make that warning go away. Maybe it would be cleaner
+# to drop the outlier data before doing the plot?
+
+x %>% 
+  ggplot(mapping = aes(x = mean_age)) +
+    geom_histogram(bins = 30) +
+    xlim(c(30, 50)) + 
+    labs(x = "Mean Age", 
+         y = "Count",
+         title = "Mean Age of Voters in 2013 Kenya Election")
+```
+
+
+### Scene 2
+
+**Prompt:** Next, let's explore the `reg_inc` variable in more detail by creating another histogram. Again, be sure to use an appropriate number of bins using the `bins` argument. You will need to re-scale the x-axis. Explore the difference between using a log scale versus a square root scale. Which one is better for this particular dataset, and why? `reg_inc` is the increase in voter registration in a community. Do you believe those outlier values? Why or why not?
+```{r scene_2}
+x %>% 
+  ggplot(aes(reg_inc)) +
+  geom_histogram(bins = 80) +
+  scale_x_sqrt() +
+  labs(x = "Increase in Voter Registration",
+       y = "Count",
+       title = "Frequency Distribution of Voter Registration Increases")
+```
+
+### Scene 3
+
+**Prompt:** Let's look at the effectiveness of the "local + SMS" treatment relative to "control" using a box plot.
+```{r scene_3}
+library(ggthemes)
+kenya %>% 
+  ggplot(mapping = aes(x = treatment)) +
+  geom_bar() +
+  labs(x = "Treatment Method",
+       y = "Number of Uses",
+       title = "Number of Uses Per Treatment Method in Experiment") +
+  theme_fivethirtyeight()
+```
+
+### Scene 4
+
+**Prompt:** We have seen that at least one treatment method was clearly effective in increasing voter registration. Now we want to compare the changes in voter registration across all treatments. Calculate the mean increase in registration for each treatment, and plot your results onto a bar graph.
+```{r scene_4}
+x %>% 
+  ggplot(mapping = aes(x = county, fill = treatment)) +
+  geom_bar(position = "dodge") +
+  labs(x = "County", y = "Change in Voter Registration",
+       title = "Number of Times Each Treatment Was Used Per County")
+```
+
+### Scene 5
+
+**Prompt:** Now we know which treatment methods were most effective by looking at the mean increases. However, the previous graph doesn't tell us much about the distribution of `reg_inc` values across treatments. Create a violin plot that shows the density of registration increases by treatment, and layer a box plot on top. Remember to use an appropriate scaling method for your x-axis.
+```{r scene_5}
+library(ggthemes)
+x %>% 
+  filter(treatment %in% c("control", "local + SMS")) %>% 
+  filter(! reg_inc == 0) %>% 
+  ggplot(mapping = aes(x = treatment, y = reg_inc)) +
+  geom_boxplot() +
+  scale_y_sqrt() +
+  labs(x = "Treatment Method", y = "Change in Registration",
+       title = "Effectiveness of Local + SMS Treatment Method")
+```

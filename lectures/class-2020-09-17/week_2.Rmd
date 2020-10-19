@@ -1,0 +1,324 @@
+---
+title: "Week 2"
+author: "David Kane"
+output: html_document
+---
+
+Go to https://registrar.fas.harvard.edu/faculty-staff/courses/enrollment and scroll down to "Access the Current Course Enrollment Numbers." Click on that to download the Excel file. Create a folder in your project called `raw_data`. Move the Excel file into that folder. 
+
+Load **tidyverse**, **readxl* and **janitor** into your setup chunk. You may need to install the packages **readxl** and **janitor** if you haven't already.
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(readxl)
+library(janitor)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Scene 1
+
+**Prompt:** Use **readxl** to read in the data and store it in an object called `raw_data`. Clean the data by cleaning any column names, skipping or cutting rows, and storing the cleaned data in an object called `en_fall_2020`. Additionally, since we will be looking only at undergraduate enrollment, get rid of any irrelevant columns, and filter to keep only courses with at least ten undergraduate students. This will get rid of any weird research courses. Look closely at your data! There is a lot of garbage to find and deal with.
+
+Once you have finished cleaning your data, figure out the course with the highest enrollment. And figure out how many students are enrolled in Gov 50. If you get a number much lower than 151, you have done something wrong . . .
+
+**Answer:**
+
+```{r s1}
+# I selected out every variable I wanted to get rid of individually, but you can
+# do this in a faster way using something like
+# select(course_id:instructor_full_name). You need to skip because of garbage in
+# the first few rows. You need to filter the rows without a course_title because
+# of the summary row at the bottom. You need to group_by() because there are
+# multiple rows for the same course. Change course_department to a factor
+# variable to make it easier to work with later on.
+
+en_fall_2020 <- 
+  read_excel("raw_data/class_enrollment_f_2020.xlsx", 
+             skip = 3) %>% 
+  clean_names() %>% 
+  filter(! is.na(course_title)) %>% 
+  select(-grad, -non_degree, -x_reg, -vus, -employee, -withdraw, -total) %>%
+  group_by(course_id, course_title, course_name, course_department) %>% 
+  
+  # Without using .groups = "drop", the arrange on line 53 will arrange for each
+  # group (e.g. 425 observations in highest_enrollment_20, rather than the
+  # highest overall)
+  
+  summarize(enrollment = sum(u_grad), .groups = "drop") %>% 
+  filter(enrollment > 10) %>% 
+  mutate(course_department = as.factor(course_department))
+
+# Be wary of slice_head! For example, you must include the "n = " because if you
+# just do slice_head(number), it will not work properly. there are other ways to
+# get the first n rows of the data set, slice_head is just one way
+
+highest_enrollment_20 <- en_fall_2020 %>% 
+  arrange(desc(enrollment)) %>% 
+  slice_head(n = 1)
+
+```
+
+
+### Scene 2
+
+**Prompt:** Create a bar plot of the 10 biggest courses. Order the plot so that courses appear in descending order. You will want to use coord_flip() to make your plot easy to read.
+
+**Answer:**
+
+```{r s2}
+# this first chunk of code gets your data looking the way you want it to and
+# keeps only the relevant rows.
+
+en_fall_2020 %>% 
+  arrange(desc(enrollment)) %>% 
+  slice_head(n = 10) %>% 
+  
+  # creating the plot is pretty straightforward. Since it is obvious that the
+  # bars are course names on the y-axis, I have removed the axis title. using
+  # labs on flipped coordinates can be confusing and may require some trial and
+  # error it seems that labs() uses the original orientation of the axes before
+  # they were flipped
+
+  ggplot(mapping = aes(x = reorder(course_name, enrollment), y = enrollment)) +
+  geom_col() +
+  coord_flip() + 
+  labs(x = NULL,
+       y = "Number of Undergraduate Students",
+       title = "Ten Biggest Courses at Harvard in Spring 2020") 
+
+```
+
+### Scene 3
+
+**Prompt:** Make a bar plot of total enrollment by department for the ten smallest departments. Arrange the bar plot in ascending order.
+
+**Answer:**
+
+```{r s3}
+# use -total_enrollment in reorder() to arrange the bar plot in ascending order
+# remove the axis title for department
+
+en_fall_2020 %>% 
+  group_by(course_department) %>% 
+  summarize(total_enrollment = sum(enrollment)) %>% 
+  arrange(total_enrollment) %>% 
+  slice_head(n = 10) %>% 
+  ggplot(mapping = aes(x = reorder(course_department, -total_enrollment), 
+                       y = total_enrollment)) + 
+    geom_col() +
+    coord_flip() +
+  theme(axis.title.y = element_blank()) +
+  labs(y = "Total Enrollment",
+       title = "Total Enrollment of 10 Smallest Departments")
+
+```
+
+
+### Scene 4
+
+**Prompt:** Create a scatterplot of the length of course name versus enrollment for the Computer Science and Economics Department. Use `nchar()` to find the length, and include spaces. Add a linear line of best fit on your plot and scale axes appropriately.
+
+**Answer:**
+```{r s4}
+# Create a new column for the length of the course name, and filter for relevant
+# departments plotting is straightforward scale the y-axis using a lot scale and
+# "lm" method for geom_smooth() for a linear line.
+
+en_fall_2020 %>% 
+  mutate(length_course_name = nchar(course_name)) %>% 
+  filter(course_department %in% c("Computer Science", "Economics")) %>% 
+  ggplot(mapping = aes(x = length_course_name, y = enrollment)) +
+    geom_point(alpha = 0.3) +
+    geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
+    scale_y_log10() +
+    facet_wrap(~ course_department) +
+    labs(x = "Length of Course Name",
+         y = "Undergraduate Enrollment",
+         title = "Undergraduate Enrollment by Length of Course Name")
+
+```
+
+
+### Scene 6
+
+**Prompt:** Go to https://registrar.fas.harvard.edu/faculty-staff/courses/enrollment again and download the enrollment data for spring 2019. Move the file into your R project folder and do the 
+same read in using readxl, storing the data in an object called `en_spring_2019`. Clean the data again like last time, skipping or cutting rows as necessary, cleaning column names. Again, we only care about undergraduate enrollment and classes with more than ten undergraduates.
+
+After that, find the class with the highest enrollment for spring 2019.
+
+**Answer:**
+
+```{r s6}
+library(readxl)
+library(janitor)
+
+# this is exactly the same read in and cleaning as the last class. You will need
+# to skip three rows in this case and cut off the last seven rows.
+
+en_spring_2019 <- read_excel("class_enrollment_summary_by_term_3.22.19_0.xlsx", skip = 3) %>%
+  clean_names() %>% 
+  head(-7) %>% 
+  select(-grad, -non_degree, -x_reg, -vus, -employee, -withdraw, -total) %>%
+  filter(u_grad > 10) %>% 
+  mutate(course_department = as.factor(course_department))
+
+# this is also the same method we used last class. remember that you must use "n = "
+# in slide_head
+
+highest_enrollment_19 <- en_spring_2019 %>% 
+  arrange(desc(u_grad)) %>% 
+  slice_head(n = 1)
+
+```
+
+
+### Scene 7
+
+**Prompt:** Using the appropriate join, merge the two semesters together and use the combined dataset to find the change in enrollment for each class from 2019 to 2020. Create a bar plot showing the 5 classes with the biggest increases in enrollment and the 5 classes with the biggest decreases in enrollment on the same plot, in decreasing order (so the class with the highest increase will be at the top and the class with the highest decrease will be at the bottom). 
+
+**Answer:**
+```{r s7}
+# you should create a new object in which to store your merged datasets.
+# Left_join() will be the appropriate join to use here, and use the suffix
+# argument to clearly indicate which columns are from which dataset. since we
+# care about finding the change in enrollment from 2019 to 2020, the only
+# variable we care about from 2019 is the undergraduate enrollment. you will
+# need to drop_na() or you may run into an error with having NA values in the
+# merged dataset. finally, create a new variable that shows the change in 
+# enrollment.
+
+enrollment_change <- left_join(en_spring_2020, en_spring_2019, 
+                               by = "course_id", 
+                               suffix = c(".2020", ".2019")) %>% 
+  select(-course_title.2019, -course_name.2019, -course_section_code.2019, 
+         -instructor_full_name.2019, -course_department.2019) %>% 
+  drop_na() %>% 
+  mutate(en_change = u_grad.2020 - u_grad.2019)
+
+# here I have created two separate tibbles to find the top 5 courses with the
+# greatest enrollment increase and the top 5 courses with the greatest
+# enrollment decrease.
+
+top_inc <- enrollment_change %>% 
+  arrange(desc(en_change)) %>% 
+  slice_head(n = 5)
+
+top_dec <- enrollment_change %>% 
+  arrange(en_change) %>% 
+  slice_head(n = 5) 
+
+# then, I join together those tibbles using full_join which simply puts all rows
+# from both datasets into one. however, you will have to reorder your courses
+# again when doing ggplot using reorder()
+
+joined <- full_join(top_inc, top_dec) %>% 
+  ggplot(mapping = aes(x = reorder(course_name.2020, en_change), y = en_change)) +
+  geom_col() +
+  coord_flip() +
+  labs(y = "Change in Enrollment",
+       title = "Courses with Greatest Increase and Decrease in Enrollment") +
+  theme(axis.title.y = element_blank())
+
+joined
+```
+
+### Scene 8
+
+**Prompt:** Use the appropriate join to find the 5 biggest new classes in 2020.
+
+**Answer:**
+```{r s8}
+# the main part here is using anti_join which will create a new dataset with
+# only courses that appear in 2020 but not 2019.
+
+new_classes <- anti_join(en_spring_2020, en_spring_2019, by = "course_id") %>% 
+  arrange(desc(u_grad)) %>% 
+  slice_head(n = 5)
+```
+
+
+### Scene 9
+
+**Prompt:** Use the stringr library to find the 10 most common first names of instructors for 2020, and plot them. 
+
+**Answer:**
+```{r s9}
+library(stringr)
+
+# create a new object to store the tibble in. I used drop_na() to be safe. You
+# will want to group by instructor's full name first, so that if one instructor
+# is teaching more than one course, they will not be counted as separate names.
+
+names <- en_spring_2020 %>% 
+  drop_na() %>% 
+  group_by(instructor_full_name) %>% 
+  
+  # Use str_split to split instructor_full_name by the comma. This will split
+  # between an instructor's first and last name. Setting simplify = TRUE creates
+  # a matrix out of the results of the split, and using [, 2] selects the second
+  # column of that matrix, which is the first name of the instructor
+  
+  mutate(first_name = str_split(instructor_full_name, ",", simplify = TRUE)[, 2]) %>% 
+
+  # here, I noticed that some people have middle initials while some also have
+  # multiple middle or first names. let's just select the very first name people
+  # have to standardize. I did this by using another str_split to split by the
+  # space between each name, and used [, 1] to select only the very first name.
+  # finally, you will just need to group by first name and use summarize and n()
+  # to count the appearances of each first name.
+  
+  mutate(first_name = str_split(first_name, " ", simplify = TRUE)[, 1]) %>% 
+  group_by(first_name) %>% 
+  summarize(count = n()) %>% 
+  arrange(desc(count)) %>% 
+  slice_head(n = 10)
+
+names %>% 
+  ggplot(mapping = aes(x = reorder(first_name, -count), y = count)) +
+  geom_col() +
+  labs(x = "Instructor First Name",
+       y = "Count",
+       title = "Ten Most Common First Names of Harvard Professors")
+
+names
+
+```
+
+### Scene 10
+
+**Prompt:** We want to see whether long course names turn off students from enrolling. Find the average length of course name by department and the average enrollment by department, and plot them in a scatter plot. Have the size of each point correspond to the number of courses in the department.
+
+**Answer:**
+```{r s10}
+library(ggtext)
+# create a new column for the length of each course name. Then, you will need to
+# group by department and summarize to find the mean for the length of course
+# name and the undergraduate enrollment. use n() in summarize to find the number
+# of courses for each department. You will need to do all three of these steps
+# in one summarize call
+
+department_avg <- en_spring_2020 %>% 
+  mutate(length_course_name = nchar(course_name)) %>% 
+  group_by(course_department) %>%
+  summarize(avg_length = mean(length_course_name), 
+            avg_enrollment = mean(u_grad),
+            n_courses = n())
+
+# Maybe use ggtext to label one or two outliers. Change the legend to make it
+# nicer. First, give it a proper header: "Number of Courses in the Department".
+# Second, only allow for some of the levels to be shown, maybe just 20 and 60.
+# Give a subtitle (key thing to notice about the plot). Give a caption which
+# provides the source.
+
+department_avg %>% 
+  filter(n_courses > 10) %>% 
+  ggplot(mapping = aes(x = avg_length, y = avg_enrollment)) +
+    geom_point(aes(size = n_courses)) +
+    geom_smooth(method = "lm", se = FALSE) +
+    labs(x = "Average Length of Course Name",
+         y = "Average Enrollment",
+         title = "Average Enrollment vs Average Length of Course Name by Department",
+         subtitle = "Longer course names are associated with lower enrollment",
+         size = "Number of Courses in Department") 
+```
+

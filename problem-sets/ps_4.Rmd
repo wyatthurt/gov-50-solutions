@@ -1,0 +1,184 @@
+---
+title: 'Problem Set #4'
+author: "Gov 50"
+date: "8/14/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(PPBDS.data)
+```
+
+## Question 1
+
+Make a new .Rmd file called **`ps_4.Rmd`**. You only need to load the `tidyverse` and `PPBDS.data` libraries for this problem set. Write a function called `play_rps` that plays Rock Paper Scissors. It must take no arguments and take the following steps:
+
+1. Randomly draw "Rock", "Paper", or "Scissors" for two players with the `sample` function and save both values in a single character vector called `draws`. Please make sure your spelling and capitalization match these.
+2. Determine the winner and create an object called `result` that contains the string "P1 Wins", "P2 Wins", or "Draw" depending on the outcome. Please make sure your spelling and capitalization match these.
+3. Return a list containing `draws` and `result` in that order.
+
+**Hint**: you can use `case_when()` to help you complete Step 2. Since there are only three scenarios, it is simplest to start by checking for a "Draw", then check for one another scenario. If neither of those are true, the third must be!
+
+Here are some examples of us calling the function. If you type `play_rps()` in the console after writing it, your output should look a lot like this:
+
+```{r q1}
+play_rps <- function() {
+  
+  rps <- c("Rock", "Paper", "Scissors")
+  
+  # Instead of two separate objects, simpler to draw with replacement.
+  
+  draws <- sample(rps, 2, replace = TRUE)
+  
+  result <- case_when(draws[1] == draws[2] ~ "Draw",
+            
+            # P1 Wins
+            
+            draws[1] == "Rock" & draws[2] == "Scissors" | 
+            draws[1] == "Scissors" & draws[2] == "Paper" | 
+            draws[1] == "Paper" & draws[2] == "Rock" ~ "P1 Wins",
+
+            # If it isn't a draw and P1 doesn't win, then P2 won!  
+            
+            TRUE ~ "P2 Wins")
+  
+  return(list(draws, result))
+
+}
+
+```
+
+
+```{r q1-calls, echo=TRUE}
+# Let's call it twice
+# You don't have to do this, please just define the function.
+play_rps()
+play_rps()
+```
+
+**Final Answer**: You should test your function several times and evaluate the draws and response to make sure it's correct, but it is not necessary to save these tests in objects. We will be evaluating your function to make sure it returns a list containing two objects: (1) a character vector with two values and (2) the correct result in that scenario as a single string. Make sure the return values are exactly as specified in the directions (e.g. capitalized "Rock", "Paper", "Scissors", and the values "Draw", "P1 Wins", or "P2 Wins"). 
+
+## Question 2
+
+Imagine your friend presents the following situation to you: "In this bag, I have 3 Red coins, 2 Green coins, 7 Blue coins, and one Gold coin. Pull three coins from the bag without putting them back. If any of your coins is the gold coin or if all of your coins are the same color, you win! Otherwise, you lose." Your friend claims that they are able to win half of the time. Write a simulation scenario to see whether or not you should believe your friend - are they cheating? Your simulation should proceed in the following way:
+
+1. Create a function `pick_color` that takes a single input, `n`, and uses `sample` to choose `n` coins from your friend's bag. `pick_color` will return a character vector of length `n` containing the color of each coin you randomly drew that time (e.g. "Blue", "Green", "Gold", or "Red" with exactly this spelling and capitalization). Inside `pick_color`, you can combine the `rep` and `c` functions to make a vector which represents the contents of your friends bag.
+2. Create a tibble called `q2` of 1000 observations, each containing the results from a separate call to `pick_color` where `n = 3`. To do this, you can make an empty `tibble` with a single column called `throws`. Fill the `throws` column by using the `map` function to call `pick_color` on a vector of one thousand 3's (you can check out the `rep` function documentation for how to do this). This will call the `pick_color` function 1000 times with n = 3.
+3. Add an additional column to `q2` called `winner` that evaluates to `TRUE` if that roll was a win according to your friend's rules and `FALSE` if it was not. Don't forget that you will be able to use the `.` syntax to access each row's values in the `throws` column.
+
+*Hint*: you do not need to explicitly check individual values of `throws` to check if they are all the same. Think about how you might combine the `unique()` and `length()` functions on a vector to test if all values in that vector are the same. For example, try `unique(c(1,1,2))` in your console.
+
+```{r q2}
+
+pick_color <- function(n) {
+  
+  # Equivalently, you could make a character vector containing
+  # each coin in the bag: c("Red", "Red", "Red", "Green",...) but 
+  # this is shorter and easier. Imagine if the bag had 700 blue coins!
+  
+  sample(c(rep("Red", 3), rep("Green", 2), 
+           rep("Blue", 7), rep("Gold", 1)), n, replace = FALSE)
+  
+  # Writing return() is unnecessary here, since the function will by 
+  # default return the last object it creates. However, assigning the 
+  # sample output to an object called x and then writing return(x)
+  # would have the same result.
+  
+}
+
+q2 <- tibble(throws = map(rep(3, 1000), pick_color)) %>%
+  
+  # map_lgl() is for logicals. 
+  # Here, `"Gold" %in% .` lets you win if *any* value is Gold,
+  # while length(unique(.)) == 1 is a handy way of checking if all values are equal.
+  
+  mutate(winner = map_lgl(throws, ~ ifelse("Gold" %in% . | length(unique(.)) == 1, TRUE, FALSE)))
+
+```
+
+**Final Answer**: a tibble called `q2` with `r nrow(q2)` rows and `r ncol(q2)` columns: `r colnames(q2)`. `throws` is a list-column containing character vectors with 3 entries containing a draw from `pick_color`, and `winner` is `TRUE` or `FALSE` according to the rules above. We will also evaluate your function `pick_color`, which must return a character vector with 3 entries with colors according to the rules above (make sure your colors are capitalized the same way as in the question: "Blue", "Green", etc.). 
+
+## Question 3
+
+Even if treatments are assigned randomly, it's possible that you could get very unusual draws. For example, if you were randomly choosing 50 animals to pet in a room of 50 cats and 50 dogs, it is theoretically possible that only dogs receive the treatment. This is one reason why it's important to check balance after randomizing your groups. The randomization process ensures that your groups are balanced on all characteristics on average, but we'd still like to see that our results are not too strange.
+
+Let's do that with `age` in the `sps` dataset and practice list columns and anonymous functions along the way. The treatment vector that the randomization process actually assigned to the experiment (`sps$treatment`) is only one out of many many possible treatment vectors (for example, imagine all the possibilities [1,0,0,...], [1,1,0,...], [0,0,1,...] and so on!). Let's compare one statistic from the randomization that we observed - the average age of the treatment group - with that same statistic under many other possible randomizations that we could have gotten.
+
+Create a new column in `sps` called `id` which numbers each observation from 1 to the number of rows in `sps` (i.e. `sps$id should go 1, 2, 3, ...)`. Create a new tibble called `draws` with a single column called `times` which contains all of the values between and including 1 to 1000. Then, create a new list column in `draws` called `ids` that contains *a list* of the values of `id` in the `sps` dataset in each row (that is, every row will have the same value for `ids`, a list of all values of `id` from `sps`). Then, create a second list column called `randomized` that randomly samples the same number of treated observations from the `ids` list as the number of treatment observations in the original `sps` dataset. This process will store 1,000 alternative treatment vectors in the `randomized` list column.
+
+```{r q5a}
+sps$id <- 1:nrow(sps)
+
+draws <- tibble(times = 1:1000) %>% 
+  
+  # Calling the sps dataset like this will make all 
+  # values of the ids column identical, but that's what we want here!
+  
+  mutate(ids = list(sps$id),
+         
+         # This anonymous function will sample 13,871 ids
+         # for every row in the original tibble (1,000 times). 
+         # Let's break this down by working from the inside-out: 
+         # sum(sps$treatment == 1) will simply evaluate to a number: 13871. 
+         # sample(., size = 13871) will take 1 draw of size 13871 from the 
+         # vector that was passed to sample() - that is sps$ids. 
+         # The returned vector of 13,871 gets stored in a single list for
+         # a single row. This process repeats 1,000 times!
+         
+         randomized = map(ids, ~ sample(., size = sum(sps$treatment == 1))))
+```
+
+**Final Answer**: a tibble called `draws` with `r nrow(draws)` rows and `r ncol(draws)` columns: `r colnames(draws)`. `times` is a numerical column holding values from 1 to 1000, `ids` is a lost-column containing 27,569 ids for each row, and `randomized` is a list-column holding 13,871 ids for each row.
+
+## Question 4
+
+Next, take `draws` and create the following new columns:
+
+1. `ages`: a new list column that subsets `sps$age` to only those values for which the corresponding `sps$id` is in `randomized`, the sampled ids from the previous question. To do this, call `map` on `randomized`. This hint will be very useful: `sps$age[sps$id %in% .]`! This code will subset `sps$age` to values for which `sps$id` are in the data that `.` represents.
+2. `ages_avg`: map the `mean` function onto each list in the `ages` list column and average them to create a simple numeric average for each row in `draws`.
+
+Finally, use `ages_avg` to replicate the plot below. These values are randomly generated, so you won't have exactly the same plot - but it should look similar! A few hints:
+
+1. The plot sets the following options in the `geom` that it uses: `bins = 50, fill = "palevioletred3", alpha = 0.8`.
+2. Use `annotate()` to add the `dodgerblue` text. Type `?annotate` in the console for instructions on how to use it. *Hint*: you are adding "text", and you can set particular `x` and `y` values to place the text in the `label` argument anywhere on an existing plot. Arguments like `x`, `y`, `color`, and `size` work how you expect! Scroll down to the bottom of the documentation after typing `?annotate` in the console for lots of examples.
+3. The theme is `theme_linedraw()`.
+4. You can add a vertical line to a plot with `geom_vline()`. Type `?geom_vline` into the console and read the docs - scroll down to the bottom! You should find exactly what you're looking for. `lty = "dashed"` is an argument in `geom_vline` to make your line dashed. To find the correct value for the intercept, use the `sps` dataset to find the average age within the treatment group.
+
+```{r 4}
+draws %>% 
+  
+  # randomized contains 13,871 vectors of random ids (these random
+  # ids are represented by `.` in this code.) "sps$id %in% ." will evaluate
+  # to TRUE or FALSE for each id in your random sample, and placing this inside the 
+  # sps$age index will select only those values of sps$age for which the inside code
+  # evaluates to TRUE. Finally, this new vector is stored in `ages` as a list column.
+  
+  # Then, map_dbl simply takes the mean of those randomly selected `ages` and stores
+  # the single numeric value in `ages_avg`. This means that `ages_avg` is simply 
+  # another numeric column that we're used to - we're back to regular numbers!
+  
+  mutate(ages = map(randomized, ~ sps$age[sps$id %in% .]),
+         ages_avg = map_dbl(ages, ~ mean(.))) %>% 
+  ggplot(aes(x = ages_avg)) + 
+    geom_histogram(bins = 50, 
+                   fill = "palevioletred3", 
+                   alpha = 0.8) + 
+    geom_vline(xintercept = 42.4, 
+             col = "dodgerblue", 
+             lty = "dashed") + 
+    annotate(x = 42.525, y = 45, 
+             geom = "text",  
+             label = "Observed average age \n in treatment group",
+             color = "dodgerblue", 
+             size = 4) + 
+    theme_linedraw() + 
+    labs(title = "Distribution of Average Age 
+         Among 1,000 Generated Treatment Vectors",
+         x = "Average Age of Each Draw",
+         y = "Count")
+
+```

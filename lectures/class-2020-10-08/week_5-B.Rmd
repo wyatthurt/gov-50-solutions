@@ -1,0 +1,226 @@
+---
+title: "Week 5, Day 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(mvtnorm) # you may need to install.packages() this!
+
+# Credit for almost all of this goes to Juan and Tyler.
+
+# Read in the raw data first. You cannot hard code the 51 electoral votes! I
+# created a csv called electoral_votes.csv with that data, which I took from
+# Wikipedia. Also, I changed the name of the variable to electoral_votes. evs is
+# not a good name! We should try not to use abbreviations when naming variables
+# or functions.
+
+# I estimated the standard deviation for the vote shares from the data provided
+# by 538 instead of hard-coding 6.
+
+cor_mat <- read_csv("election_data/state_correlation_matrix.csv",
+                    col_types = cols(.default = col_double())) %>%
+  rename(KS = KA)
+
+# https://www.jmp.com/en_us/statistics-knowledge-portal/what-is-correlation.html
+
+states <- read_csv("election_data/presidential_state_toplines_2020.csv", 
+                   col_types = cols(.default = col_double(),
+                                    branch = col_character(),
+                                    model = col_character(),
+                                    modeldate = col_character(),
+                                    candidate_inc = col_character(),
+                                    candidate_chal = col_character(),
+                                    candidate_3rd = col_logical(),
+                                    state = col_character(),
+                                    winstate_3rd = col_logical(),
+                                    voteshare_3rd = col_logical(),
+                                    voteshare_3rd_hi = col_logical(),
+                                    voteshare_3rd_lo = col_logical(),
+                                    timestamp = col_character())) %>%
+  filter(modeldate == "10/2/2020")
+
+electoral_votes <- read_csv("election_data/electoral_votes.csv", 
+                            col_types = cols(state = col_character(),
+                            electoral_votes = col_double()))
+
+states <- states %>%
+  left_join(tibble(state = c(state.name, "District of Columbia"),
+                   state_abb = c(state.abb, "DC")),
+            by = "state") %>%
+  filter(!is.na(state_abb)) %>%
+  left_join(electoral_votes, by = "state") %>%
+  arrange(state)
+
+# Estimate the standard deviation of `voteshare_inc` using
+# `winstate_inc` (the probability of Trump winning in the state),
+# assuming that the distribution of the vote share is normal and that
+# `voteshare_inc` is the mean of the distribution.
+
+states <- states %>%
+  mutate(std_dev = (voteshare_inc - 50) / qnorm(winstate_inc))
+
+# Make sure that the states in `states` have the same order as in `cor_mat`
+
+stopifnot(identical(colnames(cor_mat), states$state_abb))
+
+# convert from correlation matrix to covariance matrix
+# diag(S) %*% R %*% diag(S). 
+
+# There is a weird warning message when you knit this:
+
+## Warning: The `x` argument of `as_tibble.matrix()` must have unique column
+## names if `.name_repair` is omitted as of tibble 2.0.0. Using compatibility
+## `.name_repair`. Try as I might, I could not make it go away.
+
+cov_mat <- diag(states$std_dev) %*% 
+  as.matrix(cor_mat, .name_repair = "minimal") %*% 
+  diag(states$std_dev)
+
+# Think about how you might want to improve this code. Note that the function
+# fails to pass in the necessary variables. For example, it needs an object
+# named cov_mat, otherwise it will fail. Right now, it just assumes that that
+# object exists somewhere in the workspace, having been magically created ahead
+# of time. It would be better if it, and the mean vector, were passed in
+# directly.
+
+simulate_election <- function(n_times) {
+  
+  # This function simulates a single election. It does this by 
+  # drawing from a multivariate normal density with one random variable
+  # for each state. The "mean" vector is a vector of 538's predicted
+  # average Trump support per state (for example, Alabama is ~60%).
+  # The "sigma" matrix is a covariance matrix (size 51 x 51), which tells the 
+  # distribution how results from each state should interact. That is,
+  # if Mississippi has a high result, should Alabama also? Should CA?
+  
+  draws <- suppressWarnings(
+    rmvnorm(n = n_times, 
+            mean = states$voteshare_inc, 
+            sigma = cov_mat, checkSymmetry = FALSE)
+  ) %>%
+    as_tibble(.name_repair = "minimal")
+  
+  colnames(draws) <- states$state
+  
+  return(draws)
+}
+```
+
+
+## Scene 1: Challenging Review of Earlier Material
+
+Call the `simulate_election` function to simulate 100 elections and assign the result to an object named `draws`. Print that object out in the console and look at it. How is it formatted? It will have 100 rows and 51 columns. Figure out a way to reformat the dataset so that it has a "state" and a "trump_share" column with only one numerical value printed out per row. That is, instead of this format with 51 columns and so 51 numerical values per row, create a dataset that will have 2 columns and only one numerical value per row. This is convenient because `ggplot` prefers working with data formatted this way (think about it, how would you plot 51 columns on a `ggplot`? Much easier to use a `state` column!). 
+
+Finally, use `geom_density` to plot the distributions of two states of your choice. Make this plot beautiful!
+
+**You should do this in steps. First, create the `draws` object. Second, try to successfully change the format of the dataset. Don't do everything all at once in one long section with many pipes!!**
+
+```{r sc1}
+draws <- simulate_election(n_times = 100) %>%
+  mutate(election_number = 1:100)
+
+draws %>% 
+  
+  # This is pivot_longer because we're moving from
+  # "wide" format (where draws is 100 rows x 51 cols.) 
+  # to long format (5100 x 2). The dataset gets "longer"
+  # because we're asking all 51 state columns to pivot
+  # down to a single state column. The final object
+  # is 5100 x 2 because 51 * 100 = 5100 and we asked for
+  # two columns, "state" and "trump_share"..
+  
+  pivot_longer(cols = 1:51,
+               names_to = "state",
+               values_to = "trump_share") %>%
+  # filter(state %in% c("West Virginia", "Massachusetts")) %>%
+  View()
+  
+  ggplot(aes(x = trump_share, fill = state)) + 
+    geom_density() + 
+    facet_wrap(~state) + 
+    theme_bw() + 
+    scale_fill_manual(values = c("dodgerblue", "indianred")) + 
+    labs(title = "Estimated Trump Vote Share in Two States",
+         x = "Modeled Trump Share",
+         y = "Density")
+  
+```
+
+
+## Scene 2: Estimating Results from a Single State
+
+In Scene 1, we called this election simulation function a single time. Now, create a new `tibble` called `elections` with one column, `simulations`, that simulates one election in each of 1000 rows. Finally, use this `elections` object to create a column called `pa_win` that uses a `map` function to figure out whether Trump wins Pennsylvania in each of these simulated elections. Once you've verified that works, take the average of the `pa_win` column to see how likely Trump is to win Pennsylvania across all of these simulations.
+
+```{r sc2}
+elections <- tibble(simulations = map(rep(1, 1000), simulate_election))
+
+
+elections %>%
+  mutate(pa_win = map_lgl(simulations, ~ .$Pennsylvania > 50)) %>%
+  # summarise(pa_avg = mean(pa_win)) %>%
+  mutate(pa_win_new = ifelse(pa_win == TRUE, 100, 0)) %>%
+  View()
+```
+
+## Scene 3: Do it again!
+
+First, repeat Scene 2 to make a column called `oh_win` that uses a `map` function to figure out whether Trump wins Pennsylvania in each of these simulated elections. Then, create a column `called` both that is TRUE if Trump wins both PA and OH and FALSE otherwise.
+
+Once that is all done, summarise your dataset to estimate the probabilities of (1) winning PA, (2) winning OH, and (3) winning both.
+
+```{r sc3}
+elections %>%
+  mutate(pa_win = map_lgl(simulations, ~ .$Pennsylvania > 50),
+         oh_win = map_lgl(simulations, ~ .$Ohio > 50),
+         both = pa_win & oh_win) %>%
+  summarise(pa_avg = mean(pa_win),
+            oh_avg = mean(oh_win),
+            both_avg = mean(both))
+```
+
+## Scene 4
+
+In Scene 4, we estimated the probabilities of winning two states. However, notice we treated these as two entirely separate events. That is, our analyses assumed that Trump winning PA had nothing to do with him winning OH and treated the two events as statistically **independent**. Recall the discussion in Chapter 5 about independence. Two events are independent if the realization of one event does not effect the realization of another. For example, two fair coin flips in a row are independent - the second coin flip couldn't care any less if the first was heads or tails. However, we probably don't think that state election results are independent. If a candidate does well in one coastal, liberal state, they will probably do well in another. Independent events have a statistical correlation of 0.
+
+The Economist says that results in PA and OH are likely to be highly correlated - around 0.7. Let's investigate this using conditional probabilities. Using your elections object from Scene 2, again create two columns called `oh_win` and `pa_win` that map to TRUE and FALSE if Trump wins each state. Then, calculate the probability of winning PA in two scenarios - when Trump wins OH, and when he doesn't. That is, (1) what percentage of the time does Trump win PA if he loses OH, and (2) what percentage of the time does Trump win PA if he wins OH?
+
+```{r sc4}
+## conditional prob. Avg. PA if Wisconsin win vs. Avg. PA is Wisconsin loses
+
+elections %>%
+  mutate(oh_win = map_lgl(simulations, ~ .$Ohio > 50),
+         pa_win = map_lgl(simulations, ~ .$Pennsylvania > 50)) %>%
+  group_by(oh_win) %>%
+  summarise(pa = mean(pa_win), .groups = "drop")
+```
+
+## Scene 5
+
+Our simulation only includes the predicted popular vote results. Let's simulate 1000 elections, reformat the dataset, and join information about the number of electoral votes to generate predictions about the Electoral College outcome.
+
+1. First, create a new dataset called `elections_100` that uses `map` to call `simulate_election` with n=1 100 times in a column called `simulations`. Print out `elections_100`. You'll see a list-column where each row is a 1 x 51 dataset.
+
+2. Just like any other dataset, we can use functions like pivot and join on these list-column entries. They're just `tibbles`! The only thing that has changed is that now a separate tibble contains other tibbles inside of a list-column. Second, use `map` to pivot each of those simulations into a longer format. Save these pivoted datasets into a new list-column called `df_pivoted`. Don't forget you will need the `~` and `.` syntax.
+
+3. `cor.states` has a column called `evs` which gives the electoral votes for each state. We'd like to use this! Third, use `map` to join each dataset in `df_pivoted` with the `cor.states` dataset by the `state` column. Store this in a new column called `df_joined`. 
+
+4. Finally, calculate a new column called `ev_result` which uses `map_dbl` to calculate the sum of the electoral votes for states that Trump won in `df_joined`. You will need to use indexing to do that.
+
+```{r sc5}
+
+elections_100 <- tibble(simulations = map(rep(1, 100), 
+                                          simulate_election))
+
+elections_100 %>%
+  mutate(df_pivoted = map(simulations, 
+                          ~ pivot_longer(., cols = everything(),
+                                         names_to = "state",
+                                         values_to = "trump_share"))) %>%
+  mutate(df_joined = map(df_pivoted, ~ left_join(., states, by = "state"))) %>%
+  mutate(ev_result = map_dbl(df_joined,
+                             ~ sum(filter(., trump_share > 50)$electoral_votes)))
+
+```
+
