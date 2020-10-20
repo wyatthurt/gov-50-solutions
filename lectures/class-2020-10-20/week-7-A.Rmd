@@ -1,0 +1,68 @@
+---
+title: "Week 7, Day 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# We need the PPBDS.data package because it includes the qscores data which we
+# will use for this exercise. rsample is a package from the tidymodels
+# collection of packages which makes random sample creation easier. See The
+# Primer for examples on its use.
+
+knitr::opts_chunk$set(echo = FALSE)
+library(PPBDS.data)
+library(rsample)
+library(tidyverse)
+```
+
+We learned how to estimate a posterior probability distribution for a single parameter in Chapter 6. But, in doing so, we had to do a lot of work, calculating the joint distribution 
+$p(models, data)$ by hand, and then deriving the conditional probability. What a bother! Fortunately, the bootstrap provides an easier and more generalizable approach.
+
+Define the parameter H as the average number of hours of work reported by students for college courses. 
+
+
+## Scene 1
+
+**Prompt:** Create a tibble called `q_resamples` with three columns: `splits`, `id` and `boot`.  The first two columns are created automatically when you use `rsample::bootstraps()`. The last variable is a list column which includes a tibble with resampled data from `qscores`. There only column you need to keep from `qscores` is `hours`. Refer to Chapter 7 in the *The Primer* for hints.
+
+
+
+```{r sc1}
+set.seed(9)
+q_resamples <- qscores %>%
+  select(hours) %>% 
+  bootstraps(times = 1000) %>%
+  mutate(boot = map(splits, ~ analysis(.)))
+```
+
+
+## Scene 2
+
+**Prompt:** Add two more columns to `q_resamples`: `hours_sampled` (the vector of hours pulled from each row of `boot`) and `mean_hours` (the mean of each `hours_sampled`). 
+
+
+```{r sc2}
+ql_resamples <- qscores %>%
+  select(hours) %>% 
+  bootstraps(times = 1000) %>%
+  mutate(boot = map(splits, ~ analysis(.))) %>%
+  mutate(hours_sampled = map(boot, ~ pull(., hours))) %>% 
+  mutate(mean_hours = map_dbl(hours_sampled, ~ mean(.)))
+
+```
+
+## Scene 3
+
+**Prompt:** Create a graphic of the posterior probability distribution for H. Interpret it.
+
+```{r}
+ql_resamples %>% 
+  ggplot(aes(x = mean_hours, 
+             y = after_stat(count/sum(count)))) +
+    geom_histogram(binwidth = 0.02) +
+    labs(x = "Hours", 
+         y = "Probability",
+         title = "Posterior Distribution for the Average Hours")
+```
+
+
