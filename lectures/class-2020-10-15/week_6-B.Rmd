@@ -1,0 +1,113 @@
+---
+title: "Week 6, Day 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+
+# Build an urn with 500 red beads, 490 blue beads, and 10 yellow beads. The urn
+# should have two variables: ID and color. Mix up the beads in the urn randomly.
+# That is, we don't want all the red beads to have ID 1 through 500 and so on.
+# Sort the urn by ID.
+
+beads <- c(rep("red", 500), rep("blue", 490), rep("yellow", 10))
+urn <- tibble(ID = 1:1000,
+              color = sample(beads))
+
+# Using the book, where a very similar example is given, is highly recommended.
+# But, this example is trickier than the book because you have to mix up the
+# beads before you assign the `ID` values. If you don't tell sample() how many
+# you want, it just gives you back everything, reordered. Try `sample(letters)`
+# to see. (Note that `letters` is a built in object in R.)
+              
+```
+
+We are learning about sampling this week. We are taking the theory of Chapter 5 and applying it in a not-too-toyish example. There is a single, true, unknown parameter. What is your posterior distribution for that parameter? Once you have that posterior, how can you use it to make forecasts about the future? 
+
+Recall how we (mostly) finished on Tuesday:
+```{r prep}
+tibble(urn_red = seq(100, 700, by = 100)) %>% 
+  mutate(paddle_red = map(urn_red, ~ rbinom(n = 100, size = 25, prob = ./1000))) %>% 
+  unnest(paddle_red) %>%
+
+ggplot(aes(x = paddle_red, y = urn_red)) + geom_point(alpha = 0.05)
+```
+`urn_red` is the assumed number of red beads in the urn, out of 1,000. By assumption, we do not know the true number. Here, we are creating the joint distribution of models-that-might-be-true and results-we-might-see. That is, p(models, data). The above code gets us started in that process, but, obviously, we need to consider many more possible truths. There might be 0 or 1 or 2 or . . . red beads in the urn, after all. `n = 100` means that we are running 100 experiments at a given level of assumed number of red beads in the urn.
+
+## Scene 1
+**Prompt:** As in the book, we will be calculating our posterior distribution of the number of red beads in the urn. Assume that we know that there are 1,000 beads in the urn, all either red, blue or yellow. Create an unnormalized joint distribution of the set of models we are considering and the possible results of our experiment. In this example, we are using a paddle of size 25. (You may want to review the meaning of an unnormalized joint distribution from Chapter 5.) Plot that distribution. It should look very similar to the first plot in Section 6.6.1.
+Interpret the meaning of the graphic.
+Hint: 
+```{r sc1}
+# It can be useful to set up the key variables at the top of a block of code, if
+# only to make it easier to keep track of things. This is especially important,
+# which is case here for urn_size, if the variable is used in multiple places in
+# the code.
+
+urn_size <- nrow(urn)
+paddle_size <- 25
+
+# Make a tibble with a 100,000 rows or so.
+
+x <- tibble(urn_red = seq(0, urn_size, 1)) %>%
+  mutate(paddle_red = map(urn_red, 
+                          ~ rbinom(n = 100, 
+                                   size = paddle_size, 
+                                   prob = ./urn_size))) %>% 
+  unnest(paddle_red)
+
+x %>%
+  ggplot(aes(y = urn_red, x = paddle_red)) +
+    geom_point(alpha = 0.01) +
+    labs(title = "Joint Distribution of Red Beads in Paddle and in Urn",
+         x = "Number of Red Beads in Paddle",
+         y = "Number of Red Beads in Urn")
+```
+**Comment:** There is very little code here, but it can be tricky to create. Key insight: Assume that there are 500 red beads out of 1,000 in the urn. How many might get pulled out with a 25 paddle?
+It does not matter how many other colors there are in the urn. All that matters is how many red there are in the sample. 
+Key lesson is interpreting that joint distribution. What does it mean? What is p(models, data)? I find it useful to look at a single row. All the points in a row, say 250, are possible experimental results if, in fact there are 250 red beads in the urn.
+
+## Scene 2
+**Prompt:** Using the joint distribution we calculated in Scene 5 as input, calculate your posterior probability density for the number of red beads in the urn, given that that 10 red were sampled in our paddle of 25.
+```{r sc2}
+post <- x %>% 
+  filter(paddle_red == 10) %>% 
+  group_by(urn_red) %>% 
+  summarize(total = n(), .groups = "drop") %>%
+  mutate(probs = total/sum(total)) %>% 
+  select(-total)
+
+post %>% 
+  ggplot(aes(x = urn_red, y = probs)) +
+    geom_col() +
+    labs(title = "Posterior Probability Distribution of Red Beads in Urn",
+         x = "Number of Red Beads",
+         y = "Probability")
+```
+**Comment:** If we interpreted the previous graphic by thinking about rows, this question is asking us to pick out a column, specifically the column of data at 10 red beads. Once we filter to just include that column, we just need to normalized and, viola!, we have a posterior distribution. It is very handy to have created the `post` object since we will use that for Scene 5.
+This is our first act of inference! We start with something that is real but unknown to us: the number of red beads in the urn. We gather some data, in this case a sample of 50, in which 20 of the beads are red. We use this data, and a statistical model, to create a posterior probability distribution for the unknown value.
+
+## Scene 3
+**Prompt:** With our posterior probability distribution, we can now forecast outcomes which we have not yet seen. For example, what is the probability of getting more than 3 reds if we sample 20 from the urn, given our posterior? (That is, we are pretending that we don't know the number of red beads in the urn.)
+```{r sc3}
+y <- post %>% 
+  mutate(new_reds = map(urn_red, 
+                        ~ rbinom(n = 100, 
+                                 size = 20,
+                                 prob = ./1000))) %>% 
+  unnest(new_reds) %>% 
+  mutate(res = ifelse(new_reds > 3, TRUE, FALSE)) %>% 
+  summarise(final = weighted.mean(res, probs))
+  
+```
+**Comment:** The answer is about 96%, which might seem low. After all, if our best guess is 40% then the expected number of red beads is about 8. 
+There are a couple of tricks in the code:
+* The `prob` argument to `rbinom()` varies each time we call it because each row, by assumption, is based on a possibility different assumption about the number of red beads in the urn.  
+* `n` could be 1 or 100 or 10,000. This is just a simple way of saying: Do this experiment more than one time for each row.
+* The annoyance of n = 100 is that it makes `new_reds` a list column with a vector, and vectors are hard to work with. Look at the tibble at this stage. But then `unnest()`, which is a magical command, just expands that list-column so that each element gets its own row. Very convenient!
+* We can't just look at the proportion of results with more than three red beads. We have to weight these results by the posterior probability. The intuition behind that fact is subtle but important.
+At the same time, I would not worry too much about these tricks. We don't use them that often. The intuition behind using the posterior is the most important thing. We have to take account of the uncertainty associated with our parameter estimates.
+Conceptually, consider all possible models --- in this case all possible values for the number of red beads in the urn, from 0 to 1,000. Consider, conditional on each of them being true, the probability of getting more than 3 red beads if you draw 20. Weight those probabilities by your posterior, and then take the sum. (That is what a weighted mean is.) And that is your answer!
