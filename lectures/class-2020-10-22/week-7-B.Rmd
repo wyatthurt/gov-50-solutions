@@ -1,0 +1,81 @@
+---
+title: "Week 7, Day 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# We need the PPBDS.data package because it includes the qscores data which we
+# will use for this exercise. rstanarm is the package we use for constructing
+# Bayesian models. See The Primer for examples on its use. It is probably the
+# most popular model in R for doing so, although brms is also widely used.
+
+knitr::opts_chunk$set(echo = FALSE)
+library(PPBDS.data)
+library(rstanarm)
+library(tidyverse)
+```
+
+We have now learned two techniques for constructing a posterior probability distribution: building the $p(models, data)$ joint distribution by hand and using the bootstrap. Both are a bother, although the bootstrap is much easier and more flexible. Today, we will practice using `rstanarm::stan_glm()` for the same purpose.
+
+The parameter H is still the average number of hours of work reported by students per course. 
+
+
+## Scene 1
+
+**Prompt:** Create an objected called `fit_obj` which uses `stan_glm()` to estimate a model which explains hours for courses. It will two parameters, H and sigma. H is the average hours for courses in the population. sigma is the variability in reported hours. Print the model out and write some bullet points which explain the meaning of each parameter you have just estimated.
+
+Review the Cardinal Virtues which serve as our guide for data science. Under Justice, is this model predictive or causal? What would the Preceptor Table look like? Write down the mathematical model we are using.
+
+
+```{r sc1}
+fit_obj <- stan_glm(hours ~ 1, data = qscores, refresh = 0)
+
+
+fit_obj
+```
+
+Your research question defines what H is. H is the population parameter that you are interested in (e.g. the regression coefficient for the relationship between between arrests by school resource officers and test scores, etc.). If your sample (e.g. a dataset on school arrests and test scores in Illinois) is an accurate representation of your population, then the posterior returned by `stan_glm()` is probably an accurate posterior distribution of H.
+
+Wisdom is about deciding whether or not your data is "close enough" to H for this whole exercise to be worth doing. Wisdom is the Go/No-Go decision. If you question is about average male height in the UK and your data is just US male height, then Wisdom would say Go. If you question is about 10 year old girl height in Toyko, Wisdom would say No-Go. You data and your H are not close enough to make building a model worthwhile.
+
+The posterior that stan_glm calculates would look identical whether we defined H to be all courses at Harvard or all courses at US colleges, but how accurate this posterior is to the truth depends on how well your sample maps onto H. This is where Temperance comes in. How much faith you place in your model depends on your judgment about how close your data is to your H. Using Harvard data, I would have more faith if H is about Harvard courses this semester than I would if H is about US college courses this semester. But I would still build a model because data about Harvard courses are good enough to draw some tentative conclusions about US college courses in general.
+
+## Scene 2
+
+**Prompt:** Create a plot of the posterior probability distribution for H. Interpret the plot. 
+
+
+```{r sc2}
+fit_obj %>% 
+  as_tibble() %>% 
+  rename(mu = `(Intercept)`) %>% 
+  ggplot(aes(x = mu)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))), 
+                   binwidth = 0.01, 
+                   color = "white") +
+    labs(title = "Posterior Probability Distribution",
+         subtitle = "Average hours of work for Harvard courses",
+         x = "Hours",
+         y = "Probability") +
+    theme_classic()
+
+```
+
+
+## Scene 3
+
+**Prompt:** Use your model to answer the following question: What is your posterior probability distribution for the number of hours difference between the workload of two randomly selected courses? Use that distribution to provide a 90% confidence interval within which the difference should fall.
+
+```{r}
+pp <- posterior_predict(fit_obj)
+
+
+tibble(course_1 = pp[, 1],
+       course_2 = pp[, 2]) %>% 
+  mutate(diff = course_1 - course_2) %>% 
+  ggplot(aes(x = diff, y = after_stat(count / sum(count)))) +
+    geom_histogram(bins = 100) +
+    labs(title = "Posterior Probability of the Hours Difference",
+         x = "Hours",
+         y = "Probability")
+```

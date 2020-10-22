@@ -1,0 +1,91 @@
+---
+title: "Bootstrap Sampling"
+author: "Tyler Simko"
+date: "10/19/2020"
+output: html_document
+---
+
+```{r setup, include=TRUE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(PPBDS.data)
+library(rsample)
+library(tidyverse)
+```
+
+In many social science settings, researchers are often faced with a problem:
+
+**I want to draw conclusions about a population (e.g. all schools in India), but I only have data on a particular sample (e.g. a survey of 612 Indian schools). How do I handle the fact that my sample is imperfect?**
+
+- From this sample, you can still ***estimate*** your quantity of interest within that sample (e.g. for example, *the proportion of schools with vocational training in India*). That estimate may be wrong for the overall population since it is only based on data from certain units (for example, if your sample is biased).
+- If you had all of the data you wanted, many questions could simply be answered with just a mathematical function like a mean or median (e.g. the proportion of schools with vocational training in India would be a ratio).
+- Even if the answer from your sample (in this hypothetical example, 612 schools) is close to the truth, it is still only one draw from the population (all Indian schools). So your estimate depends on the sample you drew. If you had a different sample of 612 schools, your estimate would have been different.
+- This is an important point: ***the answer you get*** (i.e. *a number for the  proportion of schools with vocational training in India*) ***can depend on the sample that you have.***
+- But you still want to be able to say something about the population (e.g. all schools). To do this, you'll need a way to think about **the uncertainty of your estimate**. One way to do this is to visualize the estimate that you actually observed **in the context of the other estimates you could have gotten from other samples.** We'd like to have a way to see the distribution of these potential estimates.
+- These problems (of representativeness and bias) is at the core of social science research. We will return to it many times throughout the course of the semester.
+
+**Bootstrap sampling** is one way to estimate this *sampling distribution*. The sampling distribution is a distribution showing the estimates you could have gotten for your statistic of interest if you had drawn a different sample. If you assume that the single sample you have is unbiased and representative of the population and call the number of observations in your sample N, you can:
+
+1. Take many random samples with replacement of N observations from your sample.
+2. Calculate the statistic that you want in each sample (e.g. the mean, median, maximum, number of red coins, etc.)
+
+If you save all of the values that you calculated in step 2, you now have a bootstrap distribution. This is an estimate of the sampling distribution (the distribution of values you might have gotten if you took a different sample).
+
+---
+
+As an example, let's use the `nhanes` dataset (a random sample of 10,000 Americans) to estimate the average number of sleep that Americans get per night.
+
+#### 1. Take many random samples with replacement of N observations from your sample.
+
+```{r}
+boot_samples <- nhanes %>%
+  
+  # bootstraps takes `times` random samples of size nrow(nhanes). 
+  # bootstraps() is a function from library(rsample)
+  
+  bootstraps(times = 1000) %>%
+  
+  # analysis() returns each bootstrap sample as a tibble
+  
+  mutate(boot = map(splits, ~ analysis(.)))
+
+head(boot_samples)
+```
+
+#### 2. Calculate the statistic that you want in each sample
+
+In this case, we want to estimate the average number of hours that people in the US sleep per night.
+
+```{r}
+boot_distribution <- boot_samples %>%
+  
+  # pull the sleep column out of each sample
+  # we need two arguments in pull because we aren't using the %>%, which
+  # typically replaces the first argument
+  
+  mutate(sleep_sampled = map(boot, ~ pull(., sleep)),
+         
+         # like normal, let's map over this list-column and return a single numeric value
+         
+         sleep_avg     = map_dbl(sleep_sampled, ~ mean(., na.rm = TRUE))) %>%
+  select(sleep_sampled, sleep_avg)
+
+head(boot_distribution)
+```
+
+---
+
+#### Visualize your bootstrap distribution!
+
+Now, we can use the bootstrap distribution to visualize the estimate that we actually observed in our sample (the red line) alongside estimates from many other samples that we potentially could have gotten.
+
+```{r}
+boot_distribution %>% 
+  ggplot(aes(x = sleep_avg, y = after_stat(count / sum(count)))) +
+    geom_histogram(binwidth = 0.005) +
+    labs(x = "Hours", 
+         y = "Probability",
+         title = "Bootstrap Sampling (Posterior) Distribution 
+         for the Average Hours Americans Sleep Every Night") + 
+  geom_vline(xintercept = mean(nhanes$sleep, na.rm = T), col = "red")
+```
+
