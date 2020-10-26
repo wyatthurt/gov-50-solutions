@@ -1,0 +1,207 @@
+---
+title: 'Problem Set #5'
+date: "7/31/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE, echo=F}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+
+```
+
+**Create an .Rmd file called ps_5.Rmd. Please do not load any packages besides `tidyverse` and (if you want to) `ggthemes`. Please don't forget the instructions and Style Guide:** 
+
+https://rpubs.com/tylersimko/gov50-assignments
+
+## Question 1 
+
+Create an urn in a tibble called `urn` containing 1000 red, blue, and green coins each. `urn` must have two columns: `id` (containing the numbers from 1 to 3000) and `color` (the color of each coin). 
+
+Then, create a new tibble from scratch called `coin_samples` with two columns: `count` which contains only the numbers from 1 to 100, and a list-column called `sampled_coins` which maps `count` and uses the `sample_n` function (not `rep_sample_n`) to sample 10 coins from `urn` for each row.
+
+```{r Q1}
+
+# Simulate an urn with 1000 coins of each color.
+
+urn <- tibble(id = 1:3000, 
+              color = c(rep("red", 1000),
+                        rep("green", 1000),
+                        rep("blue", 1000)))
+
+n <- 10
+reps <- 100
+
+# Draw 100 samples of size 10. 
+# Note that replacement *between samples* is implicit.
+  
+coin_samples <- tibble(count = 1:reps,
+                       sampled_coins = map(count, ~ sample_n(urn, size = n)))
+
+```
+
+**Final Answer**: `coin_samples` will be a tibble with `r nrow(coin_samples)` rows and `r ncol(coin_samples)` columns: `r colnames(coin_samples)`. 
+
+
+## Question 2
+
+Even if we didn't know the true answer of all the coins, we could use our random samples to estimate the proportions of each coin color in the urn. `summarize` your `coin_samples` into a tibble with three columns: `prop_red`, `prop_green`, and `prop_blue` with single numeric values in them based on the average proportion of each coin in each sample.
+
+You can do this anyway you like as long as the final answer called `q2` has the correct dimensions, but we recommend:
+
+1. Creating new columns in `coin_samples` called `num_red`, `num_blue`, and `num_green` that use `map` family functions to count the number of red, blue, and green coins within each sample. 
+2. Then, you can add three new columns `prop_red`, `prop_blue`, and `prop_green` to calculate the proportion of coins in each sample of that color.
+3. Then, you can `summarize` the modified `coin_samples` dataset and overwrite the `prop_red`, `prop_blue`, and `prop_green` columns to take the average of those columns you created in the first step.
+4. Save the output into an object called `q2`.
+
+```{r Q2}
+q2 <- coin_samples %>% 
+  mutate(num_red = map_int(sampled_coins, ~ sum(.$color == "red"))) %>% 
+  mutate(num_blue = map_int(sampled_coins, ~ sum(.$color == "blue"))) %>%
+  mutate(num_green = map_int(sampled_coins, ~ sum(.$color == "green"))) %>%
+  mutate(prop_red = num_red / 10,
+            prop_blue = num_red / 10,
+            prop_green = num_green / 10) %>%
+  summarise(prop_red = mean(prop_red),
+            prop_green = mean(prop_green),
+            prop_blue = mean(prop_blue))
+
+```
+
+**Final Answer**: `q2` will be a tibble of `r nrow(q2)` rows and `r ncol(q2)` columns made from `coin_samples`. Your final answer must be a tibble with three columns: `prop_red`, `prop_blue`, and `prop_green` with single numeric values in them.
+
+## Question 3
+
+You will write two complementary functions for this problem.
+
+1. Write a function called `scoop` which creates a similar sample as in Question 1 and takes three arguments: `x` for the data, `sample_size` for the size, and `reps` for the number of samples to draw. `scoop` must create and return a new tibble with three columns: `count`, which simply counts from 1 to `reps`, `sampled_coins`, the results from calling `map` on `sample_n` to sample `sample_size` rows from your `x` dataset, and `sample_size`, which is simply equal to the `sample_size` argument you passed. 
+
+You can test this function by running `scoop(x = urn, sample_size = 10, reps = 100)` in your console after creating it. This should make a tibble that looks a lot like `coin_samples` from Question 1. To write `scoop`, try copy-pasting your code from Question 1 and modifying it to create this function.
+
+```{r Q3}
+
+# This function is created for two reasons:
+  # 1. It is good to practice writing your own functions
+  # 2. To practice using pre-wiitten functions with map.
+
+scoop <- function(x, sample_size, reps) {
+  
+  # This is essentially identical to coin_samples from 
+  # Question 1 with edited object names.
+  
+  tibble(count = 1:reps, 
+         sampled_coins = map(count, ~ sample_n(x, size = sample_size)),
+         sample_size = sample_size)
+}
+
+```
+
+2. Write a function called `props()` that takes two arguments, `x` and `sample_size`, and calculates the proportion of each color within each sample. This function assumes that `x` is in the format of the output from `scoop`, so you can assume that the list-column wthin `x` is called `sampled_coins`.
+
+This function essentially does steps 1 and 2 from Q2, so you can paste and edit your code from Q2 to create this.
+
+```{r Q3.2}
+
+props <- function(x, sample_size) {
+  
+  # Group by sample repetition & tally up the widgets by color.
+  
+  x %>% 
+  mutate(num_red = map_int(sampled_coins, ~ sum(.$color == "red"))) %>% 
+  mutate(num_blue = map_int(sampled_coins, ~ sum(.$color == "blue"))) %>%
+  mutate(num_green = map_int(sampled_coins, ~ sum(.$color == "green"))) %>%
+  mutate(prop_red = num_red / sample_size,
+            prop_blue = num_blue / sample_size,
+            prop_green = num_green / sample_size)
+}
+
+```
+
+**Final Answer**: you must define two functions, `scoop` and `props`. Please do not evaluate these functions and print the results to your PDF, although we do encourage you to test them in the console. `scoop` must take three arguments - `x`, `sample_size`, and `reps` that behave as defined above - and return a tibble with three columns - `count`, `sampled_coins`, and `sample_size` exactly as defined above. `props` must take two arguments, `x` and `sample_size`, and return a modified version of `x` with six additional columns (for 9 in total): `num_red`, `num_blue`, `num_green`, `prop_red`, `prop_blue`, and `prop_green`. 
+
+## Question 4
+
+Create a new tibble called `sample_sizes` that has a single column: a vector called `size` which uses the `seq` function to create a vector of all numbers between 10 and 1000 separated by 10 (your resulting vector will have length 100).
+
+Then, using the functions created above, construct a tibble called `mapped_sample` with two columns named `scoop_results` and `props_results` respectively. You will create this by piping `sample_sizes` into a `mutate` call that creates two new columns. The first new column, `scoop_results`, comes from using a `map` function to call `scoop` on the `urn` object with each of your sample sizes 50 times. The second column, `props_results`, comes from calling your new `props` function on each `scoop_results` you made in the previous column. You will need to use the `sample_size` column that `scoop_results` contains.
+
+We recommend creating `sample_sizes` on a smaller vector first (for example, a vector of 10, 20, and 30 alone), create the `mapped_sample` object, and change the `sample_sizes` vector to the full length. 
+
+```{r Q4}
+
+sample_sizes <- tibble(size = seq(10, 1000, by = 10))
+
+mapped_sample <- sample_sizes %>% 
+  
+  # map(...~ scoop()) iterates over the vector of sample sizes & 
+  # takes 50 samples each of that size. The '.' is shorthand for 
+  # "each element of the vector we're iterating over" (i.e. `size`).
+  # map(...~ props()) does the same with calculating proportions.
+  # However, we need to specify the .$sample_size argument here.
+  
+  mutate(scoop_results = map(size, 
+                             ~ scoop(x = urn, sample_size = ., reps = 50))) %>% 
+  mutate(props_results = map(scoop_results,
+                             ~ props(x = ., sample_size = .$sample_size)))
+
+```
+
+**Final Answer**: `mapped_sample` must be a new tibble, created from `sample_sizes`, with `r nrow(mapped_sample)` rows and `r ncol(mapped_sample)`: `r colnames(mapped_sample)`. Columns `scoop_results` and `props_results` must be list-columns.
+
+## Question 5
+
+Use `mapped_sample` to calculate the standard deviation of each color in all of the draws for each sample size. You will need to start with `mapped_sample` and pipe it into the creation of three new columns which estimate the standard deviation (try the `sd()` function) of each "prop" column created in the previous question. Call these new columns `props_red_sd`, `props_green_sd`, and `props_blue_sd`. Save this into an object called `sd_results`. 
+
+```{r Q5}
+
+# map_dbl() takes the output of prop() for each sample size & allows
+# pull() to extract the named column, which is then piped into the calculation of SD.
+# SD is the spread in the proportions of a certain color across samples of each size.
+# Note that map_dbl() always returns a double (a real number).
+
+# The .$ syntax would work too:
+# mapped_sample %>% mutate(props_red_sd = map_dbl(props_results, ~ sd(.$prop_red)))
+
+sd_results <- mapped_sample %>% 
+  mutate(props_red_sd = map_dbl(props_results, ~ pull(., prop_red) %>% sd())) %>% 
+  mutate(props_green_sd = map_dbl(props_results, ~ pull(., prop_green) %>% sd())) %>% 
+  mutate(props_blue_sd = map_dbl(props_results, ~ pull(., prop_blue) %>% sd()))
+
+```
+
+
+**Final Answer**: `sd_results` will be a tibble of `r nrow(sd_results)` rows and `r ncol(sd_results)` columns: `r colnames(sd_results)`, where the new columns `props_red_sd`, `props_green_sd`, and `props_blue_sd` each contain numeric values.
+
+## Question 6
+
+Design a plot that visualizes the relationship between sample size and standard deviation for each of the three colors by using `sd_results`. Your plot must:
+
+1. Clearly distinguish between the standard deviation estimates for the red, blue, and green colors. Below, we do that by plotting each line separately in a different color. Your plot does not have to use lines, but it can. 
+2. Use better legend names than "props_blue_sd", "props_red_sd", and "props_green_sd". Hint: use a scale function!
+3. Use all of the `size` and `std_dev` values from `sd_results`. That is, for example, do not filter out to indvidual size values.
+4. Use a theme other than the default `ggplot` theme.
+
+Here is an example, created by pivoting `sd_results` into a 300 x 3 datset. Your plot **does not** need to look anything like this, though it does meet all of the criteria defined above.
+
+```{r Q6}
+
+sd_results %>%
+    select(-scoop_results, -props_results) %>%
+    pivot_longer(cols = props_red_sd:props_blue_sd, 
+                 names_to = "proportion",
+                 values_to = "std_dev") %>%
+  ggplot(aes(x = size, y = std_dev, color = proportion)) + 
+  geom_line() + 
+  theme_bw() + 
+  scale_color_manual(values = c("#0A2472", "#D8315B", "#26C485"),
+                     breaks = c("props_blue_sd", "props_red_sd", "props_green_sd"),
+                     labels = c("Blue", "Red", "Green"),
+                     name = "Coin Color") + 
+  labs(title = "Relationship Between Sample Size and Standard Deviation",
+       x = "Sample Size",
+       y = "Estimated Standard Deviation")
+
+```
