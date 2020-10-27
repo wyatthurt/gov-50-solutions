@@ -1,0 +1,99 @@
+---
+title: "Week 8, Day 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(PPBDS.data)
+library(rstanarm)
+library(tidyverse)
+# Recall that Enos (2014) actually looks at a measure of change in attitude
+# toward immigration, rather than simply at the ending attitude. Let's create
+# such a variable and try to model it.
+week_8 <- trains %>% 
+  mutate(att_chg = att_end - att_start) %>% 
+  select(att_chg, gender, party, liberal, treatment)
+  
+```
+
+Weeks 7, 8 and 9 are the core of the class. We have a question. We have some data. How should we use the data to answer the question? Using Wisdom, we first decide if the question and the data are "close enough" that we can consider them to both be part of the same population. With Justice, we create a mathematical model which describes the connection between the outcome we want to explain/understand and the covariates which might be connected to it. Courage takes us from mathematics to code, creating a model, including posterior distributions for all its parameters. The last step is to use that model to answer the question with which we started, with Temperance.
+
+
+
+
+## Scene 1
+
+**Prompt:** Let's estimate and interpret three models. In each case, `att_chg` is the outcome variable, the thing we are trying to understand and explain. Use `stan_glm()` to create and print a model with `att_chg` (the dependent or outcome variable) as a function of the indicated independent (or predictor) variable. Do not use an intercept. In each case, write three sentences of interpretation, with a special focus on whether the model is predictive or causal. For causal models, indicate how you might estimate the causal effect.
+
+* `att_chg` as a function of `gender`
+
+
+* `att_chg` as a function of `liberal`
+
+
+* `att_chg` as a function of `treatment`
+
+
+```{r scene-1-a}
+fit_1 <- stan_glm(att_chg ~ gender - 1, data = week_8, refresh = 0)
+print(fit_1, detail = FALSE)
+```
+
+```{r scene-1-b}
+fit_2 <- stan_glm(att_chg ~ liberal - 1, data = week_8, refresh = 0)
+print(fit_2, detail = FALSE)
+```
+
+```{r scene-1-c}
+fit_3 <- stan_glm(att_chg ~ treatment - 1, data = week_8, refresh = 0)
+print(fit_3, detail = FALSE)
+```
+
+## Scene 2
+
+**Prompt:** For the model with `att_chg` as a function of `treatment`, create posterior probability densities for the two important parameters. Write a paragraph interpreting the meaning of those posteriors. 
+
+```{r scene-2}
+fit_3 %>% 
+  as_tibble() %>% 
+  select(-sigma) %>% 
+  rename(Treated = treatmentTreated,
+         Control = treatmentControl) %>% 
+  pivot_longer(cols = Treated:Control,
+               names_to = "parameter",
+               values_to = "attitude") %>% 
+  ggplot(aes(x = attitude, fill = parameter)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                   alpha = 0.5, 
+                   bins = 100, 
+                   position = "identity") +
+    labs(title = "Posterior Probability Distributions",
+         subtitle = "Average change in attitude toward immigration on -12 to +12 Scale",
+         x = "Average Attitude Change",
+         y = "Probability") +
+    scale_y_continuous(labels = scales::percent_format()) + 
+    guides(fill = guide_legend(reverse = TRUE, 
+                               title = "Parameter")) +
+    theme_classic()
+```
+
+## Scene 3
+
+**Prompt:** Create a plot of the the posterior for the average treatment effect. Write a paragraph interpreting the plot.
+
+
+```{r scene-3}
+fit_3 %>% 
+  as_tibble() %>% 
+  mutate(ate = treatmentTreated - treatmentControl) %>% 
+  ggplot(aes(x = ate)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                   bins = 100) +
+    labs(title = "Posterior Probability Distribution",
+         subtitle = "Average treatment effect on immigration attitude",
+         x = "Average Attitude Change",
+         y = "Probability") +
+    scale_y_continuous(labels=scales::percent_format()) + 
+    theme_classic()
+```

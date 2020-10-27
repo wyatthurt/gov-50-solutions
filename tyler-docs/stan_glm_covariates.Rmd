@@ -1,0 +1,180 @@
+---
+title: "Bayesian Regression with Covariate Predictors"
+author: "Tyler Simko"
+date: "10/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(rstanarm)
+library(tidyverse)
+library(PPBDS.data)
+set.seed(50)
+```
+
+Reminders:
+
+- Exam #2 released this Thursday (due Sunday). Focuses on Chapters 4-7.
+- I'll post another practice exam.
+- Recitations are moving to 1-on-1 meetings next week for more focused project help. Talk to your TF!
+
+---
+
+- Last week, we used `stan_glm` to create a model with only an intercept and no predictors to estimate a posterior for the population mean.
+
+- We interpreted the results from this model as **an estimate for the posterior distribution of the population average of that outcome variable**.
+
+- This is powerful! But often, our social science questions are more complicated than just estimating a population mean.
+
+-  Many (most?) research questions take this form - what is the relationship between x and y? For example:
+    1. campaign advertisements (x) and election outcomes (y)
+    2. participation in the Head Start program (x) and student life outcomes (y)
+    3. smoking (x) and future health (y)
+
+- To answer these questions, we can build models that describe the relationship **between** variables.
+
+- The best part: we already know how to do this! We can add other variables to the formula we put into `stan_glm`.
+
+- These models can be **predictive** and / or **causal**. Remember that our research question and research design define this. **Predictive models** simply use the variables on the right hand side to predict the outcome on the left (e.g. which country is more likely to win the World Cup), while **causal models** aim to estimate causal effects (e.g. what is the causal effect of smoking on developing lung cancer?).
+
+- But don't forget the advice from Chapter 3: **no causation without manipulation**! It doesn't make sense to estimate or even really discuss the causal effect of something that couldn't in theory, be manipulatd on its own (e.g. someone's race).
+
+---
+
+```{r table2, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+# adapted from this answer:
+  # https://stackoverflow.com/questions/19997242/simple-manual-rmarkdown-tables-that-look-good-in-html-pdf-and-docx
+tabl <- "
+##### Names can be confusing!
+
+| Variable   | Also called                 |
+|------------|:----------------------------|
+| outcome (y)    | dependent variable, result, response variable, regressand |                     
+| predictors (x1, x2, etc.) |  independent variable, covariate, treatment (if your model is causal), control variable, explanatory variable, regressors |
+"
+cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
+```
+
+--- 
+
+## Let's fit a model! y ~ x
+
+For example, let's fit a model to estimate the relationship between candidate incumbency (i.e. whether or not that candidate currently holds the seat) and general election returns. First, let's do that without an intercept:
+
+```{r}
+library(fec16)
+
+# By default, general_percent uses decimals (so 0.68 means 68%) 
+  # Let's multiply by 100 so it's easier to interpret
+
+modified_results <- results_house %>%
+  mutate(general_percent = general_percent * 100)
+
+# Fit a model regressing general election returns on incumbency
+  # -1 means no intercept
+# Otherwise very similar to last week! 
+  # outcome ~ covariate
+
+# regresses general_percent (outcome) on incumbency
+  ## -1 drops the intercept
+fit_incumbent <- stan_glm(general_percent ~ incumbent - 1, 
+         data = modified_results, 
+         family = gaussian(),
+         refresh = 0)
+
+# if you had multiple covariates, you could say y ~ x1 + x2
+  # e.g. income ~ age + gender
+
+fit_incumbent
+
+# We can still see the posteriors - now we have three (two that we care about)!
+
+fit_incumbent %>% 
+  as_tibble()
+```
+
+- We can interpret these coefficients as the estimated population means in each of these groups. Technically, they are median and MAD_SDs for the **posterior distribution of the estimated population mean in each of these groups**.
+
+## Intercept vs. No Intercept
+
+- You can fit these simple models with or without an overall intercept. Both contain the same information, but the results will be presented differently. That won't always be true! It is for now in this simple case with one binary predictor, but not all models with and without an intercept are the same.
+
+- What did removing an intercept do? Without an intercept, the model will return a separate estimated posterior distribution for each group. No intercept:
+
+```{r}
+stan_glm(general_percent ~ incumbent - 1, 
+         data = modified_results, 
+         family = gaussian(),
+         refresh = 0)
+```
+
+- **An "intercept" is the estimated average outcome value when all of your predictors are equal to 0** (or FALSE, in this case). So, if we include an intercept in this model (by not taking the intercept out with -1), the model will return an estimate for the intercept (posterior for observations with incumbent = 0) and a second estimate for the influence of incumbency on general election results. Notice how the coefficients on both `incumbentFALSE` above and `(Intercept)` below are 20.7. 
+
+```{r}
+
+stan_glm(general_percent ~ incumbent, 
+         data = modified_results, 
+         family = gaussian(),
+         refresh = 0)
+```
+
+- Here, the intercept estimate is the non-incumbent group. The incumbent estimate is no longer the median outcome for the incumbent posterior, but is instead **an estimate for the the additional general election percent associated with incumbents**. That is, **increasing the value of incumbency by 1 (in this case, from 0 to 1 or FALSE to TRUE is associated with increasing the estimated average general_percent by 39.7**.
+
+- To recover the median estimate for incumbents seen in the first model (approximately 60.5), you could add the two estimates (approximately 39.6 + 20.8).
+
+- Generally, for now you should keep the intercept in your model unless you have a good reason not to keep it (like there is a theoretically interesting case when all of your predictors are equal to 0, or you know for a fact that the true relationship between your variables would go through 0). This is because dropping the intercept forces your estimated line to go through 0 regardless of what the data says, which changes your estimated slope (i.e. relationship between x and y). 
+
+- This is particularly noticeable for continuous predictors (which we'll talk more about soon!). Our `stan_glm` models are linear, which means they estimate a line (glm standard for Generalized Linear Model), so we can plot them alongside our data. Without an intercept, we force the line to go through 0. This changes our estimate for the slope, as shown below:
+
+```{r}
+
+# many candidates don't face challengers in primary, 
+  # let's drop those for this example
+
+contested_races <- modified_results %>%
+  filter(primary_percent != 100)
+
+fit_intercept <- stan_glm(general_percent ~ primary_percent, 
+         data = contested_races, 
+         family = gaussian(),
+         refresh = 0)
+
+fit_no_intercept <- stan_glm(general_percent ~ primary_percent - 1, 
+         data = contested_races, 
+         family = gaussian(),
+         refresh = 0)
+
+contested_races %>%
+  ggplot(aes(x = primary_percent, y = general_percent)) + 
+  geom_point() + 
+  geom_abline(intercept = fit_intercept$coefficients["(Intercept)"], 
+              slope = fit_intercept$coefficients["primary_percent"],
+              color = "red") + 
+  geom_abline(intercept = 0, # because there is no intercept in this model
+              slope = fit_no_intercept$coefficients["primary_percent"],
+              color = "blue") + 
+  theme_classic()
+```
+
+## Visualize the posteriors
+         
+```{r}
+fit_incumbent %>% 
+  as_tibble() %>%
+  select(-sigma) %>%
+  pivot_longer(cols = c(incumbentFALSE, incumbentTRUE),
+               names_to = "incumbency",
+               values_to = "general_percent") %>%
+  ggplot(aes(x = general_percent, color = incumbency)) + 
+    geom_density() + 
+    theme_minimal() + 
+    scale_color_discrete(name = c("Incumbency"),
+                         breaks = c("incumbentFALSE", "incumbentTRUE"),
+                         labels = c("Challenger", "Incumbent")) + 
+    labs(title = "Incumbents tend to perform better 
+         than challengers in general elections",
+         x = "General Election %, Estimated Posteriors",
+         y = "Posterior Density",
+         caption = "Source: FEC16")
+```
+
