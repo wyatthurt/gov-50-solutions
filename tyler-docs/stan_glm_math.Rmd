@@ -1,0 +1,146 @@
+---
+title: "Models and Math"
+author: "Tyler Simko"
+date: "10/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(PPBDS.data)
+library(rstanarm)
+library(tidyverse)
+set.seed(50)
+
+# Recall that Enos (2014) actually looks at a measure of change in attitude
+# toward immigration, rather than simply at the ending attitude. Let's create
+# such a variable and try to model it.
+
+week_8 <- trains %>% 
+  mutate(att_chg = att_end - att_start) %>% 
+  select(att_chg, gender, party, liberal, treatment, age)
+  
+```
+
+### Reminders:
+
+- Exam #2 released today. Due on Sunday 11:55pm. Don't forget the practice exam!
+- Please don't forget to check your feedback (and not just your grade! on Gradescope.
+
+---
+
+### RMathdown
+
+We can start writing math in our markdown to use for our models.
+
+- RMarkdown uses a typesetting language called "LaTeX" to display math. LaTeX works with dollar signs \$ before and after your math.
+- to put math on its own separate line, put it inside two dollar signs: `$$ 2 + 2 $$`. Writing that outside of a code chunk would produce: $$ 2 + 2$$.
+- to have the math appear in the same line as your text, use one dollar sign:  \$y\_i\$ would display:  $y_i$
+- to make a subscript (the smaller letters / numbers below the main one), use an underscore: e.g. \$ y\_i \$ produces $y_i$.
+- if you want more than one letter in a subscript, use curly brackets: \$x\_{t, i}\$ to produce $x_{t,i}$.
+- there are also lots of built-in values - you can Google to find complete lists. For example, \$\\mu\$ would make $\mu$, \$\\beta\$ makes $\beta$, etc.
+- Here is a list of some of the math options you can now use: https://rpruim.github.io/s341/S19/from-class/MathinRmd.html
+
+One cool RStudio tip: if you use two dollar signs on their own line, RStudio will automatically compile and display the math in a box below - just like a code chunk!
+
+$$ \mu  $$
+
+## Models <---> Math
+
+Let's use this to write equations for our models! For example, here is a model with `age` as the outcome (dependent) variable and `liberal` as the covariate (independent variable).
+
+This model is using whether someone is a liberal or not to predict their age. Substantively, we may not think that is a very good predictor (what types of data might work better?) - but it will work as an example for now.
+
+```{r}
+stan_glm(age ~ liberal, 
+         data = week_8, 
+         refresh = 0)
+```
+
+This model corresponds to the following equation:
+
+$$ age_i = \beta_{int} + \beta_1 x_{liberal,i} + \epsilon_i$$
+
+- The key takeaway from today is that your `stan_glm` models estimate posteriors for each of the `\beta` parameters below (x comes from your data, and $\epsilon$ is the error in your model - the difference between the model's predicted outcome for observation $i$ - often called $\hat{y_i}$ and pronounced y-hat i -and the true outcome for $i$ in your data $y_i$). 
+
+- $age_i$ is the outcome for each observation (your `week_8$age` column - an age for each person in the dataset). $i$ means it will be different for every person, since every person in the dataset has their own age.
+
+- $\beta_{int}$ is the intercept for this model. **An intercept is the estimated mean when all predictors are equal to 0**. So, this is the average age for non-liberals (people for whom liberal = 0 or FALSE), since that is our only predictor. `stan_glm` estimates posterior distributions for every paremeter. The median of the estimated distribution for the intercept is 40.9 and the MAD_SD is 1.5. Sometimes, in other work, you may also see this written as $\beta_0$ or $\alpha_0$. The meaning is all the same - it's an intercept! Notice that it's not being multiplied by anything. 
+
+- $\beta_1$ is the estimated slope on the `liberal` covariate. That is, what is the difference in ages between liberals and non-liberals? `stan_glm` estimated an entire posterior for this value - the median of this distribution is 3.2 and the MAD_SD is 2.3. It does not have an $i$ because it is the same for every person in your dataset.
+
+- $x_{liberal,i}$ is the `liberal` column in our dataset (`week_8$liberal`). This column is TRUE (1) or FALSE (0) for every person. The $i$ means that it will be different for every person. We could have equally called this something like $x_{lib,i}$ or $x_{1i}$. You have a lot of flexibility in defining your mathematical terms as long as you are clear what they mean!
+
+- $\epsilon_i$ models are never perfect, and our model predictions will not always be exactly right. This is the error in the model. For each $i$ (person in our dataset), what is the difference between our predicted age for this person (based on $\beta_{int} + \beta_1 x_{liberal,i}$) and their observed age ($age_i$, which is in our dataset)? This will be different for every $i$ (person).
+
+### Remember, these models predict!
+
+Once it's fit, you can use the the model to predict outcome values for any values of your variables (for example, here liberal 1 or 0, but we could set more values if we had more predictors). For example, our estimated equation above was:
+
+$$ age_i = \beta_{int} + \beta_1 x_{liberal,i} + \epsilon_i $$
+
+Once we fit our model, we could plug in these values to get predicted values. Remember, there are **entire posteriors estimated for $\beta_{int}$ and $\beta_1$**, but here we are just plugging in their median estimates to get a sense of what's happening):
+
+$$ age_i = 40.9 + 3.2 x_{liberal,i} + \epsilon_i $$
+So, for a liberal, this model's predicted age would be a distribution centered around 40.9 + 3.2(1) = 44.1. For a non-liberal, it would be 40.9 + 3.2(0) = 40.9.
+
+So, let's look at the first few rows of our dataset and use this model to predict each of their ages:
+
+```{r}
+week_8 %>% 
+  select(liberal, age)
+```
+
+The first two people are non-liberals. This model would use the non-liberal posterior to predict their ages, which is centered around 40.9. Their actual ages are 31 and 34. Maybe this is not a great model substantively! Maybe we need more predictors than just whether someone is liberal or not? We will add more predictors next week.
+
+These are single values, but adding the draws from our posteriors in a similar way gives us entire predicted distribution around those values:
+
+```{r}
+fit_predict <- stan_glm(age ~ liberal, 
+         data = week_8, 
+         refresh = 0)
+
+fit_predict %>%
+  as_tibble() %>%
+  
+  # Plot predicted age distribution for liberal = FALSE
+  
+  ggplot(aes(x = `(Intercept)`)) + 
+  geom_density(fill = "dodgerblue", alpha = 0.5) + 
+  
+  # Plot predicted age distribution for liberal = TRUE
+  
+  geom_density(aes(x = `(Intercept)` + liberalTRUE), 
+               fill = "coral", alpha = 0.5) + 
+  theme_classic() + 
+  labs(title = "Predicted Age Distributions from this Model",
+       subtitle = "Liberals (Coral) and Non-Liberals (Blue)",
+       x = "Predicted Age",
+       y = "Density")
+```
+
+### Let's try without an intercept
+
+Our model above included an intercept (a predicted value when all covariates are equal to 0). We could also fit this model without an intercept. In code, that would look like:
+
+```{r}
+## remember: - 1 means "no intercept"
+stan_glm(age ~ liberal - 1, 
+         data = week_8, 
+         refresh = 0)
+```
+
+Notice now we don't have an "Intercept" line, but we have two separate group estimates - one for liberals and one for non-liberals. 
+
+This model is very similar to the one above. Now, instead of the $\beta_{int}$ intercept we have two coefficients instead:
+
+$$ age_i = \beta_1 x_{liberal,i} + \beta_2 x_{nonliberal,i} + \epsilon_i $$
+- $age_i$ is still the outcome for each observation (person in the dataset).
+
+- now, $\beta_1$ is the estimated average age of liberals in our dataset. The $1$ doesn't mean anything special, just that is our first coefficient. Still no $i$, because it is the same for every person.
+
+- $x_{liberal,i}$ is simply 1 (TRUE) if that person is liberal in the dataset or 0 (FALSE) if they are not. 
+
+- now, $\beta_2$ is the estimated average age of non-liberals in our dataset. Still no $i$, because it is the same for every person.
+
+- $x_{nonliberal,i}$ is simply 1  if that person is non-liberal in the dataset or 0 if they are. This is the opposite of $x_{liberals,i}$ above.

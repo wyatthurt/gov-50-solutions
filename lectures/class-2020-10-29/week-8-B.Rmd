@@ -1,0 +1,123 @@
+---
+title: "Week 8, Day 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(PPBDS.data)
+library(rstanarm)
+library(tidyverse)
+
+# Recall that Enos (2014) actually looks at a measure of change in attitude
+# toward immigration, rather than simply at the ending attitude. Let's create
+# such a variable and try to model it.
+
+week_8 <- trains %>% 
+  mutate(att_chg = att_end - att_start) %>% 
+  select(att_chg, gender, party, liberal, treatment)
+  
+```
+
+Weeks 7, 8 and 9 are the core of the class. We have a question. We have some data. How should we use the data to answer the question? Using Wisdom, we first decide if the question and the data are "close enough" that we can consider them to both be part of the same population. With Justice, we create a mathematical model which describes the connection between the outcome we want to explain/understand an the covariates which might be connected to it. Courage takes us from mathematics to code, creating a model, including posterior distributions for all its parameters. The last step is to use that model to answer the question with which we started, with Temperance.
+
+**Question:** *What would Preceptor's change in attitude toward immigration be if he were to receive the treatment next week?*
+
+## Scene 1
+
+**Prompt:** We have not practiced writing mathematical formulas in R markdown documents. Doing so is fairly simple. Bracket the math in one dollar sign if you want it to appear inline. Example: a y in math notation looks like $y$ and is produced with \$y\$. Subscripts require an underscore, and a bracket is often helpful. To make $y_i$ you write  \$y\_i\$. For $x_{t,i}$ write \$x\_{t, i}\$. To put the math on its own line, use two dollar signs. Here is a version of one of the formulas from chapter 8:
+
+$$ age_i = \beta_1 x_{r,i} + \beta_2 x_{d,i} + \epsilon_i$$
+
+Today, we will be considering `att_chg` as a function of `treatment`. 
+* Create the mathematical formula for that model here.
+* Describe the ideal Preceptor Table.
+* Write a few sentences about whether or not our data will allow us to answer this question.
+
+## Scene 2
+
+**Prompt:** There are two ways to interpret our question. The first involves our expectation. We can also think of this as the long-term average, if we did the same experiment over and over again. (Assume that Preceptor is always assigned to the treatment.) What is your posterior probability distribution for Preceptor's *expected* `att_chg`?
+
+```{r scene-1}
+fit_obj <- stan_glm(att_chg ~ treatment - 1, 
+                    data = week_8,
+                    refresh = 0)
+fit_obj %>% 
+  as_tibble() %>% 
+  ggplot(aes(x = treatmentTreated)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                   bins = 100) +
+    labs(title = "Posterior Probability Distribution",
+         subtitle = "Expected attitude change for Preceptor",
+         x = "Attitude Change",
+         y = "Probability") +
+    scale_y_continuous(labels = scales::percent_format()) +
+    theme_classic() 
+```
+
+**Comments:** Too many students, when confronted with a question, jump too quickly to try to answer that question directly. That is not the best approach. Instead, start by making a general model, a model which has a left-hand side variable which we are trying to explain/predict and a set of right-hand side covariates/predictors. Once we have that model, then we can answer our question.
+
+* Of course, you can't just ignore the question. The question helps you to decide what the left-hand side variable has to be. In this case, if you want to predict `att_chg`, you better (always?) put `att_chg` on the left-hand side. And, if you are predicting for a subset, you better include the variable which specifies that subset on the right-hand side. The main point, however, is that lots of questions will use the same model. 
+
+* A key distinction, as the book discusses, is the difference between creating a posterior distribution for the expected value (as above) and creating a posterior distribution for the forecast for a single individual. The latter is often called a posterior predictive distribution, although the book does not (yet!) have a good discussion of that terminology. Any suggestions for a good metaphor or imagine to make that distinction clear? 
+
+* In general (or always?), if you are working with expected values, you only need to manipulate the parameters, as well as sticking in the values of x relevant to the case you care about. There isn't much of that here, but this will happen a lot in chapter 9 and next week.
+
+## Scene 3
+
+**Prompt:** The second way to interpret the question is with regard to a single individual. What will happen to Preceptor next week? Provide a Posterior Predictive Distribution for what you predict will be Preceptor's `att_chg` after treatment.
+
+```{r scene-3}
+new_obs <- tibble(treatment = factor("Treated", levels = c("Treated", "Control")))
+pp <- posterior_predict(fit_obj, newdata = new_obs) %>%
+    as_tibble() %>%
+    mutate(across(everything(), as.numeric))
+pp %>% 
+  ggplot(aes(x = `1`)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                   bins = 100)  +
+    labs(title = "Posterior Probability Distribution",
+         subtitle = "For Precetor's change in immigration attitude",
+         x = "Attitude Change",
+         y = "Probability") +
+    scale_y_continuous(labels = scales::percent_format()) +
+    theme_classic()
+```
+
+## Challenge Problem
+
+Create the posterior distribution for the average treatment effect of `treatment` within subsets of the data defined by `liberal` and by `gender`.  In other words, there should be 4 plots total: `liberal == FALSE`, `liberal == TRUE`, `gender == "Male"` and `gender == "Female"`. Put all these posteriors in the same graphic. (One approach is to use the **patchwork** package.) The elegant approach is to create a function which takes a tibble and a restriction, and then returns the plot.
+
+```{r cp, echo=FALSE, cache=TRUE}
+library(patchwork)
+my_ate <- function(x, restriction = "TRUE"){
+  
+  x <- x %>% 
+    filter(!! rlang::parse_expr(restriction))
+  
+  x <- x %>%
+   mutate(att_chg = att_end - att_start)
+  stan_glm(att_chg ~ treatment - 1,
+           data = x,
+           refresh = 0) %>%
+  as_tibble() %>%
+  mutate(ate = treatmentTreated - treatmentControl) %>%
+  ggplot(aes(x = ate)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                   bins = 100) +
+    labs(title = "Posterior Probability Distribution",
+         subtitle = paste("For", restriction),
+         x = "Change in Attitude",
+         y = "Probability") +
+    # xlim(-1, 3) +
+    # scale_x_continuous(breaks = c(-1, 0, 1, 2, 3)) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    theme_classic()
+  
+}
+p_liberal_true <- my_ate(trains, "liberal == TRUE")
+p_liberal_false <- my_ate(trains, "liberal == FALSE")
+p_gender_male <- my_ate(trains, "gender == 'Male'")
+p_gender_female <- my_ate(trains, "gender == 'Female'")
+(p_liberal_true + p_gender_male) / (p_liberal_false + p_gender_female)
+```
