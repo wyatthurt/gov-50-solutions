@@ -1,0 +1,156 @@
+---
+title: "Week 9, Day 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(PPBDS.data)
+library(rstanarm)
+library(tidyverse)
+
+# We will use the `kenya` dataset from PPBDS.data. This dataset is from Harris,
+# Kamindo and Van der Windt (2020): "Electoral Administration in Fledgling
+# Democracies:Experimental Evidence from Kenya." The authors worked with
+# Kenya's electoral commission in 1,674 communities by assigning polling
+# stations to either a control group or to one of five other treatments.
+
+# For simplicity we will only consider polling stations assigned to either
+# "control" or to "local". The latter means a treatment in which election
+# officials visited the community's polling station for two days, thereby making
+# it easier for people to register.
+
+# The outcome variable, `reg_chg`, is the change in voter registration in each
+# community. `poverty` is the percentage of the community below the poverty
+# level. `distance` is the number of kilometers between the polling station and
+# the central political office (where registrations normally take place).
+# `pop_density` is a measure of population density around the polling station.
+
+
+week_9 <- kenya %>% 
+  rename(reg_chg = reg_byrv13) %>% 
+  filter(treatment %in% c("control", "local")) %>% 
+  droplevels() %>% 
+  select(reg_chg, treatment, poverty, 
+         distance, pop_density)
+```
+
+
+## Scene 1
+
+**Prompt:** In addition to the outcome variable and the treatment, we have 3 statistics for the communities in the sample --- poverty, distance and population density. See code comments above for details. Never hurts to do a little exploratory data analysis. Look at the data!
+
+* Make a scatter plot of `poverty` on the y-axis and `distance` in the x-axis. Include a `geom_smooth()` with `method` set to "lm" and `se` equal to FALSE. Write a sentence to answer these questions:
+
+  + Does poverty cause distance? Or does distance cause poverty? Or both? Or neither?
+  + How accurate is the model beyond 90 kilometers?  
+  + Eye-balling the chart, how different is the poverty rate between two polling stations whose distance differs by 50 kilometers?
+  
+* Fit a `stan_glm()` model which relates poverty to distance. Print a summary. (Hint: In order to see the coefficient of `distance`, you will probably need to use the `digits` argument to `print()`.) Interpret the meaning of the two important parameters.  
+
+
+```{r sc1-a}
+week_9 %>% 
+  ggplot(aes(x = distance, y = poverty)) +
+    geom_point() +
+    geom_smooth(method = "lm", se = FALSE) +
+    labs(title = "Poverty and Distance at Kenyan Polling Stations",
+         subtitle = "Poorer communities are further away from registration offices",
+         x = "Distance (km)",
+         y = "Poverty Measure",
+         caption = "Data from Harris, Kamindo and Van der Wind (2020)") + 
+  ylim(c(0,1))
+```
+
+
+```{r sc1-b}
+fit_1 <- stan_glm(poverty ~ distance,
+                  data = week_9,
+                  refresh = 0)
+
+print(fit_1, digits = 4)
+```
+
+## Scene 2
+
+**Prompt:** Let's make a model with `reg_chg` as the outcome variable and with treatment, poverty, distance and pop_density as the predictors. (Using outcome/predictors is the typical nomenclature in statistics. In Economics, we would refer to dependent/independent variables.)
+
+* Provide the math for this model.
+
+* Estimate the model. Assign the fitted model to `fit_2`. Interpret the important parameters of the model.
+
+$$ reg\_chg_i = \beta_0 + \beta_1 local + \beta_2 poverty_i + \\
+                \beta_3 distance_i + \beta_4 pop\_density_i +  + \epsilon_i
+$$
+
+
+```{r sc2-a}
+fit_2 <- stan_glm(data = week_9,
+                  formula = reg_chg ~ treatment + poverty + distance + pop_density,
+                  refresh = 0)
+
+print(fit_2, detail = FALSE, digits = 4)
+```
+
+## Scene 3
+
+**Prompt:** Let's consider a different model. First, create a new variable, `poverty_n`, which is just `poverty` minus the mean of `poverty` then divided by the standard deviation of `poverty`. The "n" is for "normalization."  Second, consider `reg_chg` as a function of `treatment`, `poverty_n` and the interaction between the two.
+
+* Fit the  model and interpret the coefficients. Focus on the coefficient of the interaction term.
+
+* Create a graphic of the posterior probability distribution of the causal effect of `local` treatment in polling stations which have +2 sigma poverty rates. Note that there are two ways to do this. First, we can use a parameter approach. This is what we did in class last week. Second, we can use `posterior_epred()`, which if generally easier since it does the math for us. Confirm that the two approaches give the same answer.
+
+
+
+```{r sc3-a}
+week_9 <- week_9 %>% 
+  mutate(poverty_n = (poverty - mean(poverty))/sd(poverty))
+
+
+fit_3 <- stan_glm(data = week_9,
+                  formula = reg_chg ~ treatment + poverty_n + treatment:poverty_n,
+                  refresh = 0)
+
+print(fit_3, detail = FALSE, digits = 3)
+```
+
+
+```{r sc3-parameter-approach}
+fit_3 %>% 
+  as_tibble() %>% 
+  select(treatmentlocal, `treatmentlocal:poverty_n`) %>% 
+  mutate(ce = (treatmentlocal * 1) + (`treatmentlocal:poverty_n` * 1 * 2)) %>% 
+  ggplot(aes(ce)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                   bins = 100) +
+    labs(title = "Posterior Probability Distribution for Causal Effect of Treatment",
+         subtitle = "For local registration at polling stations in poor communities",
+         x = "Expected Change in Registration",
+         y = "Probability") + 
+    scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+    theme_classic()
+```
+
+
+```{r sc3-epred_posterior-approach}
+new_obs <- tibble(treatment = c("local", "control"),
+                  poverty_n = 2)
+
+pe <- posterior_epred(fit_3, newdata = new_obs) %>% 
+  as_tibble() %>% 
+  mutate(ce = `1` - `2`) 
+
+pe %>% 
+  ggplot(aes(ce)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                   bins = 100) +
+    labs(title = "Posterior Probability Distribution for Causal Effect of Treatment",
+         subtitle = "For local registration at polling stations in poor communities",
+         x = "Expected Change in Registration",
+         y = "Probability") + 
+    scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+    theme_classic()
+
+```

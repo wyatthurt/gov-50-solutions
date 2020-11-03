@@ -1,0 +1,287 @@
+---
+title: "Bayesian Multiple Regression"
+author: "Tyler Simko"
+date: "11/2/2020"
+header-includes:
+  \usepackage{xcolor}
+  \definecolor{myOrange}{rgb}{1,0.5,0}
+output: html_document
+---
+
+```{r setup, include=FALSE}
+set.seed(50)
+knitr::opts_chunk$set(echo = TRUE)
+library(PPBDS.data)
+library(rstanarm)
+library(tidyverse)
+```
+
+Our models so far have been relatively simple. We've looked at models that simply measure averages in the population (`outcome ~ 1`) and models that measure relationships between two variables (`outcome ~ education`).
+
+However, we know that the social science world is not simple. For example, we need much more than a single piece of information to predict most interesting substantive outcomes. How do you predict a student's SAT score? With their GPA? Their parent's income? Their PSAT score? All of these might be useful.
+
+### Quick Review
+
+Let's fit and visualize a simple intercept model:
+
+```{r}
+# just recode treatment to a binary 1-0 number
+week_8 <- trains %>%
+  mutate(att_change = att_end - att_start,
+         treatment = ifelse(treatment == "Treated", 1, 0))
+
+# the overall intercept model
+fit_intercept <- stan_glm(att_change ~ 1,
+                  data = week_8,
+                  refresh = 0)
+print(fit_intercept, digits = 4)
+```
+
+$$ y_i = \beta_0 + \epsilon_i$$
+
+How do we interpret this model?
+
+- **Intercept**: estimated mean of `att_change` in the population. Remember that the model estimates an entire posterior, we have visualized the median of this posterior as the line above. Actual predicted draws are centered around this median value displayed above.
+
+```{r}
+# look at overall age --> outcome relationship
+ggplot(week_8, aes(x = age, y = att_change, 
+                   color = factor(treatment))) + 
+  geom_point() + 
+  # relationship between age and intercept for control group
+  geom_abline(intercept =
+                fit_intercept$coefficients["(Intercept)"],
+              slope     = 0,
+              col = "darkgreen", lwd = 1) + 
+  
+  theme_bw() + 
+  annotate("text", x = 65, y = 0.8, 
+           label = "~beta[0]", 
+           parse = TRUE, color = "darkgreen") + 
+  scale_color_manual(name = "Treatment Group",
+                       breaks = c(0,1),
+                       labels = c("Control", "Treatment"),
+                       values = c("orange", "dodgerblue")) + 
+  labs(title = "Visualizing the intercept model",
+       subtitle = "att_change ~ 1: 
+       model predictions are shown on line
+       no matter what the age, predict the mean!") + 
+  theme(plot.subtitle = element_text(face = "italic"))
+```
+
+Let's fit a simple model with an intercept and single binary independent variable.
+
+```{r}
+fit_model <- stan_glm(att_change ~ treatment,
+                  data = week_8,
+                  refresh = 0)
+
+# effects can be small
+# digits argument can give you more room to see them
+print(fit_model, digits = 4)
+```
+
+$$ y_i = \beta_0 + \beta_1 x_{treatment, i} + \epsilon_i $$ 
+
+How do we interpret the coefficients?
+
+- **Intercept**: the predicted mean of `att_change` in the population for non-treated (control) individuals. That is, the average change in attitudes for people not in the treatment group was about -0.4. Recall that the intercept is the estimated population mean when all of your predictors are equal to 0.
+- **treatment**: the predicted change in `att_change` for observations in the treatment group. That is, **the average predicted change in `att_change` from adding 1 to your treatment variable - moving from the control to the treatment group**. This was a randomized experiment, so we can interpret this as the causal effect of the treatment.
+
+```{r}
+# look at overall age --> outcome relationship
+ggplot(week_8, aes(x = age, y = att_change, 
+                   color = factor(treatment))) + 
+  geom_point() + 
+  
+  # relationship between age and intercept for control group
+  
+  geom_abline(intercept =
+              fit_intercept$coefficients["(Intercept)"],
+              slope = 0,
+              col = "orange", lwd = 1) + 
+  
+  geom_abline(intercept =
+              fit_model$coefficients["(Intercept)"] + 
+                fit_model$coefficients["treatment"],
+              slope = 0,
+              col = "dodgerblue", lwd = 1) + 
+  
+  theme_bw() + 
+  annotate("text", x = 65, y = 0.9, 
+           label = "~beta[0]+~beta[1]", 
+           parse = TRUE, color = "dodgerblue") + 
+  annotate("text", x = 65, y = -0.8, 
+           label = "~beta[0]", 
+           parse = TRUE, color = "orange") + 
+  scale_color_manual(name = "Treatment Group",
+                       breaks = c(0,1),
+                       labels = c("Control", "Treatment"),
+                       values = c("orange", "dodgerblue")) + 
+  labs(title = "Visualizing the intercept model",
+       subtitle = "att_change ~ treatment: 
+       predicted average for each treatment group!") + 
+  theme(plot.subtitle = element_text(face = "italic"))
+```
+
+### How about a continuous predictor?
+
+```{r}
+fit_model <- stan_glm(att_change ~ age,
+                  data = week_8,
+                  refresh = 0)
+print(fit_model, digits = 4)
+```
+
+$$ y_i = \beta_0 + \beta_1 x_{age, i} + \epsilon_i $$ 
+Interpretation here is almost identical!
+
+- **Intercept**: the intercept is the estimated population mean when all of your predictors are equal to 0. In this case, the only one is age. So the interpretation is the estimated population mean for people with age = 0. That doesn't make a lot of substantive sense here! But it is what the model says. Researchers will often rescale their variables in cases like this - for example, by subtracting the average age from each age observation. Then the interpretation of the intercept would be the predicted mean at the average age in the population. We'll talk through several strategies like this.
+- **age**: the estimated change in `att_change` for each additional year in `age`. That is, **the average predicted change in `att_change` from adding 1 to your `age` variable**. So, this model would predict a difference of $\beta_1$ in the outcome for someone one year older. These effects are linear - the estimated difference in outcome between two people with 10 years between them would be $10 * \beta_1$.
+
+Now let's visualize a model with a single continuous predictor:
+
+```{r}
+fit_age <- stan_glm(att_change ~ age,
+                    data = week_8,
+                    refresh = 0)
+
+ggplot(week_8, aes(x = age, y = att_change, 
+                   color = factor(treatment))) + 
+  geom_point() + 
+  
+  # relationship between age and intercept for control group
+  geom_abline(intercept = fit_age$coefficients["(Intercept)"], 
+              slope = fit_age$coefficients["age"], 
+              col = "darkred", lwd = 1) + 
+  annotate("text", x = 65, y = 0.6, 
+           label = "~beta[0]+~beta[1]*age", 
+           parse = TRUE, color = "darkred") + 
+  theme_bw() + 
+  scale_color_manual(name = "Treatment Group",
+                       breaks = c(0,1),
+                       labels = c("Control", "Treatment"),
+                       values = c("orange", "dodgerblue")) + 
+  labs(title = "Continuous predictors add a line with a slope",
+       subtitle = "att_change ~ age") + 
+  theme(plot.subtitle = element_text(face = "italic"))
+```
+
+**Let's try this in Scene 1.**
+
+### Let's add another predictor! 
+
+Other variables may also help us to predict someone's `att_change`. For example, let's include both `treatment` and `age` in our model:
+
+```{r}
+fit_2 <- stan_glm(att_change ~ treatment + age,
+                  data = week_8,
+                  refresh = 0)
+print(fit_2, digits = 4)
+```
+
+With two variables, our interpretation is very similar:
+
+- **Intercept**: the predicted population mean when all of your predictors are equal to 0. In this case, the predicted `att_change` for a person in the control group with an age of 0. Is that a substantively interesting value? Probably not! But that's what this simple model says.
+- **treatment**: **holding age constant, the coefficient on `treatment` is the predicted change in `att_change` from moving from the control to the treatment group (i.e. increasing the `treatment` column by 1)**. That is, for any given age, the model predicts that moving from the treatment to the control group would increase your `att_change` by about 0.8. This is still the average treatment effect.
+- **age**: **holding treatment constant, the coefficient on `age` is the predicted change in `att_change` from increasing the value of `age` by 1**. Notice this coefficient is very small because a single year doesn't change much.
+
+### What does this look like?
+
+Adding a binary predictor like `treatment` here essentially means that you add a separate intercept for each group. Multiple continuous predictors are more difficult to visualize (you need more dimensions), so we'll stick to the binary treatment for now:
+
+Why? The model above (`att_change ~ age + treatment`) makes an equation like this:
+
+$$ y_i = \beta_0 + \beta_1 x_{age,i} + \beta_2 x_{treatment,i} + \epsilon_i $$ 
+What happens if the observation is in the treatment group (treatment = 1)?
+
+$$ y_i = \beta_0 + \beta_1 x_{age,i} + {\color{ForestGreen}{\beta_2}} x_{treatment,i} + \epsilon_i $$ 
+$$ y_i = \beta_0 + \beta_1 x_{age,i} + {\color{ForestGreen}{\beta_2}} * 1 + \epsilon_i $$ 
+
+$$ y_i = (\beta_0 + {\color{ForestGreen}{\beta_2}}) + \beta_1 x_{age,i} + \epsilon_i $$ 
+What has this done? Essentially made a different intercept ($\beta_0 + \beta_2$ instead of just $\beta_0$) for the treatment group! 
+
+Now let's visualize the model with treatment and age predictors. 
+
+```{r}
+# use the model output to extract coefficients by name
+intercept      <- fit_2$coefficients["(Intercept)"]
+coef_treatment <- fit_2$coefficients["treatment"]
+coef_age       <- fit_2$coefficients["age"]
+
+# look at age --> outcome relationship within each group
+ggplot(week_8, aes(x = age, y = att_change, 
+                   color = factor(treatment))) + 
+  geom_point() + 
+  
+  # relationship between age and intercept for control group
+  geom_abline(intercept = intercept, 
+              slope = coef_age, 
+              col = "orange", lwd = 1) + 
+  
+  # relationship between age and intercept for treatment group
+  geom_abline(intercept = intercept + coef_treatment, 
+              slope = coef_age, 
+              col = "dodgerblue", lwd = 1) + 
+  annotate("text", x = 60, y = -1.5, 
+           label = "~beta[0]+~beta[1]*age", 
+           parse = TRUE, color = "orange") + 
+  annotate("text", x = 60, y = 1.5, 
+           label = "(~beta[0] + ~beta[2])+~beta[1]*age", 
+           parse = TRUE, color = "dodgerblue") + 
+  theme_bw() + 
+  scale_color_manual(name = "Treatment Group",
+                       breaks = c(0,1),
+                       labels = c("Control", "Treatment"),
+                       values = c("orange", "dodgerblue")) + 
+  labs(title = "Binary / categorical covariates make multiple intercepts",
+       subtitle = "att_change ~ treatment + age
+       different predictions within each treatment group that vary by age") + 
+  theme(plot.subtitle = element_text(face = "italic"))
+```
+
+Let's visualize both at once: 
+
+```{r}
+## add the overall intercept
+ggplot(week_8, aes(x = age, y = att_change, 
+                   color = factor(treatment))) + 
+  geom_point() + 
+  
+  # relationship between age and intercept for control group
+  geom_abline(intercept = intercept, 
+              slope = coef_age, 
+              col = "orange", lwd = 1) + 
+  
+  # relationship between age and intercept for treatment group
+  geom_abline(intercept = intercept + coef_treatment, 
+              slope = coef_age, 
+              col = "dodgerblue", lwd = 1) + 
+  
+  # add the simple intercept fit without treatment
+  geom_abline(intercept = fit_intercept$coefficients["(Intercept)"],
+              slope     = 0,
+              col = "darkgreen", lwd = 1) + 
+  
+  theme_bw() + 
+  scale_color_manual(name = "Treatment Group",
+                       breaks = c(0,1),
+                       labels = c("Control", "Treatment"),
+                       values = c("orange", "dodgerblue")) + 
+  labs(title = "Binary / categorical covariates make multiple intercepts",
+       subtitle = "Displayed alongside naive intercept model with no slope 
+       (dark green)") + 
+  theme(plot.subtitle = element_text(face = "italic"))
+```
+The key point here is: once you've added multiple covariates, you interpret the relationship between a single covariate and the outcome as the predicted change in the outcome if you increase that predictor by one **holding the other values constant.** In this example, one way to interpret the coefficient on age is: **holding treatment constant, $\beta_1$ is the predicted change in outcome for an additional year of age.**
+
+- In the above graph, the slope within each group is the same.
+
+**Let's add multiple continuous variables in Scene 2.**
+
+### Key takeaways:
+
+1. Including covariates in your model allows your model to make predictions depend on the values of those variables.
+2. If you include binary (e.g. 1 or 0, TRUE or FALSE) / categorical predictors (e.g. 5 treatment groups, 50 states, 10 countries, etc.), your **intercept** will vary for each of those groups.
+3. If you include continuous covariates (e.g. age), you get an estimated **slope** for the relationship between that covariate and your outcome.
+4. Interpreting the values without an interaction (we'll get there on Thursday!): holding all else equal (i.e. at any value), a slope coefficient $\beta$ for a covariate $x$ is the predicted change in outcome $y$ from a one unit increase in $x$. Remember that `stan_glm` estimates posteriors though, so the actual change in any one individual draw can vary.
