@@ -1,0 +1,189 @@
+---
+title: "Week 9, Day 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(PPBDS.data)
+library(rstanarm)
+library(tidyverse)
+
+# There is one change to our data from Tuesday. We have a created a new
+# variable: `poverty_n`, where the "n" stands for "normalized." To normalize data
+# is to subtract the mean and divide by the standard deviation. This can be
+# helpful. The coefficient to such a variable can be interpreted as a comparison
+# between two groups, separated by a one standard deviation of the poverty
+# measure.
+
+
+week_9 <- kenya %>% 
+  rename(reg_chg = reg_byrv13) %>% 
+  filter(treatment %in% c("control", "local")) %>% 
+  droplevels() %>% 
+  mutate(poverty_n = (poverty - mean(poverty))/sd(poverty)) %>% 
+  select(poll_station, reg_chg, treatment, poverty_n, poverty)
+  
+```
+
+
+## Scene 1
+
+**Prompt:** Let's create a new model. Consider `reg_chg` as a function of `treatment`, `poverty_n` and the interaction between the two.
+
+* Write the math for this model.
+
+* Describe the population for which you are creating the model.
+
+* Fit the  model and interpret the coefficients. Focus on the coefficient of the interaction term.
+
+
+
+**Comments:**  
+
+* Math is the same as we saw last week.
+
+$$ reg\_chg_i = \beta_0 + \beta_1 local_i + \beta_2 poverty\_n_i +  \\
+\beta_3 local_i poverty\_n_i + \epsilon_i $$
+
+Speaking roughly, every unit in the population has a row in the ideal Preceptor Table. (I think that the table is a much more concrete way to think about this than a nebulous-seeming "population.") Key point: *Until we know what question we are trying to answer, we can't know what the relevant population is.* 
+
+* If, for example, the question is just about another polling station in Kenya in 2017, then the population is the 7,000 polling stations in 2017. Note that our data only covers some of them. If, on the other hand, the question is about a different country, or about Kenya in a different year (including next year), then the population needs to be different.
+
+* Model fit is easy and the usual interpretations apply. The coefficients of treatment (and interactions with treatment) can be interpreted in a causal manner. Coefficients of other variables should only be interpreted in terms of *comparisons.*
+
+
+```{r sc1}
+fit_1 <- stan_glm(data = week_9,
+                  formula = reg_chg ~ treatment + poverty_n + treatment:poverty_n,
+                  
+                  # Can also use a colon for the interaction term
+                  
+                  refresh = 0)
+
+print(fit_1, detail = FALSE, digits = 3)
+
+library(gapminder)
+
+gapminder %>%
+  ggplot(aes(x = lifeExp, y = gdpPercap)) + 
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+
+## Scene 2
+
+**Prompt:** Let's begin with a question from Kenyan President Uhuru Kenyatta:
+
+*Consider the polling station 007/001. What are the chances of an increase in registration of 4% if I were to give it the local treatment in January?*
+
+Write a sentence or two for each of these topics:
+
+* What would Wisdom suggest about the use of the `kenya` data to answer this question?
+
+* Describe the ideal Preceptor Table.
+
+* Graph the posterior probability distribution `reg_chg` if polling station 007/001 were to be assigned treatment in January.
+
+* Answer the President's question.
+
+```{r sc2}
+new_obs <- tibble(treatment = "local", poverty_n = -1.61)
+
+pp <- posterior_predict(fit_1, newdata = new_obs) %>% 
+  as_tibble() %>% 
+  mutate_all(as.numeric)
+
+pp %>% 
+  ggplot(aes(x = `1`)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                   bins = 100) +
+    labs(title = "Posterior Predictive Distribution", 
+         subtitle = "Registration change at polling station 007/001 under treatment",
+         x = "Registration Change",
+         y = "Probability") + 
+    scale_x_continuous(labels = scales::percent_format()) +
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+    theme_classic()
+```
+
+
+
+**Comments:** 
+
+* Wisdom: Make sure to discuss the idea of a "population." To use data from Kenya in 2017 to answer a question about Kenya in 2021, we have to assume that communities from both years are drawn from the same population. If that is the case, it is probably most plausible to think about the relevant population as all Kenyan communities from 2015 through 2025, or some similar time period. Recall the the units here are communities around polling stations, not individual voters.
+
+* Ideal Preceptor Table: Connect the ideal Preceptor Table to the concept of the population. Indeed, *the ideal Preceptor Table is (exactly?) a listing of every unit in the population.* In this case, we want communities from 2017 and from 2021. *Again, each row of the Preceptor Table is a community, not an individual voter.*
+
+* This raises a somewhat subtle issue in the definition of the Preceptor Table. We currently define it as a data set with rows and columns such that, if there is no missing data, answering the question would be a matter of arithmetic. Upon reflection, that definition does not really work. For this question, all we would need is a PT with one row and one column --- the one containing `reg_chg` for polling station 007/001 under treatment. That is stupid! So, our understanding of what belongs in a PT should expand. New definition: A PT is a table with enough rows and columns such that we can include all our data and so that, if there is no missing value, we can answer our questions with arithmetic.
+
+* Recall that there are two typical questions. One is about the "expected" value of something. Expected means average so we would want to use `posterior_epred()`, not `posterior_predict()` for this question. We would only use `posterior_predict()` if we wanted the prediction for a specific community, or for a small number of communities, as in this question.
+
+* The portion of the posterior that is greater than 4% is around 14%
+
+```{r}
+sum(pp$`1` > 0.04)/length(pp$`1`)
+```
+
+
+
+
+## Scene 3
+
+
+**Prompt:**  President Kenyatta has another question;
+
+*I care more about increasing registration in poor communities. For a community with poverty_n equal to 2, what would you expect the change in registration under treatment to be?*
+
+Using the model which you created in Scene 1, create a graphic of the posterior probability distribution of the causal effect of `local` treatment in polling stations which have +2 sigma poverty rates. Note that there are two ways to do this. First, we can use a parameter approach. This is what we did in class last week. Second, we can use `posterior_epred()`, which is generally easier since it does the math for us. Use the `posterior_epred()` approach. 
+
+
+```{r sc3-epred_posterior-approach}
+new_obs <- tibble(treatment = c("local", "control"),
+                  poverty_n = 2)
+
+pe <- posterior_epred(fit_1, newdata = new_obs) %>% 
+  as_tibble() %>% 
+  mutate_all(as.numeric) %>% 
+  mutate(ce = `1` - `2`) 
+
+pe %>% 
+  ggplot(aes(ce)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                   bins = 100) +
+    labs(title = "Posterior Probability Distribution for Causal Effect of Treatment",
+         subtitle = "For local registration at polling stations in poor communities",
+         x = "Expected Change in Registration",
+         y = "Probability") + 
+    scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+    theme_classic()
+
+```
+
+```{r sc3-parameter-approach}
+fit_1 %>% 
+  as_tibble() %>% 
+  select(treatmentlocal, `treatmentlocal:poverty_n`) %>% 
+  mutate(ce = (treatmentlocal * 1) + (`treatmentlocal:poverty_n` * 1 * 2)) %>% 
+  ggplot(aes(ce)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                   bins = 100) +
+    labs(title = "Posterior Probability Distribution for Causal Effect of Treatment",
+         subtitle = "For local registration at polling stations in poor communities",
+         x = "Expected Change in Registration",
+         y = "Probability") + 
+    scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+    theme_classic()
+```
+
+
+
+
+**Comments:** 
+
+* The question wording makes it clear that Kenyatta is not interested in any specific community, unlike in Scene 2. Instead, he wants to know what we would "expect" in communities with certain characteristics. Language like "expect" means that we do not use `posterior_predict()`.
+
+* There are two ways to answer this question. In the parameter approach, we just use our posterior estimates for the parameters and "plug in" the values for the variables in the case we care about. This is fairly simple because the values for things like `treatmentlocal" are simply +1, so there is not much to plug in. However, plugging in +2 for the value of poverty is still necessary. In my code, I show the +1 explicitly but, of course, in actual code we would not bother with that.
