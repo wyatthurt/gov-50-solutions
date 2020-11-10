@@ -1,0 +1,125 @@
+---
+title: "Week 10, Day 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(PPBDS.data)
+library(stringr)
+library(rstanarm)
+library(tidyverse)
+library(tidymodels)
+
+# We are still working with the kenya data set. In addition to the variables we
+# used last week, we will make use of the county in which the poll station was
+# located and of the block_number of that location. Check out the stringr code
+# we use to pull those variables out.
+
+week_10 <- kenya %>% 
+  rename(reg_chg = reg_byrv13) %>% 
+  filter(treatment %in% c("control", "local")) %>% 
+  droplevels() %>% 
+  mutate(poverty_n = (poverty - mean(poverty))/sd(poverty)) %>% 
+  mutate(county = str_replace(block, "/\\d*", "")) %>% 
+  mutate(block_number = str_extract(block, "/\\d*")) %>% 
+  mutate(block_number = str_replace(block_number, "/", "")) %>% 
+  select(county, block_number, poll_station, reg_chg, treatment, poverty_n) 
+
+```
+
+
+## Scene 1
+
+**Prompt:** How do we choose between competing models? First, we need to have a sense of what makes one model "better" than another. There is no single answer, but the most popular approach is to see how well the model's predictions match the truth.
+
+
+* Fit the same stan_glm() model which we used on Thursday: `reg_chg` as a function of `treatment`, `poverty_n` and their interaction. Look at the results. Write a sentence interpreting sigma.
+
+* The root mean square error (also known as RMSE or rmse) is the most common measure for how well a models fits the data. It is the square root of the average of the sum of the residuals squared. (Recall that the residual is defined as the true value minus the fitted value.) Calculate the RMSE. (Hint: Use the `predict()` function with the fitted object as the only input. This will give you the fitted values.)
+
+
+
+```{r}
+fit_1 <- stan_glm(reg_chg ~ treatment*poverty_n,
+                  data = week_10,
+                  refresh = 0)
+
+print(fit_1, digits = 4)
+```
+
+
+```{r}
+tibble(truth = week_10$reg_chg, forecast = predict(fit_1)) %>% 
+  mutate(sq_diff = (forecast - truth)^2) %>% 
+  summarize(rmse = sqrt(mean(sq_diff)))
+```
+
+
+## Scene 2
+
+**Prompt:** Create the same model using the **tidymodels** approach. However, instead of creating a training/test split, and then using the training data for cross-validation, we will just use the whole data at once. This is, after all, what we did above. Hint: Use the Summary from Chapter 10 for guidance: https://davidkane9.github.io/PPBDS/model-choice.html#summary
+
+* Calculate RMSE again by hand. Does it match what you saw above?
+
+* Calculate RMSE using the metrics() argument.
+
+
+```{r}
+s2_results <- workflow() %>% 
+  add_recipe(recipe(reg_chg ~ treatment + poverty_n,
+                    data = week_10)) %>% 
+    step_interact(~ treatment*povert_n) %>% 
+  add_model(linear_reg() %>% set_engine("stan")) %>% 
+  fit(data = week_10) %>% 
+  predict(new_data = week_10) %>% 
+  bind_cols(week_10 %>% select(reg_chg))
+
+s2_results %>% 
+  mutate(sq_diff = (.pred - reg_chg)^2) %>% 
+  summarize(rmse = sqrt(mean(sq_diff)))
+
+s2_results %>% 
+  metrics(truth = reg_chg, estimate = `.pred`)
+
+```
+
+## Scene 3
+
+**Prompt:** The key problem with this analysis is that we have used the same data to *fit* the model as we are using to *evaluate* the model. This is very, very dangerous. We don't really care how well the model works on data we have already seen. We have the data itself! We care about the future, when we don't know the answer already. The main purpose of tidymodels is to make it easy to estimate how well our model will work in the future.
+
+* Create 4 objects: split, train, test and folds data, just as we do in chapter 10.
+
+* Using the same model as in the previous scene, fit the model on the training data and test it on the test data. Report the RMSE. Why is it so much lower?
+
+* Using the same model as in the previous scene, use cross-validation and report the average RMSE over the assessment samples. 
+
+
+```{r}
+set.seed(9)
+week_10_split <- initial_split(week_10, prob = 0.8)
+week_10_train <- training(week_10_split)
+week_10_test  <- testing(week_10_split)
+week_10_folds <- vfold_cv(week_10, v = 10)
+
+workflow() %>% 
+  add_recipe(recipe(reg_chg ~ treatment + poverty_n,
+                    data = week_10_train)) %>% 
+    step_interact(~ treatment*povert_n) %>% 
+  add_model(linear_reg() %>% set_engine("stan")) %>% 
+  fit(data = week_10_train) %>% 
+  predict(new_data = week_10_test) %>% 
+  bind_cols(week_10_test %>% select(reg_chg)) %>% 
+  metrics(truth = reg_chg, estimate = `.pred`)
+
+workflow() %>% 
+  add_recipe(recipe(reg_chg ~ treatment + poverty_n,
+                    data = week_10_train)) %>% 
+    step_interact(~ treatment*povert_n) %>% 
+  add_model(linear_reg() %>% set_engine("stan")) %>% 
+  fit_resamples(resamples = week_10_folds) %>% 
+  collect_metrics()
+```
+
+
+
