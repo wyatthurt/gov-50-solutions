@@ -1,0 +1,165 @@
+---
+title: "Problem Set 6"
+author: "Gov 50"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(PPBDS.data)
+library(rsample)
+library(ggridges)
+library(rstanarm)
+```
+
+**Please call your file ps_6.Rmd. This problem set is focused on interpreting models, so you do not have to upload a .zip file to Gradescope. The only Gradescope assignment for this problem set is Problem Set 6: PDF, which accepts your knitted PDF. Your PDF should still only contain paragraphs (for Questions 1 and 2), plots (for Questions 3 and 6), your collaborators, and your single commented code chunk at the end.**
+
+The `qscores` dataset in the **PPBDS.data** library contains course evaluations for all Harvard courses from Fall 2018 and Spring 2019. You can type `?qscores` in the RStudio console to learn more.
+
+## Question 1
+
+**Please type the answers to these questions directly into your .Rmd document (that is, not as comments in a code chunk) so that they appear in your knitted PDF.**
+
+1) Imagine the Harvard administration is looking to analyze "the quality of Harvard courses in general over the last 5 years." Using the concept of "Wisdom," write a paragraph answering whether the dataset you have will allow you to properly answer this question. Here are a few issues to think about when responding: what population is `qscores` a sample of? Is the sample representative of the population?
+
+*Answer is along the lines of: `qscores` is a sample from the population of all Harvard courses during the last five years. `qscores` is only drawn  only two terms of courses, so the sample is not perfectly representative. However, it does cover a full calendar year so the sample is probably not too unrepresentative - this is better than nothing. Harvard courses are likely relatively stable over the last 5 years and don't change that much.*
+
+2) Now, imagine administrators from another New England university approached Harvard to ask for the results of this analysis. They write that "we offer roughly the same departments and number of courses per department as Harvard, and we are interested in using the results of Harvard's analysis to investigate differences in course quality across departments." Using the concept of "Temperance," respond in a paragraph. What would you tell these administrators? How well can your model be applied to their university? Describe several reasons why the model may and may not be a good fit.
+
+*Answer along the lines of: Temperance reminds us to be cautious about the limits of our models. Our model is built from two terms of Harvard courses - this is hardly representative of all Harvard courses, let alone courses at another university! The universities have similar departments with roughly the same sizes, and the nature of undergraduate education means that most courses are likely similar (note that course similarity is an empirical question that could be answered with more data!). However, the courses themselves - including the faculty, curricula, etc. - will be different across universities which may limit the model's usefulness.*
+
+
+## Question 2
+
+**Please type the answers to these questions directly into your .Rmd document (that is, not as comments in a code chunk) so that they appear in your knitted PDF.**
+
+The Government Department volunteers to be the first department to have their evaluations investigated. Using `stan_glm`, create a one-parameter model that finds the mean of overall course evaluations for courses in the Gov. department. Save the result to `gov_model`. Use the `posterior_interval` function to calculate the 95\% confidence interval of the estimate for the mean, and save the result to `gov_interval`. Make sure no output is printed to your PDF. If you're unsure how to remove the output from `stan_glm`, review Chapter 7 of the book.
+
+After creating `gov_model` and `gov_interval`, write one or two sentences to answer each of the following questions. Section 7.5.3 may be helpful for you.
+
+1. Describe the "formula" of your model. What is your dependent variable? What is your independent variable?
+2. What does this model estimate? Interpret the values shown under "Median" and "MAD_SD" in a sentence or two each.
+3. What is your confidence interval? How do you interpret it?
+
+```{r Q2.1}
+gov_model <- qscores %>% 
+  filter(department == "GOV") %>% 
+  stan_glm(formula = rating ~ 1, family = gaussian(), refresh = 0)
+
+gov_interval <- posterior_interval(gov_model)
+```
+
+**Final Answer**: `gov_model` must be a Bayesian model created using `stan_glm`. `gov_interval` must be a 95\% confidence interval created using `posterior_interval`. Your answers above must be in paragraphs.
+
+*Answer along the lines of: the formula is rating ~ 1 because we are creating a model predicting rating with a constant. The dependent variable is the course rating, and the independent variable is simply a constant. The model estimates the average score of GOV courses in the population. To do that, it estimates posterior distributions for mu and sigma. The value of 4.1 for Median means that the median GOV course rating was 4.1. The value of 0.1 for MAD_SD means the scaled standard deviation of the absolute difference between each observation and the median of all observations. This is a measure of spread around the distribution like a simple standard deviation.*
+
+
+## Question 3
+
+Let's look at the posteriors for our mean parameter. Replicate the following histogram of the posterior distribution for the mean course rating. Mark the estimated mean parameter on the graph with a red vertical line, and display both values on the 95\% confidence interval with the blue lines. You may find section 7.5.3 of the textbook useful for this exercise.
+
+```{r q3}
+interval <- gov_interval[1, ]
+
+gov_model %>% 
+  as_tibble() %>% 
+  rename(mu = `(Intercept)`) %>%
+  ggplot(aes(x = mu)) + 
+  geom_histogram(aes(y = after_stat(count/sum(count))),
+                 binwidth = 0.01,
+                 color = "white") +
+  geom_vline(aes(xintercept = mean(mu)), color = "red") +
+  geom_vline(aes(xintercept = interval[1]), color = "blue") +
+  geom_vline(aes(xintercept = interval[2]), color = "blue") +
+  labs(title = "Posterior Probability Distribution",
+       subtitle = "Average course rating in Gov",
+       x = "Rating",
+       y = "Probability") +
+  theme_bw()
+```
+
+## Question 4
+
+Now let's use bootstrap to calculate the average Gov course rating. Using the method described in Chapter 7, complete the following steps and save the result into an object called `q4`:
+
+1. Subset `qscores` to only courses in the GOV department.
+2. Use `bootstraps()` from **rsample** to take 100 bootstrap samples.
+3. Pull the `rating` column in each sample.
+4. Save the mean `rating` from each sample into a column called `score_mean_boot`. 
+5. Pull the `score_mean_boot` values.
+6. Create a 95\% confidence interval for the bootstrap sampled means. You can do this by using the `quantile()` function to calculate the 2.5\% and 97.5\% percentiles in your distribution. Read the documentation for `quantile` and check the examples, particularly with the `probs` argument, for how to do this. 
+
+```{r q4}
+q4 <- qscores %>%
+  filter(department == "GOV") %>% 
+  bootstraps(100) %>%
+  mutate(boot = map(splits, ~ analysis(.)),
+         score_boot = map(boot, ~ pull(., rating)),
+         score_mean_boot = map_dbl(score_boot, ~ mean(.))) %>%
+  pull(score_mean_boot) %>% 
+  quantile(., probs = c(0.025, 0.975))
+```
+
+**Final Answer**: A vector named `q4` with two numeric values, the lower and upper levels of a confidence interval. This object must be made by the `quantile()` function (you'll be able to tell if you did it correctly if `quantile()` automatically adds 2.5\% and 97.5\% names to your confidence interval values that you can see when printing your answer to the console.). Your confidence interval should be similar (but not necessarily identical) to the one calculated in the previous question.
+
+## Question 5
+
+Other departments were so impressed by your work with the Gov Department that the university administrators have asked you to conduct a similar analysis for every other department. Instead of replicating the analysis above several dozen times, your knowledge from Gov 50 leads you to create a function instead. Create a function called `bootstrap_department` that takes the following steps:
+
+1. The function accepts two inputs: a `tibble` called `x` and a numeric value called `n_times`.
+2. Use `bootstraps()` like in Question 4 to take `n_times` bootstrap samples from `x`.
+3. Pull the `rating` column in each sample.
+4. Save the mean `rating` from each sample into a column called `score_mean_boot`. 
+5. Pulls the `score_mean_boot` column.
+
+```{r q5}
+bootstrap_department <- function(x, n_times) {
+  x %>% 
+    bootstraps(n_times) %>%
+    mutate(boot = map(splits, ~ analysis(.)),
+         score_boot = map(boot, ~ pull(., rating)),
+         score_mean_boot = map_dbl(score_boot, ~ mean(.))) %>% 
+    pull(score_mean_boot)
+}
+```
+
+**Final Answer**: a function `bootstrap_department` exactly as described above. You can validate that your function works by confirming that your answer for the Government department works by running something like `qscores %>% filter(department == "GOV") %>% bootstrap_department(., n_times = 50)` - it should return a vector of length 50 with values similar to the distribution you created earlier.
+
+## Question 6
+
+1) Now let's create bootstrap mean estimates for every department in our dataset. For each department in `scores`, run your new `bootstrap_department()` function to take 50 bootstrap samples and save the result in a column called `boot_score`. Create a second column called `n` that counts the number of observed courses in each department. Save your results into an object called `q6`.
+
+**Hint**: you might think that `boot_score = bootstrap_department(., n_times = 50)` within a `summarise()` call would work, but that would call `bootstrap_department()` on the entire dataset and not respect your `group_by` call. Instead, you can access the current data for the current group by calling `cur_data()` like this: `boot_score = bootstrap_department(cur_data(), n_times = 50)`.
+
+```{r q6}
+q6 <- qscores %>% 
+  group_by(department) %>% 
+  summarise(boot_score = bootstrap_department(cur_data(), n_times = 50), 
+            n = n(),
+            .groups = "drop")
+```
+
+**Final Answer**: a tibble called `q6` with `r nrow(q6)` rows and `r ncol(q6)` columns. `q6` must be created by calling your `bootstrap_department` function on every department in `qscores` separately.
+
+2) Let's revisit our initial question about ratings in larger departments, this time by looking at our bootstrap samples. Replicate the following plot of the distributions of ratings in departments with more than 20 courses. Your plot should look similar, but will not be identical because of the randomness involved in bootstrapping.
+
+**Hint**: install the `ggridges` package and check out `geom_density_ridges()`, a great tool to visualize and compare multiple distributions. You can remove the message it prints by passing a value around 0.05 to the `bandwidth` argument in `geom_density_ridges()`.
+
+**Hint #2**: to sort the graph in order of highest to lowest rating, we need to make `department` a factor. Take a look at the `fct_reorder()` function. Feel free to get creative and try to find a way to add colors to this plot - Google is your friend!
+
+```{r}
+q6 %>% 
+  filter(n > 20) %>% 
+  mutate(department = fct_reorder(.f = department, .x = boot_score, .fun = mean)) %>% 
+  ggplot(aes(x = boot_score, y = department)) +
+  geom_density_ridges(bandwidth = 0.05) +
+  theme_bw() +
+  labs(
+    title = "Posterior Distributions of Course Ratings",
+    subtitle = "Departments offering more than 20 courses",
+    x = "Rating",
+    y = "Department"
+  )
+  
+```
