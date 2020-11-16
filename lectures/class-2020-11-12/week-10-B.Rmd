@@ -1,0 +1,146 @@
+---
+title: "Week 10, Day 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(PPBDS.data)
+library(stringr)
+library(rstanarm)
+library(tidyverse)
+library(tidymodels)
+
+# We are still working with the kenya data set. In addition to the variables we
+# used last week, we will (on Thursday) make use of the county in which the poll
+# station was located and of the block_number of that location. Check out the
+# stringr code we use to pull those variables out. Can you figure out how the
+# **stringr** code below works? Is there a better way to do it?
+
+week_10 <- kenya %>% 
+  rename(reg_chg = reg_byrv13) %>% 
+  filter(treatment %in% c("control", "local")) %>% 
+  droplevels() %>% 
+  mutate(poverty_n = (poverty - mean(poverty))/sd(poverty)) %>% 
+  mutate(county = str_replace(block, "/\\d*", "")) %>% 
+  mutate(block_number = str_extract(block, "/\\d*")) %>% 
+  mutate(block_number = str_replace(block_number, "/", "")) %>% 
+  select(county, block_number, poll_station, reg_chg, treatment, poverty_n) 
+
+# These are the data splits we did on Tuesday.
+
+set.seed(9)
+week_10_split <- initial_split(week_10, prob = 0.8)
+week_10_train <- training(week_10_split)
+week_10_test  <- testing(week_10_split)
+week_10_folds <- vfold_cv(week_10_train, v = 10)
+```
+
+
+## Scene 1
+
+**Prompt:** Create a workflow object called `mod_1_wfl` which uses the `lm` engine to run a linear regression. Use a recipe in which reg_chg is a function of `treatment` and `poverty_n`. (No need for an interaction term today.) 
+
+* Calculate the RMSE for this model on the training data. (We did a similar exercise on Tuesday, so feel free to refer to your prior code.)
+
+* Create a model which produces a lower RMSE on the training data. (Do not use the cross-validated data sets until the next Scene.) You may do anything you like! Our advice is to keep the same basic structure as `mod_1_wfl`, but to change the formula and to experiment with various `step_` functions. Call this workflow `mod_2_wfl`. Hints: `step_poly()` and `step_bs()` are fun to play with.
+
+**Answers:** 
+
+
+```{r sc1-a}
+mod_1_wfl <- workflow() %>% 
+  add_model(linear_reg() %>% 
+              set_engine("lm")) %>% 
+  add_recipe(recipe(reg_chg ~ treatment + poverty_n,
+                    data = week_10_train)) 
+
+
+mod_1_wfl %>% 
+  fit(data = week_10_train) %>% 
+  predict(new_data = week_10_train) %>% 
+  bind_cols(week_10_train %>% select(reg_chg)) %>% 
+  metrics(truth = reg_chg, estimate = `.pred`)
+```
+
+```{r sc1-b}
+mod_2_wfl <- workflow() %>% 
+  add_model(linear_reg() %>% 
+              set_engine("lm")) %>% 
+  add_recipe(recipe(reg_chg ~ county + block_number + treatment + poverty_n,
+                    data = week_10_train)  %>% 
+             step_poly(poverty_n, degree = 15))
+
+mod_2_wfl %>% 
+  fit(data = week_10_train) %>% 
+  predict(new_data = week_10_train) %>% 
+  bind_cols(week_10_train %>% select(reg_chg)) %>% 
+  metrics(truth = reg_chg, estimate = `.pred`)
+```
+
+* Goal of this scene is to show how easy it is to overfit a model and to show how cross-validation provides a warning if we have done so. Great case study:  https://www.tidymodels.org/start/case-study/.
+
+## Scene 2
+
+**Prompt:** The danger of using all of the training data to fit a model, and then use that same training data to estimate the RMSE, is that the we will dramatically underestimate the RMSE we will see in the future, because we have overfit. The best way to deal with this problem is to use cross-validation. 
+
+* Calculate mean RMSE using `week_10_folds` for both `mod_1_wfl` and `mod_2_wfl`.  Even though I have no idea what model you built, I bet that the cross-validated `mod_1_wfl` RSME will be better (lower) that the one for `mod_2_wfl`.
+
+* Write a few sentences explaining why a model which worked so well on week_10_train worked so poorly on week_10_folds.
+
+**Answers:** 
+
+```{r sc2-a}
+mod_1_wfl %>% 
+  fit_resamples(resamples = week_10_folds) %>% 
+  collect_metrics()
+```
+
+
+```{r sc2-b}
+mod_2_wfl %>% 
+  fit_resamples(resamples = week_10_folds) %>% 
+  collect_metrics()
+```
+
+* Am I right the the students' models are worse? I bet I am! As soon as you try to find a low RMSE, you almost can't help but to overfit. *Cross-validation allows us to detect model overfitting.* Without it, or a similar tool, there is no easy way to know how much faith you should have in your models.
+
+
+## Scene 3
+
+**Prompt:** Let's use `mod_1_wfl`. Recall that, when using simple `stan_glm()`, we can use `posterior_predict()` and `posterior_epred()` to create individuals predictions and expected values, respectively. The corresponding function is tidymodels is simply `predict()`.
+
+* Use `predict()` to calculate the expected `reg_chg` in a polling station assigned to the treatment and with `poverty_n` equal to 1.5. 
+
+* Provide the 95% confidence interval for this estimate.
+
+* Write a few sentences interpreting this confidence interval.
+
+**Answers:**  
+
+```{r sc3-a}
+new_obs <- tibble(treatment = "control",
+                  poverty_n = 1)
+```
+
+
+```{r sc3-b}
+mod_1_wfl %>% 
+  fit(data = week_10_train) %>% 
+  predict(new_data = new_obs)
+```
+
+
+```{r sc3-c}
+mod_1_wfl %>% 
+  fit(data = week_10_train) %>% 
+  predict(new_data = new_obs, 
+          type = "conf_int",
+          level = 0.95)
+```
+
+* Posterior_epred() gives you a posterior probability distribution, in a way that we are used to working with. predict() does not do that for you. Instead, you got individual things. Simple predict() gets you the expected value --- which is not dissimilar from the Median of the ppd. You can also use predict() to get confidence intervals.
+
+* If we ever get around to wanting the analogue to posterior_predict(), we will need predict(type = "pred_int").
+
+* The interpretation of the confidence interval is the same as always. We are Bayesian through-and-through. The point is that we don't need all the machinery associated with stan_glm() to continue to make claims about the future. We don't have the full posterior probability distribution for the expected value of `reg_chg` for a poverty_n = 1.5 community assigned to treatment. But, having a mean value and a confidence interval is more than enough information for any real world application.

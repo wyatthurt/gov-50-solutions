@@ -1,0 +1,247 @@
+---
+title: 'Problem Set #7'
+author: "Gov 50"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(rstanarm)
+library(ggridges)
+library(gtsummary)
+library(broom.mixed)
+library(gt)
+```
+
+For this problem set, we'll use [DW-NOMINATE scores](https://en.wikipedia.org/wiki/NOMINATE_(scaling_method)), a widely used method for estimating the ideology of members of Congress. Download the data at [https://voteview.com/data](https://voteview.com/data) with the default options (Member Ideology, Both, All, and CSV in the selection tabs) that appear when you first open the page. [Here](https://voteview.com/articles/data_help_members) is some more information on the data.
+
+Please load the following libraries (and only these!): `tidyverse`, `rstanarm`, `ggridges`, `gtsummary`, `broom.mixed`, and `gt` (you may need to install some of these!).
+
+## Question 1
+
+First, create a folder called `raw_data`, place the `dw_nominate.csv` data in it and read the dataset into an object. Poke around the data with `glimpse()`, `View()`, and the other usual methods in the console (remember you can't include functions like `View()` when knitting an .Rmd). Let's read and clean the data:
+
+1. First, read the dataset and drop all columns except `congress`, `chamber`, `bioname`, `party`, `born`, `died`, `nominate_dim1`, and `nominate_dim2`. Make sure no warnings appear when reading in the data.
+2. Notice that the data includes presidents, who are not associated with any NOMINATE scores. Since we're only interested in members of Congress, drop presidents from the dataset.
+3. Create a tibble called `congress_1947`, which includes every Congress after 1947 (greater than or equal to the 80th Congress). Include a new variable called `party` in `congress_1947` that changes `party_code` to take the value "D" for Democrats (instead of 100), "R" for Republicans (instead of 200), and "Other" for all other parties.
+
+```{r Load data}
+dw_nominate <- read_csv("raw_data/dw_nominate.csv",
+                        col_types = cols(.default = col_double(),
+                                         chamber = col_character(),
+                                         state_abbrev = col_character(),
+                                         bioname = col_character(),
+                                         bioguide_id = col_character(),
+                                         conditional = col_logical())
+                        ) %>% 
+  filter(chamber != "President")
+
+congress_1947 <- dw_nominate %>% 
+  filter(congress >= 80) %>% 
+  mutate(party = case_when(party_code == 100 ~ "D",
+                           party_code == 200 ~ "R",
+                           TRUE ~ "Other")) %>% 
+  select(congress, chamber, bioname, party, born, died, nominate_dim1, nominate_dim2)
+```
+
+**Final Answer**: a `tibble` called `congress_1947` with `r nrow(congress_1947)` rows and `r ncol(congress_1947)` columns: `r colnames(congress_1947)`. Feel free to read in the original dataset into a separate object first and then create `congress_1947`, that is up to you.
+
+## Question 2
+
+Let's begin exploring the relationship between ideology and party for members of Congress. Here are two visualizations of DW-NOMINATE scores in `congress_1947`. Choose *one* plot to replicate, but provide a few sentences of substantive interpretation (as in, please describe what the plots mean) for *both* plots in your pdf. Make sure to address the following points in your response:
+
+1. For Plot 1: what do the `nominate_dim1` and `nominate_dim2` variables represent conceptually? You can Google DW-NOMINATE scores, search from the provided website, etc. to find more substantive information on these scores. Be sure to interpret both dimensions. We're not grading this on technical detail, but just to make sure you do some research to understand what these scores represent. This is great practice for your project, where you should be looking up documentation for your datasets. The Wikipedia article is a good place to start: https://en.wikipedia.org/wiki/NOMINATE_(scaling_method)
+2. For Plot 2: how has the `nominate_dim1` of members of each party changed since 1947? Why might this be?
+
+**Hint for Plot 1**: `geom_text()` prints text labels in specified positions on a plot. Notice you will need to find a way to separate the `bioname` column into last name alone. The `separate` function is a good way to do this. If you find yourself with warnings, try examining the `fill` and `extra` arguments in the documentation.
+
+**Hint for Plot 2**: The y-axis in `geom_density_ridges()` is discrete.
+
+######################### 
+
+**Potential answers:**
+
+1. `nominate_dim` is a measurement of economic liberal-conservativism; `nominate_dim2` "picks up differences...over slavery, currency, nativism, civil rights, and lifestyle issues during periods of American history."  In the context of the 88th Congress, `nominate_dim2` probably represents views on civil rights. This is supported by the fact that Southern Democrats who filibustered the Civil Rights Act appear at one extreme, and the drafters of the bill (e.g. Everett Dirksen and Emanuel Celler) at the other.
+
+2. The ideologies of both parties seem to have steadily drifted farther apart, with less and less overlap in between the distributions. The Republican party seems to drifted significantly to the right, while the Democrats have largely stayed at a similar median while gradually becoming a bit narrower. This is generally called political polarization.
+
+###############################
+
+```{r Plot 1}
+congress_88 <- congress_1947 %>% 
+    filter(congress == 88 & party != "Other") %>% 
+    separate(bioname, into = c("lastname", NA), 
+             sep = ",", fill = "right", extra = "drop")
+
+notable <- c("THURMOND", "RUSSELL", "FULBRIGHT", "JAVITS", "DIRKSEN", "CELLER")
+
+congress_88 %>% 
+  ggplot(aes(x = nominate_dim1, y = nominate_dim2, color = party)) +
+  geom_point(alpha = 0.4) +
+  geom_text(aes(label = ifelse(lastname %in% notable, lastname, "")),
+            check_overlap = FALSE,
+            color = "black",
+            size = 2, vjust = -1) +
+  scale_color_manual(values = c("blue", "red")) +
+  scale_x_continuous(limits = c(-1, 1)) +
+  theme_bw() +
+  labs(
+    title = "Ideology of members of the 88th Congress, 1963-1965",
+    x = "Liberal to conservative",
+    y = "Positions on salient issues",
+    color = "Party"
+  )
+```
+
+```{r Graph 2}
+congress_1947 %>% 
+  filter(congress >= 90 & party != "Other") %>% 
+  mutate(congress = as.factor(congress)) %>% 
+  filter(!is.na(nominate_dim1)) %>%
+  ggplot(aes(x = nominate_dim1, y = congress, fill = party)) +
+  geom_density_ridges(alpha = 0.7, bandwidth = 0.04) +
+  scale_fill_manual(values = c("blue", "red")) +
+  theme_bw() +
+  labs(
+    title = "Ideological Distribution of Members of Congress Since 1967",
+    x = "Liberal to conservative",
+    y = "Congress",
+    fill = "Party"
+  )
+```
+
+## Question 3
+
+Now, let's model the relationship between ideology and party identification. This will allow us to answer questions later in the problem set like, for example, what is the probability that a given Democratic member of the 115th Congress is more conservative than the median member of that Congress? What about a Republican?
+
+1. Create a new tibble called `congress_115` which contains all the members of the 115th Congress. Note that there will be more than 535 members due to vacancies and special elections. Modify the dataset so that the two independents ("Other" in the party `column`) are Democrats instead since they (Bernie Sanders and Angus King) caucus with the Democrats. Create a new variable called `dim1_percentile`, which is the percentile rank of `nominate_dim1`, where 50 is a member of Congress at the 50th percentile. You can calculate this by using the `percent_rank` function on `nominate_dim1` and multiplying the result by 100.
+
+```{r}
+congress_115 <- congress_1947 %>% 
+  filter(congress == 115) %>% 
+  mutate(party = recode(party, "Other" = "D"),
+         dim1_percentile = 100 * percent_rank(nominate_dim1))
+```
+
+Using `stan_glm()`, we'll create a model for `dim1_percentile` using `party` as the explanatory variable. You can do this with or without an intercept as long as your code, model, and interpretations are correct.
+
+2. Write down the mathematical form of your model. LaTeX is a great way to typeset mathematical equations in an Rmarkdown. Write the mathematical equation for your model that uses `party` (which has two groups, Democrats and Republicans) to predict `dim1_percentile` for each member. Interpret your outcome variable, your coefficient(s), your predictor(s), and the error term.
+
+########################
+
+**Potential answer (without an intercept):**
+
+$y_i = \beta_1 x_{r, i} + \beta_2 x_{d, i} + \epsilon_i$
+
+where
+
+$x_{r, i}, x_{d, i} \in \{0,1\}$
+
+$x_{r, i} + x_{d, i} = 1$
+
+$\epsilon_i \sim \mathrm{N}(0, \sigma^2)$
+
+$y_i$ represents the dependent variable `dim1_percentile`, the $x_i$ terms represent the explanatory variables of partisanship and take values $0$ or $1$, the $\beta$ terms represent the mean ideology percentile of Democrats and Republicans, and the error term is the difference between reality and model predictions (the "stochastic component"), influenced by omitted variables.
+
+########################
+
+3. Now, create the model with `stan_glm`. Save it to an object called `dim1_model`. Run `set.seed(10)` at the start of the code chunk. ([Why?](https://en.wikipedia.org/wiki/Random_seed))
+
+```{r}
+set.seed(10)
+dim1_model <- congress_115 %>% 
+  stan_glm(formula = dim1_percentile ~ party - 1, 
+           family = gaussian(), 
+           refresh = 0)
+```
+
+We could just print the model output directly, but it wouldn't be very aesthetically pleasing. If you were presenting these results in a paper appendix (or in your final project), you would print them in a nice table, so that's what we'll do here. Install the `gtsummary` package and design a regression table to display your results. Here is one taht we mdae - yours should look similarly professional, although it's okay if you want to design it differently:
+
+[Here](https://www.danieldsjoberg.com/gtsummary/articles/tbl_summary.html) is a guide to `gtsummary`, and you can also find an example in the Tools chapter of PPBDS. You can adapt the example on the Enos experiment using `tbl_regression()`. Note that you will also need to load the `gt` package.
+
+```{r}
+tbl_regression(dim1_model, intercept = TRUE) %>% 
+  as_gt() %>%
+  tab_header(title = "Regression of Congressional Ideology",
+             subtitle = "The Effect of Party on DW-NOMINATE Percentile") %>% 
+  tab_source_note(md("Source: https://voteview.com/data"))
+```
+
+5. Finally, in a short paragraph, interpret all parameters (i.e. the fitted coefficients and the auxiliary parameter sigma) of this model.
+
+**Final Answer**: there are multiple parts to this question. Your final answer must include an object called `congress_115` exactly as described above, a mathematical formula for your model, a model called `dim1_model` created with `stan_glm`, a regression table, and a short paragraph interpreting your fitted coefficients and auxiliary sigma.
+
+## Question 4
+
+1. Let's return to our initial question: how likely is it that a Democratic or Republican member of the 115th Congress will be more conservative than the median member (the 50th percentile of `nominate_dim1`)? Create a new tibble to represent a hypothetical Democrat and Republican and use `posterior_predict()` to get posterior draws for each party (there are several examples of using new data in this way in Chapter 8). Save the results to a tibble called `dim1_posterior`.
+
+```{r}
+set.seed(12553)
+new_obs <- tibble(party = c("D", "R"))
+dim1_posterior <- posterior_predict(dim1_model, newdata = new_obs) %>% 
+  as_tibble() %>% 
+  mutate_all(as.numeric) %>% 
+  rename(D = `1`, R = `2`)
+```
+
+Then, create a plot that visualizes both posterior distributions for hypothetical Democrats and Republicans. Remember that your solution to this question will depend on how you made your original model. Your plot must:
+
+1. Visualize both Democrats and Republicans in separate distributions.
+2. Have clearly labeled axes, a legend describing which color distribution represents each party, and a title.
+3. A theme and colors other than the default ggplot values. Beautiful plots are somewhat subjective, but please put in effort to make it look pretty!
+
+```{r}
+dim1_posterior %>% 
+  pivot_longer(cols = c(D, R),
+               names_to = "party",
+               values_to = "pred_ideology") %>% 
+  ggplot(aes(x = pred_ideology)) +
+  geom_histogram(aes(y = after_stat(count/sum(count)),
+                     fill = party),
+                 bins = 100, 
+                 color = "white",
+                 alpha = 0.6,
+                 position = "identity") +
+  scale_x_continuous(breaks = seq(0, 100, 25)) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  scale_fill_manual(values = c("blue", "red")) +
+  theme_bw() +
+  labs(
+    title = "Posterior Distribution for DW-Nominate Percentile",
+    x = "Percentile",
+    y = "Proportion",
+    fill = "Party"
+  )
+```
+
+3. Using `dim1_posterior`, calculate the answer to our initial question for both the hypothetical Democrat and Republican. That is, how likely is it that a Democratic or Republican member of the 115th Congress will be more conservative than the median member overall? You can store these values in any object you want. Describe the process you took and your answer in a few sentences.
+
+```{r}
+pred1 <- tibble(percentile = dim1_posterior$D) %>% 
+  mutate(more_cons = percentile > 50) %>% 
+  summarize(prob = sum(more_cons) / n())
+
+pred2 <- tibble(percentile = dim1_posterior$R) %>% 
+  mutate(more_cons = percentile > 50) %>% 
+  summarize(prob = sum(more_cons) / n())
+```
+
+**Final Answer**: your answer must include a tibble called `dim1_posterior` created by using `posterior_predict()` as described above, a plot visualizing both party distributions, and a few sentences describing the procedure you took for Step 3 and interpreting your answer.
+
+## Question 5
+
+We just calculated a bunch of numbers and made some nice-looking graphs, but what kind of conclusions can we actually reach? In a paragraph each, reflect on our analyses of the 115th Congress through the lenses of the following concepts:
+
+1. *Wisdom:* How representative was our data? To what extent can we generalize our analyses, and what are the perils of doing so? Recall the plot of the 88th Congress from Question 2. If we ran the same analyses on the 88th Congress, what might the results and implications be? What about the 12th Congress?
+2. *Temperance:* Our model included only one dependent variable, `party`. What are some other variables that would plausibly influence ideology? How might we go about incorporating them into a model?
+
+##############################
+
+**Potential answers:**
+
+1. Only representative of the present moment in American politics, however defined. We cannot assume that the same set of ideological divisions existed in the same arrangement across all of American history. For example, the plot of the 88th Congress suggests that there were many Republicans who were significantly more liberal than many Democrats, compared to very few today (as our analyses showed), which means that party had a much smaller influence on ideology. Who knows for the 12th Congress? Totally different circumstances.
+
+2. Other plausible variables: age, race, gender, geography/urban vs. rural, wealth (though there's likely a great deal of positive covariance between many of these), and probably many more interesting & less obvious variables that political scientists have used in more complex models. Temperance teaches us to respect the omitted variables & to be realistic about the strength of our conclusions.
+
+#############################
