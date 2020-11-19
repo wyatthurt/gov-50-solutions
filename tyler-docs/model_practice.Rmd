@@ -1,0 +1,80 @@
+---
+title: "More Model and CV Practice"
+author: "Tyler Simko"
+date: "11/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(PPBDS.data)
+library(stringr)
+library(rstanarm)
+library(tidyverse)
+library(tidymodels)
+library(fec16)
+```
+
+#### Quick Review of Cross-Validation
+
+`tidymodels` always has to start with setup. This is pasted from last week:
+
+```{r}
+set.seed(50) # so results stay the same every time
+house <- results_house %>% 
+  drop_na(general_percent, primary_percent)
+
+# create "training" (80% of your rows) and "testing" (20%)  sets from data
+house_split <- initial_split(house, prob = 0.8)
+house_train <- training(house_split) # training set
+house_test  <- testing(house_split)  # testing set
+
+# 10 random groups in training set for CV
+house_folds <- vfold_cv(house_train, v = 10)
+```
+
+Get the model setup: 
+
+```{r}
+model_chosen <- workflow() %>% 
+  add_recipe(recipe(general_percent ~ primary_percent + incumbent,
+                    data = house_train) %>%
+  step_interact(~ primary_percent*incumbent)) %>%
+  add_model(linear_reg() %>% set_engine("stan"))
+```
+
+That code is the `tidymodels` equivalent of 
+
+```{r, eval=FALSE}
+stan_glm(general_percent ~ primary_percent + 
+                           incumbent + 
+                           primary_percent*incumbent,
+         refresh = 0, data = house_train)
+```
+
+Recall Cross-Validation (CV) from Tuesday. CV creates $V$ random groups in your data and uses each fold sequentially as the testing data.
+
+1. **Split data into folds**: Randomly split your dataset into $V$ groups called folds (also sometimes called $K$ folds). Each of these will sequentially be your testing data.
+2. **Hold one fold aside and train on others**: For each of your folds, train your model on the other $V - 1$ folds (9 in this case) and hold one aside as testing data.
+3. **Predict for held-out testing fold**: Make predictions on your held-out testing data.
+4. **Summarize errors**: often an average of $V$ numbers, estimates error (like RMSE) when you use each fold as the testing data.
+
+```{r, echo=FALSE, fig.align="center", fig.cap="***Step 1: A visualization of cross-validation with V = 3***"}
+knitr::include_graphics("images/cross_validation_randomize.png")
+```
+
+```{r, echo=FALSE, fig.align="center", fig.cap="***Steps 2 & 3: Now you can estimate error (with something like RMSE) on each fold!***"}
+knitr::include_graphics("images/cross_validation.png")
+```
+
+```{r}
+model_chosen %>% 
+  # use fit_resamples() for CV instead of fit
+  fit_resamples(resamples = house_folds) %>% 
+  # collect_metrics() for CV instead of metrics()
+  collect_metrics()
+```
+
+You could run CV on several models and chooose the one that performs best as your "final" model.
+
+**Let's try Cross-Validation in Scene 2.**

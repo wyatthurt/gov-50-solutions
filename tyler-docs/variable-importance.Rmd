@@ -1,0 +1,146 @@
+---
+title: "Variable Importance"
+author: "Tyler Simko"
+date: "11/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(PPBDS.data)
+library(gt)
+library(rstanarm)
+library(tidyverse)
+library(tidymodels)
+```
+
+Don't forget you can get more information about functions and datasets with `?`:
+
+```{r}
+# try this for Scene 1! read it before answering questions!
+?shaming
+```
+
+**Scene 1: let's get warmed up by cleaning our data.**
+
+Once you've cleaned your data, you're ready to fit a model!
+
+# Variable "Importance"
+
+While fitting our models, how do we know whether or not a variable has an "important" relationship with the outcome? A "big" or "small" effect?
+
+**Quick point about significance**: if you have previous stats experience, you may have heard of **"statistical significance"** and / or "null hypothesis tests." They are not covered in the textbook or in this course.
+
+Roughly, they use confidence intervals and uncertainty the same way as above to decide whether a variable is "significant" or not. The traditional approach is to call a variable "significant" if the confidence interval does not contain 0 and "insignificant if it does. If you assume a null hypothesis (typically that means the true coefficient is zero), the "p-value" represent the probability of obtaining an effect at least as extreme as the one in your sample.
+
+**Since we are calculating entire posteriors, we don't really need significance anyway**. It doesn't matter if a variable if "significant" or not, we can see all of the posterior estimates and see exactly how likely we think values are to be above 0 or not.
+
+Here, we will substantively interpret the coefficient in terms of (1) **magnitude** (how large is the relationship? ) and (2) **uncertainty** (how confident are we in that magnitude?).
+
+Two things to keep in mind:
+
+## 1. Magnitude
+
+The size of the coefficient is the first thing to check. Recall that a regression coefficient $\beta_1$ (with no interactions) will be interpreted as "holding all else constant, increasing this variable by 1 changes our model's predicted outcome by $\beta_1$."
+
+Whether this value is "large" or "small" depends on your question - what the variable represents, what your outcome represents, etc.
+
+For example:
+
+```{r}
+# make a "math department" indicator for illustration
+qscores <- qscores %>% 
+  mutate(math = ifelse(department == "MATH", 1, 0))
+
+fit_1 <- stan_glm(hours ~ math, 
+                  data = qscores,
+                  refresh = 0)
+print(fit_1, digits = 4)
+```
+
+The intercept (courses not in the math department) has a posterior median of 6.02. Courses in the math department get an additional ~2.5 in their prediction. That's nearly a 50\% ([6+2.5] / 6) increase! 
+
+But the question you're dying to ask yourself: *is that a big or a small number?* **It depends on your question**. Do you think a 2.5 hour increase / week on average is large? Maybe! I'd say it's a large increase.
+
+However, check out this model:
+
+```{r}
+fit_2 <- stan_glm(hours ~ enrollment, 
+                  data = qscores,
+                  refresh = 0)
+print(fit_2, digits = 6)
+```
+
+Increasing the number of students in a course by 1 is associated with a 0.000021. Each additional student has a very small effect. At this relationship, increasing the size of a course by 100 students would lead to a predicted outcome change of 0.000021 * 100 = 0.0021. Substantively, this seems like a very small change. Maybe this variable is not so important.
+
+Magnitude - things to keep in mind:
+
+1. **Whether an increase is small or large depends on the context of your problem**. First, think about the ***scale*** of your outcome variable. An increase of 0.5 is huge if we're talking about the predicted probability of turnout, but 0.5 is quite small if we're talking about annual income in dollars.
+2. The **scale** of your predictor. Interpreting $\beta_1$ will always be in terms of an increase of 1 in your variable. If this is something like number of children, 1 is a sizable increase. If the predictor is dollars, an increase of 1 isn't as meaningful.
+3. But **scale isn't everything** - small increases can add up! If the coefficient on `enrollment` above had been larger, then the cumulative effect of adding 10 or 20 could've been quite large, even if a single student doesn't add much.
+
+Beyond magnitude, we also need to think about ...
+
+# 2. (Un)certainty
+
+Next, we can think about how **confident** we are in our coefficient estimates. This is where MAD_SD estimates and confidence intervals come in.
+
+A good sign of importance is if your confidence interval does not contain 0. Then, you are 95\% sure that your coefficient is at least positive if the entire posterior is above 0 (or negative if it's all below 0).
+
+The `enrollment` CI contains 0 - we're not 95\% sure that adding an additional student is associated with an increase in hours - the relationship could be positive or negative. 
+
+```{r}
+posterior_interval(fit_2, prob = 0.95)
+```
+
+Recall that your confidence intervals around an estimate $\beta_1$ are roughly $(\beta_1 - 2*MAD\_SD, \beta_1 + 2*MAD\_SD)$. If you wanted to be more precise, you could use 1.96 instead of 2. For example:
+
+```{r}
+fit_3 <- stan_glm(hours ~ math + enrollment, 
+                  data = qscores,
+                  refresh = 0)
+print(fit_3, digits = 4)
+
+# ask function to make CI for you
+posterior_interval(fit_3, prob = 0.95)
+
+# or ~~roughly~~ do it yourself!
+c(fit_3$coefficients["math"] - 1.96*fit_3$ses["math"],
+  fit_3$coefficients["math"] + 1.96*fit_3$ses["math"])
+```
+
+`math` is a different story - the model is very confident that math department courses take longer on average than non math department courses. We're 95\% sure the predicted increase is between 1.5 hours and 3.5 hours.
+
+```{r, echo=FALSE}
+# you can ignore this code, just makes plot below
+d1 <- rnorm(1000, mean = 0,  sd = 0.1) %>% tibble()
+d2 <- rnorm(1000, mean = 5, sd = 2) %>% tibble()
+d3 <- rnorm(1000, mean = 5, sd = 0.1) %>% tibble()
+d4 <- rnorm(1000, mean = 0, sd = 2) %>% tibble()
+
+d <- bind_rows(d1, d2, d3, d4, .id = "d")
+colnames(d) <- c("dist", "value")
+d <- d %>% 
+  mutate(dist = case_when(dist == 1 ~ "Low Magnitude / Low Uncertainty",
+                          dist == 2 ~ "High Magnitude / High Uncertainty",
+                          dist == 3 ~ "High Magnitude / Low Uncertainty",
+                          dist == 4 ~ "Low Magnitude / High Uncertainty"))
+## get CIs
+cis <- d %>% group_by(dist) %>%
+  summarise(lower = quantile(value, probs = 0.025),
+            upper = quantile(value, probs = 0.975), .groups = "drop")
+
+d %>% ggplot(aes(x = value, fill = dist)) + 
+  geom_density() + 
+  facet_wrap(~dist, scales = "free_x") + 
+  theme_classic() + 
+  theme(legend.position = "none") + 
+  labs(title = "Importance: Magnitude and Uncertainty",
+       subtitle = "95% CIs shown with dashed lines",
+       x = "Remember: `High` and `Low` depend on your question.",
+       y = "Density") + 
+  geom_vline(data = cis, aes(xintercept = lower), col = "darkblue", lty = "dashed") + 
+  geom_vline(data = cis, aes(xintercept = upper), col = "darkblue", lty = "dashed") + 
+  theme(strip.text = element_text(face = "bold"))
+```
+
+**Let's do this together in Scene 2.**
