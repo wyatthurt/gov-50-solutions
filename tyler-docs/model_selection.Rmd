@@ -278,7 +278,7 @@ knitr::include_graphics("images/cross_validation.png")
 
 ```{r}
 # create 10 folds
-cv_folds <- vfold_cv(house, v = 10)
+cv_folds <- vfold_cv(house_train, v = 10)
 
 # instead of fit() on one sample, use fit_resamples to do it on all folds
 model_chosen %>% 
