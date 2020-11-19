@@ -1,0 +1,184 @@
+---
+title: "Week 11, Day 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(PPBDS.data)
+library(gt)
+library(rstanarm)
+library(tidyverse)
+library(tidymodels)
+
+# The full shaming data is huge. We will learn more about how to work with such
+# large data sets next semester in Gov 1005: Big Data. Join us! For now, let's
+# sample 10,000 rows and work with that. Next Tuesday, we will use the full
+# data set. In the meantime, feel free to experiment.
+
+set.seed(1005)
+week_11 <- shaming %>% 
+  mutate(age = 2006 - birth_year) %>% 
+  mutate(treatment = fct_relevel(treatment, "Control")) %>% 
+  mutate(solo = ifelse(hh_size == 1, TRUE, FALSE)) %>% 
+  select(-general_04, -no_of_names, -birth_year, -hh_size) %>% 
+  sample_n(10000)
+
+week_11_split <- initial_split(week_11)
+week_11_train <- training(week_11_split)
+week_11_test  <- testing(week_11_split)
+week_11_folds <- vfold_cv(week_11_train, v = 5)
+```
+
+
+## Scene 1
+
+**Prompt:** Explore a variety models which explain `primary_06` as a function of the variables in our data set. Make sure to explore some interaction terms. 
+
+* Come up with at least two models that a) you like and would be willing to defend and b) are somewhat different from one another. The two most common model types in these situations are "simple" and "full". The former includes a minimum number of variables. The latter errs on the side of variable inclusion and the creation of interaction terms.
+
+* Which data set should we use for this? Why?
+
+* What does it mean if, for example, the coefficient of `treatmentNeighbors` varies across models?
+
+* Do things change if we start using all the data? Is there a danger in doing so?
+
+**Answers:** 
+
+```{r}
+mod_3_all <- stan_glm(primary_06 ~ sex + age + primary_02 + 
+                        general_02 + primary_04 + treatment  + 
+                        solo, 
+                  data = week_11_train,
+                  refresh = 0)
+```
+
+```{r}
+print(mod_3_all, detail = FALSE, digits = 3)
+```
+
+```{r}
+mod_3_some <- stan_glm(primary_06 ~ age + primary_04 + treatment, 
+                  data = week_11_train,
+                  refresh = 0)
+```
+
+```{r}
+print(mod_3_some, detail = FALSE, digits = 3)
+```
+
+```{r}
+mod_3_inter <- stan_glm(primary_06 ~ sex + age + primary_02 + solo + 
+                        general_02 + primary_04 + treatment + treatment:solo, 
+                  data = week_11_train,
+                  refresh = 0)
+
+print(mod_3_inter, detail = FALSE, digits = 3)
+```
+
+
+## Scene 2
+
+**Prompt:** Compare your two models using cross-validation.
+
+**Answers:*
+
+```{r simple}
+simple_wfl <- workflow() %>% 
+  add_model(linear_reg() %>% 
+              set_engine("stan"))  %>%
+  add_recipe(recipe(primary_06  ~ age + primary_04 + treatment,
+                    data = week_11_train) %>% 
+               step_dummy(all_nominal())
+             )
+```
+
+
+```{r simple-res}
+simple_res <- simple_wfl %>% 
+  fit_resamples(resamples = week_11_folds) %>% 
+  collect_metrics() 
+
+simple_res
+```
+
+
+
+
+```{r full}
+full_wfl <- workflow() %>% 
+  add_model(linear_reg() %>% 
+              set_engine("stan"))  %>%
+  add_recipe(recipe(primary_06  ~ sex + age + primary_02 + solo + 
+                        general_02 + primary_04 + treatment,
+                    data = week_11_train) %>% 
+               step_dummy(all_nominal()) %>% 
+               step_interact(~ starts_with("treatment"):starts_with("solo"))
+             )
+```
+
+
+```{r full-res}
+full_res <- full_wfl %>% 
+  fit_resamples(resamples = week_11_folds) %>% 
+  collect_metrics()
+
+full_res
+```
+
+```{r}
+trains %>% 
+  select(starts_with("a"))
+```
+
+
+## Scene 3
+
+**Prompt:** Fit the model and then estimate what RMSE will be in the future.
+
+* If you have time, redo all the important steps above with the full data set.
+
+**Answers:*
+
+Let's say we select the full model.
+
+```{r}
+full_wfl %>% 
+  fit(data = week_11_train) %>% 
+  predict(new_data = week_11_test) %>% 
+  bind_cols(week_11_test %>% select(primary_06)) %>% 
+  metrics(truth = primary_06, estimate = .pred)
+  
+```
+
+I would predict that RMSE would be around 0.444 in the future.
+
+
+## Problem for Challenge Groups
+
+Challenge groups should be encouraged to make some plots. Hard thing about these plots is that the outcomes are all 0/1. Makes plotting much more of a challenge! Examples:
+
+* Plot the primary_06 versus age for all the data. There are many ways to do that. Here is mine.
+
+```{r}
+shaming %>% 
+  mutate(age = 2006 - birth_year) %>%  
+  ggplot(aes(age, primary_06)) + 
+  geom_jitter(alpha = 0.005, height = 0.1) + 
+  geom_smooth(formula = y ~ x, method = "lm", se = FALSE) + 
+  scale_y_continuous(breaks = c(0, 1), labels = c("Did Not Vote", "Voted")) + 
+  labs(title = "Age and Voting in 2012 Michigan Primary Election", 
+       subtitle = "Older people are more likely to vote", 
+       x = "Age", 
+       y = NULL, 
+       caption = "Data from Gerber, Green, and Larimer (2008)") 
+```
+
+* Plot the predicted values for the simple model versus the predicted values for the full model. How different are they?
+
+* Plot the predicted values for the full model (fitted with all the training data) against the true values? Is there anything strange? Are there categories of observations with big residuals? Looking for such things can provide clues about how to improve the model.
+
+* Do the same plots but with all 340,000 rows. What changes do we need to make the plots look good?
+
+
+

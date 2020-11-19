@@ -1,0 +1,202 @@
+---
+title: "Week 11, Day 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(PPBDS.data)
+library(knitr)
+library(gt)
+library(rstanarm)
+library(tidyverse)
+library(tidymodels)
+
+# We will be using the `shaming` tibble from PPBDS.data. Check out ?shaming for
+# details. On Day 1, we will explore the data and review the basics of Bayesian
+# modeling, as covered in chapters 7 -- 9. On Day 2, we will decide on a model
+# to use. On Day 3, we will use that model to answer questions.
+
+# The full shaming data is huge. We will learn more about how to work with such
+# large data sets next semester in Gov 1005: Big Data. Join us! For now, let's
+# sample 10,000 rows and work with that.
+
+set.seed(1005)
+week_11 <- shaming %>% 
+  sample_n(10000)
+```
+
+## Scene 1
+
+**Prompt:** Let's explore the data. You can never look at your data too much!
+
+1) How many voters got which treatments and how many voted in the 2006 primary? 
+
+```{r}
+# how many voters got which treatments?
+week_11 %>%
+  group_by(treatment) %>%
+  count()
+
+table(week_11$treatment)
+
+# how many voted in 06?
+table(week_11$primary_06)
+```
+
+2) Explore `birth_year`. Does it make sense? If we got handed a new data set for today, would `birth_year` mean the same thing? Might we want to transform it into something different so that our model would "work" with today's data?
+
+```{r}
+# you could use age instead
+week_11$age <- 2006 - week_11$birth_year
+
+# or do it the long way
+week_11 <- week_11 %>%
+  mutate(age = 2006 - birth_year)
+```
+
+3) There are a bunch of voting records. What do they mean? Are they all recorded in the same way? How are they connected to each other? Do we want to use them all?
+
+They mean whether a voter turned out. 
+Some are coded Yes/No and some are 1/0.
+
+4) Explore the `no_of_names` variable? How is it distributed? What does it mean? Can we use it in our modeling?
+
+Help pages says it's in the dataset only for "Neighbors" group. NA for everyone else. Probably best to avoid it for now.
+
+5) Check out `hh_size`. What does it mean? Is the distribution sensible? Might it be a good idea to create a new variable which is more likely to capture an effect of interest? For example, I bet that that there is a big difference between living by yourself and living with other people. I bet that there is much less difference between living with 3 versus 4 people.
+
+Help pages - household size.
+
+```{r}
+table(shaming$hh_size)
+
+# can make a new variable if you want like he says
+week_11 <- week_11 %>%
+  mutate(solo = ifelse(hh_size == 1, 1, 0))
+```
+
+6) Are the factor levels for treatment convenient? Try a simple regression and see! How can we change them?
+
+No, looks like Civic Duty is the baseline group.
+
+```{r}
+stan_glm(primary_06 ~ treatment, refresh = 0, data = week_11)
+
+# you can use factor relevel so that "Control" is the baseline group
+week_11 <- week_11 %>%
+  mutate(treatment = fct_relevel(treatment, "Control"))
+```
+
+7) Create a new data set, `week_11_clean`, which makes whatever corrections/improvements you think are a good idea. We will use that data set for the next two Scenes.
+
+```{r}
+week_11_clean <- week_11 %>% 
+  mutate(age = 2006 - birth_year) %>% 
+  mutate(treatment = fct_relevel(treatment, "Control")) %>% 
+  mutate(solo = ifelse(hh_size == 1, TRUE, FALSE)) %>% 
+  select(-general_04, -no_of_names, -birth_year, -hh_size)
+```
+
+## Scene 2
+
+**Prompt:** Having cleaned up our data, we are now ready to start modeling. 
+
+* Let's be disciplined. Split up the data and only use the training data for the rest of today. 
+
+```{r}
+set.seed(9)
+week_11_split <- initial_split(week_11_clean)
+week_11_train <- testing(week_11_split)
+week_11_test  <- testing(week_11_split)
+week_11_folds <- vfold_cv(week_11_train, v = 5)
+```
+
+* Use stan_glm() to estimate a model of `primary_06` as a function of `treatment`. Write a sentence or two interpreting the important parameters. (Hint: Try it both with and without an intercept.)
+
+```{r}
+fit_1 <- stan_glm(primary_06 ~ treatment, 
+                  data = week_11_train,
+                  refresh = 0)
+
+fit_1_no_i <- stan_glm(primary_06 ~ treatment - 1, 
+                  data = week_11_train,
+                  refresh = 0)
+```
+
+```{r}
+print(fit_1, digits = 3)
+```
+
+
+```{r}
+print(fit_1_no_i, digits = 3, detail = FALSE)
+```
+
+* Use the value of MAD_SD to discuss the magnitude/importance of various coefficients. Refer to this image, courtesy of Tyler.
+
+* What is the causal effect?
+
+Many treatment groups, so several different causal effects we could estimate.
+
+* What is the meaning --- in words and mathematically --- of something like `treatmentSelf`? After all, it is not a variable in our data set . . .
+
+One of the treatment groups.
+
+* Compare the model with the intercept to the one without. Are they the same? Explain.
+
+```{r}
+# coefficients are a little different
+# predictions will be roughly the same
+fit_1 <- stan_glm(primary_06 ~ treatment + age*hh_size, 
+                  data = week_11_train, refresh = 0)
+
+fit_1_no_i <- stan_glm(primary_06 ~ treatment +age*hh_size - 1, 
+                  data = week_11_train, refresh = 0)
+
+tibble(pred_1 = predict(fit_1),
+       pred_2 = predict(fit_1_no_i))
+```
+
+## Scene 3
+
+**Prompt:** Explore a variety models which explain `primary_06` as a function of the variables in our data set. Make sure to explore some interaction terms. 
+
+* Come up with at least two models that a) you like and would be willing to defend and b) are somewhat different from one another. The two most common model types in these situations are "simple" and "full". The former includes a minimum number of variables. The latter errs on the side of variable inclusion and the creation of interaction terms.
+
+* What does it mean if, for example, the coefficient of `treatmentNeighbors` varies across models? 
+
+* Do things change if we start using all the data? Is there a danger in doing so?
+
+**Answers:** 
+
+```{r}
+mod_3_all <- stan_glm(primary_06 ~ sex + age + primary_02 + 
+                        general_02 + primary_04 + treatment  + 
+                        solo, 
+                  data = week_11_train,
+                  refresh = 0)
+```
+
+```{r}
+print(mod_3_all, detail = FALSE, digits = 3)
+```
+
+```{r}
+mod_3_some <- stan_glm(primary_06 ~ age + primary_04 + treatment, 
+                  data = week_11_train,
+                  refresh = 0)
+```
+
+```{r}
+print(mod_3_some, detail = FALSE, digits = 3)
+```
+
+```{r}
+mod_3_inter <- stan_glm(primary_06 ~ sex + age + primary_02 + solo + 
+                        general_02 + primary_04 + treatment + treatment:solo, 
+                  data = week_11_train,
+                  refresh = 0)
+
+print(mod_3_inter, detail = FALSE, digits = 3)
+```
