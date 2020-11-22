@@ -1,0 +1,317 @@
+---
+title: 'Problem Set #8'
+author: "Gov 50"
+date: "8/14/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(rstanarm)
+library(ggridges)
+library(gtsummary)
+library(broom.mixed)
+library(ggthemes)
+library(tidymodels)
+library(gt)
+```
+
+For this problem set, we will be using a dataset from a 1994 paper called "Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania" by economists David Card and Alan B. Krueger. The paper estimated the causal effect of a minimum wage increase on full-time employment. 
+
+We encourage you to read the full paper, though it is not required to complete this problem set: https://davidcard.berkeley.edu/papers/njmin-aer.pdf
+
+-------------------------------------------------------------------------------
+ Column               Description
+ -------------------- ---------------------------------------------------------
+ `nj`                 1 if restaurant is in NJ, 0 if PA.
+
+ `d`                  Time indicator - 1 for after the min-wage increase, 0 before.
+
+ `fte`                Number of full-time equivalent employees.
+
+ `southj`             1 if in southern NJ, 0 otherwise.
+
+ `centralj`           1 if in central NJ, 0 otherwise.
+
+-------------------------------------------------------------------------------
+
+## Question 1
+
+There is a dataset on Canvas called `nj_minwage.csv`. Download this data and place it in a folder called `raw_data`. Read the `nj_minwage.csv` into a tibble called `minwage`. Make sure no warnings appear. The relevant columns are listed in the table above.
+
+Then, use this dataset to design an interesting plot. You have complete freedom to do whatever you like, as long as:
+
+1. You incorporate at least three variables in some way. That is, don't just make a scatterplot comparing one variable to another. Instead, you can do something like show the average FTE (variable 1) among various types of restaurants (variable 2) within each state (variable 3). Be creative!
+2. You have a theme, a legend, a title, and axis labels.
+
+Finally, write a few sentences describing your plot and what it shows substantively.
+
+```{r q1}
+minwage <- read_csv(
+  "raw_data/nj_minwage.csv",
+  col_types = cols(
+    nj = col_double(),
+    d = col_double(),
+    d_nj = col_double(),
+    fte = col_double(),
+    bk = col_double(),
+    kfc = col_double(),
+    roys = col_double(),
+    wendys = col_double(),
+    co_owned = col_double(),
+    centralj = col_double(),
+    southj = col_double(),
+    pa1 = col_double(),
+    pa2 = col_double(),
+    demp = col_double()
+  )
+)
+```
+
+**Final Answer**: a tibble called `minwage` with `r nrow(minwage)` rows and `r ncol(minwage)` columns: `r colnames(minwage)`. You must also create a plot meeting the criteria above and a short paragraph describing the plot and what it shows.
+
+## Question 2
+
+This paper uses an identification strategy called a **difference-in-differences** (DiD) estimator. This estimator uses an interaction term to estimate a causal effect. This study uses full-time employment (`fte`) as the outcome. The model used in this study is a regression of `fte` on `nj` (an indicator for whether or not the restaurant is in NJ), `d` (an indicator for whether the measurement was taken after the minimum wage change), and the interaction between `nj` and `d`. Write the mathematical model for this regression below and interpret each of your variables (that is, interpret the substantive meaning of all of your terms - outcome, coefficients, variables, and error).
+
+In particular, pay attention to the coefficient on the interaction between $nj$ and $d$ when writing your interpretations. This is called a difference-in-differences estimator. Why? Recall our discussion and interpretation of interaction terms in lecture. What do interaction terms represent?
+
+While we haven't covered DiD estimators directly in this course, your knowledge of causal effects from Chapter 3 and interaction terms from Chapter 9 is enough to understand them mathematically. However, if you would like more detail on these models and how they are used since they won't be covered directly in this course, you should feel absolutely free to Google the estimator. The Wikipedia page (which includes detail on the same paper used in this problem set!) would be an excellent place to start: https://en.wikipedia.org/wiki/Difference_in_differences
+
+--------------------------------------------------------------------------
+
+## Answer 2
+
+$$ fte_i = \beta_0 + \beta_1 nj_i + \beta_2 d_i + \beta_3 (nj_i * d_i) + \epsilon_i$$
+
+- **$fte_i$** = the number of full-time employees in restaurant $i$.
+- **$\beta_0$** = the intercept - full-time employment for restaurants in PA before the minimum wage increase.
+- **$\beta_1$** = the predicted change in FTE for restaurants in NJ before the minimum wage change. That is, the difference between NJ and PA employment before the change.
+- **$\beta_2$** = the predicted change in FTE for restaurants in PA after the minimum wage increase.
+- **$\beta_3$** = the predicted **difference** in the changes between NJ and PA employment after the minimum wage increase. That is, the treatment effect that we are interested in: the difference between the employment change in NJ over this time period (where the minimum wage increase happened) and the change in PA over this time period (which did not receive the minimum wage increase). 
+
+--------------------------------------------------------------------------
+
+## Question 3
+
+Use `stan_glm` to fit the model described above, which regresses `fte` on `nj`, `d`, and the interaction between the two. Save the model to an object named `minwage_mod`. In a sentence or two each, interpret the "Median" of the posterior for each of your coefficients (don't worry about MAD_SD or sigma). 
+
+
+```{r q3}
+minwage_mod <- stan_glm(fte ~ nj*d, 
+                        data = minwage, 
+                        refresh = 0)
+```
+
+**Final Answer**: a model called `minwage_mod` created using `stan_glm` and a short interpretation of each posterior of the "Median" for your two predictors and their interaction.
+
+## Question 4
+
+The key assumption behind difference-in-differences estimators is called the "parallel trends" assumption. The assumption is that the change in the control group between the two time periods is the same as the change that the treatment group in the two time periods **would have experienced** without the treatment. That is, that the FTE change in PA restaurants between the two time periods in the study is a valid estimate for the change that NJ would have experienced without the minimum wage increase. This is an attempt to overcome the fundamental problem of causal inference that we have spent so long talking about - even though we can never observe what would have happened to NJ restaurants (the treatment group) if they wouldn't have experienced the treatment (the minimum wage increase), we can take a similar group (PA restaurants) and assume that the change in FTE experienced by that group (the control group) would have happened to NJ without the treatment.
+
+Even though we can never see what would have happened in NJ without the minimum wage increase, the difference-in-differences estimator assumption is that we **can** observe what happened in PA, and we can use PA as the control group as an estimate for what would have happened in NJ without the "treatment" (the minimum wage increase).
+
+Examine the plot below (you **do not need to replicate this plot for this question**). Instead, for each of the points on the graph ($p_1, p_2, p_3, p_4, p_5$), answer the following questions:
+
+1. what the value of each point represents
+2. how you would approximately estimate each point using your coefficients from the model in the previous question. You may need to add multiple coefficients together to estimate these values. Recall that `stan_glm` estimates posterior distributions for these values in the **population**, but we can still use the coefficients as approximate estimates for values to describe the sample that we have (since the model assumes your sample is representative of the population you are studying).
+
+**Hint**: we will answer $p_1$ for you - $p_1$ represents (1) the average FTE of PA restaurants before the minimum wage change and (2) it is represented by the intercept in our model.
+
+**Hint #2**: you can consider the median coefficient values as sample estimates while doing this exercise. That is, if your intercept in the model estimated in the previous question was 23.3, we know that this is the median of a posterior distribution for the model's estimated number of full-time employees in PA in the population. However, you can use that coefficient (23.3 in this example) to describe the median FTE for PA restaurants. 
+
+```{r q4, fig.align='center', message=FALSE,warning=FALSE}
+fit1 <- lm(fte ~ nj, data = minwage)
+fit1 <- lm(fte ~ nj + d + nj*d,  data = minwage)
+
+ggplot(minwage, aes(x = d, y = fte)) + 
+  geom_blank() + 
+  geom_abline(aes(intercept = fit1$coefficients["(Intercept)"],
+              slope     = fit1$coefficients["d"], 
+              col = "orange"), lwd = 2) + 
+  geom_abline(aes(intercept = sum(fit1$coefficients[c("(Intercept)", "nj")]),
+              slope     = sum(fit1$coefficients[c("d", "nj:d")]), 
+              col = "blue"), lwd = 2) + 
+  geom_abline(aes(intercept = sum(fit1$coefficients[c("(Intercept)", "nj")]),
+              slope     = fit1$coefficients["d"], 
+              color = "green"), lwd = 1, lty = "dashed") + 
+  geom_point(x= 0, y = fit1$coefficients["(Intercept)"], 
+             col = "#0D5C63", size = 5) +
+  geom_point(x= 1, y = fit1$coefficients["(Intercept)"]+ fit1$coefficients["d"], 
+             col = "#0D5C63", size = 5, alpha = 0.05) +
+  geom_point(x= 0, y = sum(fit1$coefficients[c("(Intercept)", "nj")]), 
+             col = "#E4572E", size = 5) +
+  geom_point(x= 1, 
+             y = sum(fit1$coefficients[c("(Intercept)", "nj")]) +
+               sum(fit1$coefficients[c("d", "nj:d")]), 
+             col = "#E4572E", size = 5, alpha = 0.05) +
+  geom_point(x= 1, y = 18.25, 
+             col = "#0267C1", size = 5, alpha = 0.05) +
+  annotate(geom = "text", x = 0, y = 23.75, 
+           col = "#0D5C63", label = "p[1]", parse = TRUE, size = 5) + 
+  annotate(geom = "text", x = 1, y = 21.75, 
+           col = "#0D5C63", label = "p[2]", parse = TRUE, size = 5) + 
+  annotate(geom = "text", x = 0, y = 19.75, 
+           col = "#E4572E", label = "p[3]", parse = TRUE, size = 5) + 
+  annotate(geom = "text", x = 1, y = 20.5, 
+           col = "#E4572E", label = "p[4]", parse = TRUE, size = 5) +
+  annotate(geom = "text", x = 1, y = 18.75, 
+           col = "#0267C1", label = "p[5]", parse = TRUE, size = 5) +
+  ylim(c(17.5,25)) + 
+  theme_bw() + 
+  scale_color_manual(name = "Legend", 
+                     breaks = c("orange", "blue", "green"),
+                     labels = c("PA Observed", "NJ Observed", "NJ Assumption"),
+                     values = c("#0D5C63", "#E4572E", "#0267C1")) + 
+  labs(x = "Change Over Time",
+       y = "Full Time Employment",
+       title = "Difference-in-Differences Visualization",
+       subtitle = "Observed and Assumed Changes in FTE",
+       caption = "Source: Card and Krueger (1994)") + 
+  theme(plot.caption = element_text(hjust = 1.25, face = "italic")) + 
+  scale_x_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1.00),
+                     labels = c("d = 0 \n Before Increase", "", "", "", "d = 1 \n After Increase"))
+```
+----------------------------------------
+
+## Answer 4
+
+(values are given from the model that we fit, yours may be slightly different due to the randomization in `stan_glm`)
+
+- $p_1$: (1) the average FTE of PA restaurants before the minimum wage change and (2) it is represented by the intercept in our model: 23.4.
+- $p_2$: (1) the average FTE of PA restaurants after the change, and (2) we can estimate it by adding the intercept to the coefficient on `d`: 23.4 - 2.3 = 21.1.
+- $p_3$: (1) the average FTE of NJ restaurants before the change, and (2) we can estimate it by adding the intercept to the coefficient on `nj`: 23.4 - 2.9 = 20.5.
+- $p_4$: (1) the average FTE of NJ restaurants after the change, and (2) we can estimate it by adding the intercept, the coefficient on `nj`, the coefficient on `d`, and the interaction coefficient: 23.4 - 2.9 - 2.3 + 2.9 = 21.1.
+- $p_5$: (1) this is the assumed NJ value after the change if they would have not experienced the minimum wage increase (the difference is given by the observed change in PA) and (2) we could estimate this by adding the intercept, `nj` coefficient, and `d`: 23.4 - 2.9 - 2.3 = 18.2. Note that this value did not actually happen in the real world, but is an assumption.
+
+----------------------------------------
+
+## Question 5
+
+Use the material in Chapter 10 to create a recipe, model, and workflow using the `minwage` data and a model regressing `fte` on `nj`, `d`, and their interaction as above (hint: remember your recipe can't include the interaction by default and you'll need the `step_interact()` function). Using a train/test split saved to new objects (just a single split, not cross validation), use your recipe to fit a model on the training set and predict onto the testing dataset. Chapter 10 will be extremely helpful here - you should start with the recipe, model, and workflow code used in the textbook.
+
+Once you have your predictions, use the `bind_cols()` function to bind your testing data to your predictions. Then, create a new column in `prediction_results` called `error` which contains the Root Mean Squared Error of the difference between your true `fte` and predictions. Finally, summarize you `error` column into a single numerical value representing the average error and save this to an object called `prediction_results`. You have a lot of flexibility in how you approach this question - all that we require is that your `prediction_results` object at the end has a single row and column called `error` that contains your answer.
+
+```{r q5}
+
+minwage_split <- initial_split(minwage, prob = 0.80)
+minwage_train <- training(minwage_split)
+minwage_test <- testing(minwage_split)
+
+# create recipe
+
+minwage_recipe <- recipe(fte ~ nj + d,
+       data = minwage_train) %>%
+  step_dummy(all_nominal()) %>%
+  step_interact(~nj:d)
+
+# create model
+
+lm_model <- linear_reg() %>%
+  set_engine("lm")
+
+# create workflow + add recipe to it
+
+lm_wflow <-
+  workflow() %>%
+  add_model(lm_model) %>%
+  add_recipe(minwage_recipe)
+
+lm_fit <- fit(lm_wflow, minwage_train)
+
+minwage_res <- predict(lm_fit, new_data= minwage_test)
+
+prediction_results <- bind_cols(minwage_test, minwage_res) %>%
+  mutate(error = (fte - .pred)^2) %>%
+  summarise(error = sqrt(mean(error, na.rm = TRUE)))
+```
+
+**Final Answer**: a tibble called `prediction_results` with `r nrow(prediction_results)` rows and `r ncol(prediction_results)` columns: `r colnames(prediction_results)`. The value in `error` must represent the RMSE (so it must be greater than 0) between the true `fte` and your model predictions.
+
+## Question 6
+
+In Question 5, we calculated prediction error using a test/train split on our minimum wage data. Now, create a function called `estimate_error` that takes the following arguments: (1) a dataset called `df` and (2) a pre-defined recipe object called `test_recipe`. Your function must return 1x1 tibble exactly as in the previous question that returns the RMSE of your predictions in a column called `error`. You can start this question by copying your code from the previous question and changing object names to fit your arguments.
+
+You can test your function by running it (in the console) on your full dataset and your previously defined recipe from the last question. For example, `estimate_error(minwage, minwage_recipe)` (if you called your recipe from the previous question `minwage_recipe`). This should return a single 1x1 tibble that looks like this (your value will look different due to the random train/test split):
+
+```{r q6-a}
+estimate_error <- function(df, test_recipe) {
+  
+  df_split <- initial_split(df, prob = 0.80)
+  df_train <- training(df_split)
+  df_test <- testing(df_split)
+  
+  lm_model <- linear_reg() %>%
+  set_engine("lm")
+
+  # create workflow + add recipe to it
+  
+  lm_wflow <-
+    workflow() %>%
+    add_model(lm_model) %>%
+    add_recipe(test_recipe)
+  
+  lm_fit <- fit(lm_wflow, df_train)
+
+  df_res <- predict(lm_fit, new_data = df_test)
+
+  bind_cols(df_test, df_res) %>%
+    mutate(error = (fte - .pred)^2) %>%
+    summarise(error = sqrt(mean(error, na.rm = TRUE)))
+}
+
+minwage_recipe <- recipe(fte ~ nj + d,
+       data = minwage_train) %>%
+  step_dummy(all_nominal()) %>%
+  step_interact(~nj:d)
+
+estimate_error(minwage, minwage_recipe)
+```
+
+Finally, evaluate your function on two recipes using the `minwage` data. The first should be exactly the recipe used throughout the problem set (predictors `nj`, `d`, and the interaction). The second should use `nj`, `d`, their interaction, and two additional predictors: `southj` and `centralj`. Use your `estimate_error()` function on each of these two recipes and store the results into new tibbles named `pred_error_1` and `pred_error_2`.
+
+In a paragraph, describe the process you took to answer this question and interpret you results. Compare the errors from your two models. Which model does better? Do you think it is by a substantial amount? Use your data to help you determine whether or not the additional predictors improve upon your model.
+
+```{r q6b}
+
+estimate_error <- function(df, test_recipe) {
+  
+  df_split <- initial_split(df, prob = 0.80)
+  df_train <- training(df_split)
+  df_test <- testing(df_split)
+  
+  lm_model <- linear_reg() %>%
+  set_engine("lm")
+
+  ## create workflow + add recipe to it
+  lm_wflow <-
+    workflow() %>%
+    add_model(lm_model) %>%
+    add_recipe(test_recipe)
+  
+  lm_fit <- fit(lm_wflow, df_train)
+
+  df_res <- predict(lm_fit, new_data = df_test)
+
+  bind_cols(df_test, df_res) %>%
+    mutate(error = abs(fte - .pred)) %>%
+    summarise(error = mean(error, na.rm = TRUE))
+}
+
+minwage_recipe <- recipe(fte ~ nj + d,
+       data = minwage_train) %>%
+  step_dummy(all_nominal()) %>%
+  step_interact(~nj:d)
+
+pred_error_1 <- estimate_error(minwage, minwage_recipe)
+
+minwage_recipe_2 <- recipe(fte ~ nj + d + southj + centralj,
+       data = minwage_train) %>%
+  step_dummy(all_nominal()) %>%
+  step_interact(~nj:d)
+
+pred_error_2 <- estimate_error(minwage, minwage_recipe_2)
+```
+
+**Final Answer**: two tibbles called `pred_error_1` and `pred_error_2`, both of which have with `r nrow(pred_error_1)` rows and `r ncol(pred_error_1)` columns: `r colnames(pred_error_1)`. The value in `error` must represent the RMSE (so it must be >= 0) between the true `fte` and your model predictions. You must also write a short paragraph analyzing the results as described above.
