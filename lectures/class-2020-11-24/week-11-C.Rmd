@@ -1,0 +1,176 @@
+---
+title: "Week 11, Day 3"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(PPBDS.data)
+library(rstanarm)
+library(tidyverse)
+
+# Same data clean up as last week.
+
+set.seed(1005)
+week_11 <- shaming %>% 
+  mutate(age = 2006 - birth_year) %>% 
+  mutate(treatment = fct_relevel(treatment, "Control")) %>% 
+  mutate(solo = ifelse(hh_size == 1, TRUE, FALSE)) %>% 
+  select(-general_04, -no_of_names, -birth_year, -hh_size) 
+```
+
+
+## Scene 1
+
+**Prompt:** Create a fitted model object called `fit_1` using this formula or, if you want, a formula which you prefer. I recommend not making your model execessively complex.
+
+primary_06 ~ solo + primary_04 + treatment + solo:treatment
+
+(Assume that you have already completed a cross-validation analysis and chosen this one model to use going forward.)
+
+* Which data set should you use to fit the model? Explain why.
+
+* Interpret the fitted model. Should we keep all these variables? And the interaction term?
+
+**Answers:** We have learned how to create two sorts of model objects last week: `stanreg` objects using `stan_glm()` and tidymodel objects. Is one "right" and the other "wrong?" No! They are, substantively, the same things. We should chose the one that is more convenient for what we want to accomplish. In this case, is is the `stan_glm()` object we want since it makes creating posterior probability distributions much easier.
+
+
+```{r sc1-a, cache=TRUE}
+fit_1 <- stan_glm(formula = primary_06 ~ solo + primary_04 + treatment + solo:treatment,
+                  data = week_11,
+                  refresh = 0,
+                  seed = 9)
+```
+
+```{r sc1-b}
+print(fit_1, digits = 4)
+```
+
+* I just learned that, instead of set.seed(), you can pass `seed` as an argument directly in the call to `stan_glm()`. Very convenient.
+
+* You should use the full data set to fit this model. The only reason we use training/test data is to avoid overfitting when choosing among possible models. That stage of the analysis is over. We should use all the data we have because we want to make the best inferences we can. 
+
+* Notice how long the model takes to fit! Why? Because we are using all 340,000 observations, as opposed to the sample of 10,000 that we have been using up till now. There is some chance that this will be too much data for some students' computers. If that is the case, feel free to use a smaller sample. 
+
+* One thing that big data gets for us is significance. With a large enough data set, almost every coefficient with have a 95% confidence interval which excludes zero. Is that enough to declare those variables important or meaningful? No! Recall the discussion from last week. Significance --- or, rather, a lack of uncertainty --- is not enough on its own. The coefficient must be large enough that you, in your judgment, consider it important enough to keep around. There is not textbook answer to whether or not you should.
+
+* `cache=TRUE` is a good idea for the code chunk in which you fit the model.
+
+
+## Scene 2
+
+**Prompt:** What is the causal effect of receiving the Neighbors postcard as compared to being in the control group? Provide a posterior probability distribution.
+
+* One way to answer this question is to use `posterior_predict()`. Do that. Make it look nice! Write a sentence or two interpreting the answer.
+
+* A second approach uses `posterior_epred()`. Do that. Make it look nice! Write a sentence or two interpreting the answer.
+
+**Answers:**
+
+* Note that, as written, the question is impossible to answer! There is no simple causal effect given a complex model like the one that we are using, even if we specify that the comparison is between Neighbors and Control. For example, the causal effect is clearly different, depending on whether or not you live alone. 
+
+* In truth, causal effects in social science are almost always heterogenous. The effect of the postcard on me is different form the effect of the postcard on you. So, for any linear model which includes interaction terms --- or for (almost?) every non-linear model, we need to specify the other covariates when asking our question. Causal effects vary!
+
+* We can look at the model formula and know --- because it is linear --- that we would get the same estimate for the causal effect regardless of the value of `primary_04`. The contribution disappears when we subtract one potential outcome from the other. That is not true for `solo` because of the interaction term. Chapter 9 walks through some detailed examples of this scenario.
+
+
+```{r sc2-a}
+new_obs <- tibble(treatment = c( "Neighbors", "Control"), 
+                  solo = TRUE, 
+                  primary_04 = "Yes")
+```
+
+
+```{r sc2-b}
+posterior_predict(fit_1, newdata = new_obs) %>% 
+  as_tibble() %>% 
+  mutate_all(as.numeric) %>% 
+  mutate(causal_effect = `1` - `2`) %>% 
+  ggplot(aes(causal_effect)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                    bins = 100) +
+    labs(title = "Posterior Predictive Distribution for Causal Effect of Neighbors Postcard",
+         subtitle = "For a single individual there is much uncertainty",
+         x = "Change in Voting Likelihood",
+         y = "Probability") + 
+    scale_x_continuous(labels = scales::percent_format()) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    theme_classic()
+```
+
+
+```{r sc2-c}
+posterior_epred(fit_1, newdata = new_obs) %>% 
+  as_tibble() %>% 
+  mutate_all(as.numeric) %>% 
+  mutate(causal_effect = `1` - `2`) %>% 
+  ggplot(aes(causal_effect)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                    bins = 100) +
+    labs(title = "Posterior Predictive Distribution for Causal Effect of Neighbors Postcard",
+         subtitle = "Expected value is clearly positive",
+         x = "Change in Voting Likelihood",
+         y = "Probability") + 
+    scale_x_continuous(labels = scales::percent_format()) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    theme_classic()
+```
+
+* Wrong argument names can cause mysterious disasters! For example, if you use `new_data` instead of `newdata`, the whole calculation blows up and produces a weird error message. The reason is that, without a `newdata` argument, posterior_epred() tries to give us a 4,000 row column for every one of the 340,000 observations. That will blow up most student laptops. But, with the right argument, the code runs very quickly.
+
+* Results for `posterior_predict()` are, obviously, wrong in some sense. Your likelihood of voting can't be above 100% or below 0%. This is evidence that our linear model is "wrong." We really should use a logistic model. But, at the same time, is really doesn't matter, unless we are truly interested in extreme results.
+
+* I bet, although I have not checked, that we would get almost exactly the same graph for the expected value even if we switched to a logistic model. I am not sure what would happen in the `posterior_predict()` case.
+
+
+
+## Scene 3
+
+**Prompt:** There are four primary causal effects of interest: each of the four treatments compared, individually, to Control.  Build a big graphic which shows the four posterior probability distributions of the expected values at once. See #preceptors-notes for my version. You do not need to copy my work! Make something better!
+
+* Challenge question: Do the same but for both `solo = TRUE` and `solo = FALSE`. This means that there are 8 posterior probability distributions to show. Think hard about the best way to display them. What point are you trying to get across to your readers?
+
+
+**Answers:**
+
+* We could type in all the things we want to estimate by hand, but that is a bother. expand_grid() comes to the rescue. We probably don't need expand grid for this example, since there are only 10 rows. But, as the examples at the end of Chapters 11 and 12 show, we often want to pass in hundreds, even thousands, of possible combinations.
+
+```{r sc3-a}
+new_obs <- expand_grid(treatment = levels(week_11$treatment), 
+                       solo = c(TRUE), 
+                       primary_04 = "Yes")
+```
+
+* set_names() in the code below is not, strictly speaking, necessary. But it makes the code which follows easier to write and easier to read. There is a danger, however. What if `new_obs` is not actually in the order which is passed to `set_names()`? There is nothing which would automatically warn us about a problem. Dangerous!
+
+* The other newish trick is the use of `pivot_longer()` while leaving one of the columns, `Control`, alone. This causes a copy of Control to be included in each "block" of our new longer tibble. That is what we want, since we want to compare each of the four other treatments to Control. But it is still tricky.
+
+* `fill = "Treatment"` allows me to change the title of the legend. (I can never really remember this. Also, I wonder if this only works because I used `fill` in the `aes()`. Probably?)
+
+* `fct_relevel(treatment, "Neighbors", after = 4)` allows me to put the legend entries in the same order as the size of the causal effects themselves. Neighbors is furtherest to the right, so it belongs at the bottom of the legend.
+
+
+```{r sc3-b}
+posterior_epred(fit_1, newdata = new_obs) %>% 
+  as_tibble() %>% 
+  mutate_all(as.numeric) %>% 
+  set_names(new_obs$treatment) %>% 
+  pivot_longer(cols = `Civic Duty`:Neighbors, 
+               names_to = "treatment",
+               values_to = "post") %>% 
+  mutate(causal_effect = post - Control) %>% 
+  mutate(treatment = fct_relevel(treatment, "Neighbors", after = 4)) %>% 
+  ggplot(aes(x = causal_effect, fill = treatment)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                   alpha = 0.5, 
+                   bins = 100, 
+                   position = "identity") +
+    labs(title = "Posterior Probability Distribution for Expected Causal Effects",
+         subtitle = "Postcards which show neighborhood voting have the biggest effect",
+         x = "Change in Likelihood of Voting",
+         y = "Probability",
+         fill = "Treatment") + 
+    scale_x_continuous(labels = scales::percent_format()) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    theme_classic()
+```
